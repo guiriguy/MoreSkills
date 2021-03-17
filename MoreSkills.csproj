@@ -54,8 +54,15 @@
     <Reference Include="UnityEngine.ImageConversionModule">
       <HintPath>Libs\UnityEngine.ImageConversionModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>..\..\..\..\valheim_Data\Managed\UnityEngine.UI.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UI\SkillIcons.cs" />
+    <Compile Include="Utility\EmbeddedAssests.cs" />
+    <Compile Include="Utility\Helper.cs" />
+    <Compile Include="Config\MoreSkills.Config.cs" />
     <Compile Include="MoreSkills.cs" />
     <Compile Include="PluginInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -63,5 +70,10 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Icons\strengthicon.png" />
+    <EmbeddedResource Include="Assets\Icons\vitalityicon.png" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
