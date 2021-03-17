@@ -194,129 +194,55 @@ namespace MoreSkills
         [HarmonyPatch(typeof(Player), "UpdateStats")]
         public static class Strength_ApplyWeightMod
         {
-
-            [HarmonyPrefix]
-            public static void Strength_WeightMod()
+            public static void Postfix(ref Player __instance)
             {
-
-                bool disabled = !MoreSkills.EnableWeightMod.Value;
-
-                if (disabled)
+                if (MoreSkills.EnableWeightMod.Value)
                 {
-
-
-                }
-                else
-                {
-                    try
+                    if (__instance != null)
                     {
-
-                        bool player = Player.m_localPlayer == null;
-
-                        if (!player)
-
-                        {
-
-
-                            float weight_skill = (float)Math.Floor((Player.m_localPlayer.GetSkillFactor((Skills.SkillType)700) * 100f) + 0.000001f);
-
-                            float weight_skillinc = ((MoreSkills.BaseMaxWeight.Value - MoreSkills.BaseWeight.Value) / 100f) * weight_skill;
-
-                            Player.m_localPlayer.m_maxCarryWeight = (MoreSkills.BaseWeight.Value + weight_skillinc);
-
-                        }
-                        else
-                        {
-                        }
+                        float weight_skill = (float)Math.Floor((__instance.GetSkillFactor((Skills.SkillType)StrengthSkill_Type) * 100f) + 0.000001f);
+                        float weight_skillinc = ((MoreSkills.BaseMaxWeight.Value - MoreSkills.BaseWeight.Value) / 100f) * weight_skill;
+                       __instance.m_maxCarryWeight = (MoreSkills.BaseWeight.Value + weight_skillinc);
 
                     }
-                    catch (Exception ex)
-                    {
-
-                        Debug.LogError("Error al intentar poner peso base: " + ex);
-
-                    }
-
                 }
-
             }
-
         }
 
         [HarmonyPatch(typeof(Player), "GetMaxCarryWeight")]
         public static class RaiseSkill_Strength
         {
-
-            [HarmonyPostfix]
-            public static void RS_Strength(ref float __result)
+            public static void Postfix(ref Player __instance, ref float __result)
             {
-
-                bool player = Player.m_localPlayer == null;
-
-                bool disabled = !MoreSkills.EnableWeightMod.Value;
-
-                if (disabled)
+                if(MoreSkills.EnableWeightMod.Value)
                 {
-
-                }
-                else
-                {
-
-                    if (!player)
+                    if (__instance != null)
                     {
-
-                        bool halfweight = Player.m_localPlayer.GetInventory().GetTotalWeight() > (__result / 2);
-
-                        bool encumbered = Player.m_localPlayer.GetInventory().GetTotalWeight() > __result;
-
-                        Vector3 vel = Player.m_localPlayer.m_currentVel;
-
+                        bool halfweight = __instance.GetInventory().GetTotalWeight() > (__result / 2);
+                        Vector3 vel = __instance.m_currentVel;
                         bool moving = Math.Floor(vel.y + vel.x + vel.z) < -1 || Math.Floor(vel.y + vel.x + vel.z) > 1;
-
-                        bool running = Player.m_localPlayer.IsRunning();
-
-                        if (halfweight && moving)
+                        if (halfweight && moving) countsrs++;
+                        if (countsrs >= 1000)
                         {
-
-                            countsrs++;
-
+                            if (moving)
+                            {
+                                if (__instance.IsEncumbered)
+                                {
+                                    __instance.RaiseSkill((Skills.SkillType)StrengthSkill_Type, MoreSkills.StrengthSkillIncreaseWhenEncumbred.Value);
+                                    countsrs = 0;
+                                }
+                                else if (halfweight)
+                                {
+                                    if (__instance.IsRunning())
+                                        __instance.RaiseSkill((Skills.SkillType)StrengthSkill_Type, MoreSkills.StrengthSkillIncreaseWhenHalfnRunning.Value);
+                                    else 
+                                        __instance.RaiseSkill((Skills.SkillType)StrengthSkill_Type, MoreSkills.StrengthSkillIncreaseWhenHalfnMoving.Value);                                    
+                                    countsrs = 0;
+                                }                                
+                            }
                         }
-
-                        if (encumbered && moving && countsrs >= 1000)
-                        {
-
-                            Player.m_localPlayer.RaiseSkill((Skills.SkillType)700, MoreSkills.StrengthSkillIncreaseWhenEncumbred.Value);
-
-                            Debug.LogWarning("Incremented Strength skill in " + MoreSkills.StrengthSkillIncreaseWhenEncumbred.Value);
-
-                            countsrs -= countsrs;
-
-                        }
-                        else if (halfweight && running && countsrs >= 1000)
-                        {
-
-                            Player.m_localPlayer.RaiseSkill((Skills.SkillType)700, MoreSkills.StrengthSkillIncreaseWhenHalfnRunning.Value);
-
-                            Debug.LogWarning("Incremented Strength skill in " + MoreSkills.StrengthSkillIncreaseWhenHalfnRunning.Value);
-
-                            countsrs -= countsrs;
-
-                        }
-                        else if (halfweight && moving && countsrs >= 1000)
-                        {
-
-                            Player.m_localPlayer.RaiseSkill((Skills.SkillType)700, MoreSkills.StrengthSkillIncreaseWhenHalfnMoving.Value);
-
-                            Debug.LogWarning("Incremented Strength skill in " + MoreSkills.StrengthSkillIncreaseWhenHalfnMoving.Value);
-
-                            countsrs -= countsrs;
-
-                        }
-
                     }
-
                 }
-
             }
 
             public static int countsrs;
@@ -351,7 +277,7 @@ namespace MoreSkills
                         if (!player)
                         {
 
-                            float health_skill = (float)Math.Floor((Player.m_localPlayer.GetSkillFactor((Skills.SkillType)701) * 100f) + 0.00000001f);
+                            float health_skill = (float)Math.Floor((Player.m_localPlayer.GetSkillFactor((Skills.SkillType)VitalitySkill_Type) * 100f) + 0.00000001f);
 
                             float health_skillinc = ((MoreSkills.BaseMaxHealth.Value - MoreSkills.BaseHealth.Value) / 100) * health_skill;
 
@@ -395,7 +321,7 @@ namespace MoreSkills
                     if (!player)
                     {
 
-                        Player.m_localPlayer.RaiseSkill((Skills.SkillType)701, (hit.GetTotalDamage() / 100));
+                        Player.m_localPlayer.RaiseSkill((Skills.SkillType)VitalitySkill_Type, (hit.GetTotalDamage() / 100));
 
                     }
 
