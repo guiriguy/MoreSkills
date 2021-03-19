@@ -47,8 +47,6 @@ namespace MoreSkills.Config
             MoreSkills_Config.BaseMaxRSpeed = base.Config.Bind<float>("MoreSkills: Sailing", "Max Rudder Speed", 1.5f, "Changes the Max Speed of the Rudder to reach the max turning when Sailing is at Level 100.");
             MoreSkills_Config.BaseSForce = base.Config.Bind<float>("MoreSkills: Sailing", "Base Sail Force", 0.025f, "Changes the Base Sail Force, incresing it increases the speed with the Sail Down");
             MoreSkills_Config.BaseMaxSForce = base.Config.Bind<float>("MoreSkills: Sailing", "Max Sail Force", 0.5f, "Changes the Max Sail Force when Sailing is at Level 100.");
-            MoreSkills_Config.BaseAngDamping = base.Config.Bind<float>("MoreSkills: Sailing", "Base Angle Damping", 0.6f, "Changes the Base Angle Damping, I believe that it affects the control of the boat, making it more dificult at higher values to turn and control");
-            MoreSkills_Config.BaseMaxAngDamping = base.Config.Bind<float>("MoreSkills: Sailing", "Max Angle Damping", 0.15f, "Changes the Max Angle Damping when Sailing is at Level 100.");
             MoreSkills_Config.BaseDSideways = base.Config.Bind<float>("MoreSkills: Sailing", "Base Damping Sideways", 0.3f, "Changes the Base Damping Sideways, at higher values te boat moves sideways more. Making it dangerous when Sailing at low levels in a storm.");
             MoreSkills_Config.BaseMaxDSideways = base.Config.Bind<float>("MoreSkills: Sailing", "Max Damping Sideways", 0.075f, "Changes the Max Damping Sideways when Sailing is at Level 100.");
 
@@ -133,10 +131,6 @@ namespace MoreSkills.Config
         public static ConfigEntry<float> BaseSForce;
 
         public static ConfigEntry<float> BaseMaxSForce;
-
-        public static ConfigEntry<float> BaseAngDamping;
-
-        public static ConfigEntry<float> BaseMaxAngDamping;
 
         public static ConfigEntry<float> BaseDSideways;
 

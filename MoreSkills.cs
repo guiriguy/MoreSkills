@@ -143,7 +143,6 @@ namespace MoreSkills_Skills
                             float bforce_skillinc = ((MoreSkills_Config.BaseMaxBForce.Value - MoreSkills_Config.BaseBForce.Value) / 100) * sailing_skill;
                             float rspeed_skillinc = ((MoreSkills_Config.BaseMaxRSpeed.Value - MoreSkills_Config.BaseRSpeed.Value) / 100) * sailing_skill;
                             float sforce_skillinc = ((MoreSkills_Config.BaseMaxSForce.Value - MoreSkills_Config.BaseSForce.Value) / 100) * sailing_skill;
-                            float angdamping_skillinc = ((MoreSkills_Config.BaseMaxAngDamping.Value - MoreSkills_Config.BaseAngDamping.Value) / 100) * sailing_skill;
                             float dsideways_skillinc = ((MoreSkills_Config.BaseMaxDSideways.Value - MoreSkills_Config.BaseDSideways.Value) / 100) * sailing_skill;
                             float mbforce = __instance.GetControlledShip().m_backwardForce;
                             float msforce = __instance.GetControlledShip().m_sailForceFactor;
@@ -182,7 +181,6 @@ namespace MoreSkills_Skills
                             }
 
                             __instance.GetControlledShip().m_rudderSpeed = MoreSkills_Config.BaseRSpeed.Value + rspeed_skillinc;
-                            __instance.GetControlledShip().m_angularDamping = MoreSkills_Config.BaseAngDamping.Value + angdamping_skillinc;
                             __instance.GetControlledShip().m_dampingSideway = MoreSkills_Config.BaseDSideways.Value + dsideways_skillinc;
 
                             if (((svelx + svelz) / 1000) >= 0.0001)
@@ -222,6 +220,24 @@ namespace MoreSkills_Skills
             public static float svelx;
             public static float svelz;
         }
+
+        /*[HarmonyPatch(typeof(Player), "UpdateStats")]
+        public static class Testing
+        {
+            public static void Postfix(ref Player __instance)
+            {
+                if (__instance != null)
+                {
+                    foreach (ItemDrop.ItemData item in __instance.GetInventory().m_inventory)
+                    {
+                        Debug.LogWarning("Prueba" + item);
+                    }
+                }
+            }
+
+            public static Inventory _inventory;
+            public static ItemDrop _itemDrop;
+        }*/
     }
 }
 
