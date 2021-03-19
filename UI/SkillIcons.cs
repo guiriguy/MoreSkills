@@ -27,5 +27,16 @@ namespace MoreSkills.UI
             iconStrength.Dispose();
             return StrengthIcon;
         }
+
+        public static Sprite SailingIcon;
+
+        public static Sprite Load_SailingIcon()
+        {
+            Stream iconSailing = EmbeddedAssets.LoadAssets("Assets.Icons.sailingicon.png");
+            Texture2D Sailingtexture2D = Helper.LoadPng(iconSailing);
+            SailingIcon = Sprite.Create(Sailingtexture2D, new Rect(0f, 0f, 32f, 32f), Vector2.zero);
+            iconSailing.Dispose();
+            return SailingIcon;
+        }
     }
 }

@@ -64,7 +64,7 @@
     <Compile Include="Utility\Helper.cs" />
     <Compile Include="Config\MoreSkills.Config.cs" />
     <Compile Include="MoreSkills.cs" />
-    <Compile Include="PluginInfo.cs" />
+    <Compile Include="Config\MoreSkills.Info.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -74,6 +74,8 @@
     <EmbeddedResource Include="Assets\Icons\strengthicon.png" />
     <EmbeddedResource Include="Assets\Icons\vitalityicon.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Icons\sailingicon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
