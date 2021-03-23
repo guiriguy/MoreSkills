@@ -59,6 +59,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModSkills\Crafting.cs" />
+    <Compile Include="ModSkills\Sailing.cs" />
+    <Compile Include="ModSkills\Vitality.cs" />
+    <Compile Include="ModSkills\Strength.cs" />
+    <Compile Include="ModSkills\SwimMod.cs" />
+    <Compile Include="ModSkills\CrouchMod.cs" />
     <Compile Include="UI\SkillIcons.cs" />
     <Compile Include="Utility\EmbeddedAssests.cs" />
     <Compile Include="Utility\Helper.cs" />
@@ -66,16 +72,22 @@
     <Compile Include="MoreSkills.cs" />
     <Compile Include="Config\MoreSkills.Info.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\Instances.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Assets\Icons\strengthicon.png" />
-    <EmbeddedResource Include="Assets\Icons\vitalityicon.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Assets\Icons\sailingicon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Icons\vitalityicon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Icons\craftingicon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

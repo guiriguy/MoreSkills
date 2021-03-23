@@ -38,5 +38,16 @@ namespace MoreSkills.UI
             iconSailing.Dispose();
             return SailingIcon;
         }
+
+        public static Sprite CraftingIcon;
+
+        public static Sprite Load_CraftingIcon()
+        {
+            Stream iconCrafting = EmbeddedAssets.LoadAssets("Assets.Icons.craftingicon.png");
+            Texture2D Craftingtexture2D = Helper.LoadPng(iconCrafting);
+            CraftingIcon = Sprite.Create(Craftingtexture2D, new Rect(0f, 0f, 32f, 32f), Vector2.zero);
+            iconCrafting.Dispose();
+            return CraftingIcon;
+        }
     }
 }

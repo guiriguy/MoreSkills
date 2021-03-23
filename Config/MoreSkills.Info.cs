@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MoreSkills_Info
+namespace MoreSkills.Info
 {
 	public static class PluginInfo
 	{
@@ -8,6 +8,6 @@ namespace MoreSkills_Info
 
 		public const string Guid = "com.guiriguy.moreskills";
 
-		public const string Version = "0.1.1.1";
+		public const string Version = "0.1.1.3";
 	}
 }
