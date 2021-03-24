@@ -59,12 +59,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModSkills\Crafting.cs" />
-    <Compile Include="ModSkills\Sailing.cs" />
-    <Compile Include="ModSkills\Vitality.cs" />
-    <Compile Include="ModSkills\Strength.cs" />
-    <Compile Include="ModSkills\SwimMod.cs" />
-    <Compile Include="ModSkills\CrouchMod.cs" />
+    <Compile Include="ModSkills\Overhauls\Pickaxe.cs" />
+    <Compile Include="ModSkills\NewSkills\Crafting.cs" />
+    <Compile Include="ModSkills\NewSkills\Sailing.cs" />
+    <Compile Include="ModSkills\NewSkills\Vitality.cs" />
+    <Compile Include="ModSkills\NewSkills\Strength.cs" />
+    <Compile Include="ModSkills\Overhauls\SwimMod.cs" />
+    <Compile Include="ModSkills\Overhauls\CrouchMod.cs" />
     <Compile Include="UI\SkillIcons.cs" />
     <Compile Include="Utility\EmbeddedAssests.cs" />
     <Compile Include="Utility\Helper.cs" />

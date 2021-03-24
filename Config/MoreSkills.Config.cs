@@ -73,11 +73,34 @@ namespace MoreSkills.Config
             MoreSkills_Config.BaseSwimSpeed = base.Config.Bind<float>("MoreSkills: Swim", "Base Swim Speed", 2f, "Change the base Swim Speed (Valheim Defailt is 2)");
             MoreSkills_Config.BaseMaxSwimSpeed = base.Config.Bind<float>("MoreSkills: Swim", "Base Max Swim Speed", 4f, "Change the base Max Swim Speed at level 100. (Valheim Default is 2)");
 
+            //Pickaxe.Mod
+            MoreSkills_Config.EnablePickaxeDropMod = base.Config.Bind<bool>("MoreSkills: Pickaxe", "Enable Pickaxe Drop Mod", true, "Enables or disables the Pickaxe Drops Modification");
+            MoreSkills_Config.EnablePickaxeChanceMod = base.Config.Bind<bool>("MoreSkills: Pickaxe", "Enable Pickaxe MudPile Chance Mod", true, "DROP MOD NEEDS TO BE TRUE. Enables or disables the Pickaxe Chances Modification");
+            MoreSkills_Config.PickaxeMultiplier = base.Config.Bind<int>("MoreSkills: Pickaxe", "Multiplier based on level Pickaxe", 1, "The based on level multipliers is on the max level. At level 100 you got x10 times the amount of min and max than vanilla. This multiplier changes that number.");
+
             //Inject.Strength
             SkillInjector.RegisterNewSkill(700, "Strength", "Able to carry more and with higher numbers", 1f, SkillIcons.Load_StrengthIcon(), Skills.SkillType.Unarmed);
             SkillInjector.RegisterNewSkill(701, "Vitality", "Endure and gain resistance as you recieve damage", 1f, SkillIcons.Load_VitalityIcon(), Skills.SkillType.Unarmed);
             SkillInjector.RegisterNewSkill(702, "Sailing", "You become a true viking with a great control of the boat in your adventures through seas", 1f, SkillIcons.Load_SailingIcon(), Skills.SkillType.Unarmed);
             SkillInjector.RegisterNewSkill(703, "Crafting", "You get better at this thing of crafting. You can probably even become more efficient...", 1f, SkillIcons.Load_CraftingIcon(), Skills.SkillType.Unarmed);
+
+            //AllRocks.PickaxeMod
+                //Rock
+                MoreSkills_Config.BaseMinRock = base.Config.Bind<int>("MoreSkills: zRocks", "Min Drop of Rocks", 3);
+                MoreSkills_Config.BaseMaxRock = base.Config.Bind<int>("MoreSkills: zRocks", "Max Drop of Rocks", 6);
+                //Big Rock
+                MoreSkills_Config.BaseMinBigRock = base.Config.Bind<int>("MoreSkills: zBigRocks", "Min Drop of Big Rocks", 4);
+                MoreSkills_Config.BaseMaxBigRock = base.Config.Bind<int>("MoreSkills: zBigRocks", "Max Drop of Big Rocks", 8);
+            //Copper Vein
+                MoreSkills_Config.BaseMinCopperVein = base.Config.Bind<int>("MoreSkills: zCopperVein", "Min Drop of Copper Veins", 2);
+                MoreSkills_Config.BaseMaxCopperVein = base.Config.Bind<int>("MoreSkills: zCopperVein", "Max Drop of Copper Veins", 4);
+            //Mudpile (Iron)
+                MoreSkills_Config.BaseMinMudPile = base.Config.Bind<int>("MoreSkills: zMudPile", "Min Drop of Mud Piles (Iron)", 1);
+                MoreSkills_Config.BaseMaxMudPile = base.Config.Bind<int>("MoreSkills: zMudPile", "Max Drop of Mud Piles (Iron)", 1);
+                MoreSkills_Config.BaseChanceMudPile = base.Config.Bind<float>("Moreskills: zMudPile", "Chance of Mud Piles (Iron)", 0.3f);
+            //Silver Vein
+                MoreSkills_Config.BaseMinSilverVein = base.Config.Bind<int>("MoreSkills: zSilverVein", "Min Drop of Silver Vein", 2);
+                MoreSkills_Config.BaseMaxSilverVein = base.Config.Bind<int>("MoreSkills: zSilverVein", "Max Drop of Silver Vein", 3);
 
             //--
             new Harmony("com.guiriguy.moreskills").PatchAll();
@@ -123,8 +146,17 @@ namespace MoreSkills.Config
                 else
                     Debug.LogWarning("[MoreSkills]: Higher Difficulty Crafting Mod Enabled");
             }
+            if (!MoreSkills_Config.EnablePickaxeDropMod.Value)
+                Debug.LogWarning("[MoreSkills]: Pickaxe Drop Mod Disabled");
+            else
+                Debug.LogWarning("[MoreSkills]: Pickaxe Drop Mod Enabled");
+            if (!MoreSkills_Config.EnablePickaxeChanceMod.Value)
+                Debug.LogWarning("[MoreSkills]: Pickaxe MudPile Chance Mod Disabled");
+            else
+                Debug.LogWarning("[MoreSkills]: Pickaxe MudPile Chance Mod Enabled");
         }
             
+        // Stats Bases
 
         public static ConfigEntry<float> BaseWeight;
 
@@ -160,6 +192,10 @@ namespace MoreSkills.Config
 
         public static ConfigEntry<float> BaseMaxDSideways;
 
+        //Multipliers
+
+        public static ConfigEntry<int> PickaxeMultiplier;
+
         public static ConfigEntry<float> CraftingHigherLevelMultiplier;
 
         public static ConfigEntry<int> CraftingNormalLevel25;
@@ -170,6 +206,8 @@ namespace MoreSkills.Config
 
         public static ConfigEntry<int> CraftingNormalLevel100;
 
+        //Skill Increases Multpliers
+
         public static ConfigEntry<float> StrengthSkillIncreaseMultiplier;
 
         public static ConfigEntry<float> VitalitySkillIncreaseMultiplier;
@@ -177,6 +215,8 @@ namespace MoreSkills.Config
         public static ConfigEntry<float> SailingSkillIncreaseMultiplier;
 
         public static ConfigEntry<float> CraftingSkillIncreaseMultiplier;
+
+        //Enables
 
         public static ConfigEntry<bool> EnableWeightMod;
 
@@ -196,7 +236,15 @@ namespace MoreSkills.Config
 
         public static ConfigEntry<bool> EnableHigherDifficultyCrafting;
 
+        public static ConfigEntry<bool> EnablePickaxeDropMod;
+
+        public static ConfigEntry<bool> EnablePickaxeChanceMod;
+
+        //Test
+
         public static Dictionary<string, Texture2D> cachedTextures = new Dictionary<string, Texture2D>();
+
+        //Skills Types
 
         public const int StrengthSkill_Type = 700;
 
@@ -205,5 +253,31 @@ namespace MoreSkills.Config
         public const int SailingSkill_Type = 702;
 
         public const int CraftingSkill_Type = 703;
+
+        //Rocks Bases
+
+        public static ConfigEntry<int> BaseMinRock;
+
+        public static ConfigEntry<int> BaseMaxRock;
+
+        public static ConfigEntry<int> BaseMinBigRock;
+
+        public static ConfigEntry<int> BaseMaxBigRock;
+
+        public static ConfigEntry<int> BaseMinCopperVein;
+
+        public static ConfigEntry<int> BaseMaxCopperVein;
+
+        public static ConfigEntry<int> BaseMinMudPile;
+
+        public static ConfigEntry<int> BaseMaxMudPile;
+
+        public static ConfigEntry<int> BaseMinSilverVein;
+
+        public static ConfigEntry<int> BaseMaxSilverVein;
+
+        //Rocks Chances
+
+        public static ConfigEntry<float> BaseChanceMudPile;
     }
 }

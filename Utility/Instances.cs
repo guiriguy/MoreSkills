@@ -11,6 +11,8 @@ namespace MoreSkills.Utility
         public static ItemDrop _itemDrop;
         public static ObjectDB _objectDB;
         public static InventoryGui _inventoryGui;
+        public static ZNetView _zNetView;
+        public static MineRock5 _mineRock5;
 
         [HarmonyPatch(typeof(Vagon), "UpdateMass")]
         public static class SI_Vagon
@@ -69,6 +71,27 @@ namespace MoreSkills.Utility
             {
                 if (__instance != null)
                     _inventoryGui = __instance;
+            }
+        }
+
+        [HarmonyPatch(typeof(ZNetView), "Awake")]
+
+        public static class SI_ZNetView
+        {
+            public static void Postfix (ref ZNetView __instance)
+            {
+                if (__instance != null)
+                    _zNetView = __instance;
+            }
+        }
+
+        [HarmonyPatch(typeof(MineRock5), "Start")]
+
+        public static class SI_MineRock5
+        {
+            public static void Postfix (ref MineRock5 __instance)
+            {
+                _mineRock5 = __instance;
             }
         }
     }
