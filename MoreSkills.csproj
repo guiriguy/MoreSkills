@@ -59,6 +59,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModSkills\NewSkills\Hunting.cs" />
     <Compile Include="ModSkills\Overhauls\Pickaxe.cs" />
     <Compile Include="ModSkills\NewSkills\Crafting.cs" />
     <Compile Include="ModSkills\NewSkills\Sailing.cs" />
@@ -85,10 +86,11 @@
     <EmbeddedResource Include="Assets\Icons\sailingicon.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Assets\Icons\vitalityicon.png" />
+    <EmbeddedResource Include="Assets\Icons\craftingicon.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Assets\Icons\craftingicon.png" />
+    <EmbeddedResource Include="Assets\Icons\huntingicon.png" />
+    <EmbeddedResource Include="Assets\Icons\vitalityicon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

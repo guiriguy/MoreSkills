@@ -49,5 +49,16 @@ namespace MoreSkills.UI
             iconCrafting.Dispose();
             return CraftingIcon;
         }
+
+        public static Sprite HuntingIcon;
+
+        public static Sprite Load_HuntingIcon()
+        {
+            Stream iconHunting = EmbeddedAssets.LoadAssets("Assets.Icons.huntingicon.png");
+            Texture2D Huntingtexture2D = Helper.LoadPng(iconHunting);
+            HuntingIcon = Sprite.Create(Huntingtexture2D, new Rect(0f, 0f, 32f, 32f), Vector2.zero);
+            iconHunting.Dispose();
+            return HuntingIcon;
+        }
     }
 }

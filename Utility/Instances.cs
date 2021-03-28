@@ -13,6 +13,8 @@ namespace MoreSkills.Utility
         public static InventoryGui _inventoryGui;
         public static ZNetView _zNetView;
         public static MineRock5 _mineRock5;
+        public static Character _CDamage;
+        public static ZDOID _CDAttacker;
 
         [HarmonyPatch(typeof(Vagon), "UpdateMass")]
         public static class SI_Vagon
@@ -75,7 +77,6 @@ namespace MoreSkills.Utility
         }
 
         [HarmonyPatch(typeof(ZNetView), "Awake")]
-
         public static class SI_ZNetView
         {
             public static void Postfix (ref ZNetView __instance)
@@ -86,12 +87,22 @@ namespace MoreSkills.Utility
         }
 
         [HarmonyPatch(typeof(MineRock5), "Start")]
-
         public static class SI_MineRock5
         {
             public static void Postfix (ref MineRock5 __instance)
             {
                 _mineRock5 = __instance;
+            }
+        }
+
+        [HarmonyPatch(typeof(Character), "Damage")]
+        public static class SI_CDamage
+        {
+            public static void Postfix (ref Character __instance, HitData hit)
+            {
+                _CDamage = __instance;
+
+                _CDAttacker = hit.m_attacker;
             }
         }
     }

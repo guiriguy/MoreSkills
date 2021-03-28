@@ -19,7 +19,7 @@ namespace MoreSkills.ModSkills
                     {
                         if (MoreSkills_Instances._player.GetControlledShip() != null)
                         {
-                            float sailing_skill = (float)Math.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.SailingSkill_Type) * 100f) + 0.000001f);
+                            float sailing_skill = Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.SailingSkill_Type) * 100f) + 0.000001f);
                             float bforce_skillinc = ((MoreSkills_Config.BaseMaxBForce.Value - MoreSkills_Config.BaseBForce.Value) / 100) * sailing_skill;
                             float rspeed_skillinc = ((MoreSkills_Config.BaseMaxRSpeed.Value - MoreSkills_Config.BaseRSpeed.Value) / 100) * sailing_skill;
                             float sforce_skillinc = ((MoreSkills_Config.BaseMaxSForce.Value - MoreSkills_Config.BaseSForce.Value) / 100) * sailing_skill;
@@ -27,19 +27,6 @@ namespace MoreSkills.ModSkills
                             float mbforce = MoreSkills_Instances._player.GetControlledShip().m_backwardForce;
                             float msforce = MoreSkills_Instances._player.GetControlledShip().m_sailForceFactor;
                             float CrewMult = ((MoreSkills_Config.BaseBForce.Value + bforce_skillinc) + (((MoreSkills_Config.CrewMembersBForceAdd.Value * bforce_skillinc) / 5) * MoreSkills_Instances._player.GetControlledShip().m_players.Count));
-
-                            if (MoreSkills_Instances._player.GetVelocity().x < -1)
-                                svelx = MoreSkills_Instances._player.GetVelocity().x * -1;
-                            else if (MoreSkills_Instances._player.GetVelocity().x > 1)
-                                svelx = MoreSkills_Instances._player.GetVelocity().x;
-                            else
-                                svelx = 0f;
-                            if (MoreSkills_Instances._player.GetVelocity().z < -1)
-                                svelz = MoreSkills_Instances._player.GetVelocity().z * -1;
-                            else if (MoreSkills_Instances._player.GetVelocity().z > 1)
-                                svelz = MoreSkills_Instances._player.GetVelocity().z;
-                            else
-                                svelz = 0f;
 
                             if (!MoreSkills_Config.EnableShipAcceleration.Value)
                             {
@@ -67,15 +54,15 @@ namespace MoreSkills.ModSkills
                             MoreSkills_Instances._player.GetControlledShip().m_rudderSpeed = MoreSkills_Config.BaseRSpeed.Value + rspeed_skillinc;
                             MoreSkills_Instances._player.GetControlledShip().m_dampingSideway = MoreSkills_Config.BaseDSideways.Value + dsideways_skillinc;
 
-                            if (((svelx + svelz) / 1000) >= 0.0001)
-                                if (Captain >= 0.10f)
+                            if (MoreSkills_Instances._player.GetVelocity().magnitude >= 1)
+                                if (Captain < 0.50f)
                                 {
-                                    MoreSkills_Instances._player.RaiseSkill((Skills.SkillType)MoreSkills_Config.SailingSkill_Type, Captain);
-                                    Captain = 0f;
+                                    Captain += (MoreSkills_Instances._player.GetVelocity().magnitude / (4000 * MoreSkills_Config.SailingSkillIncreaseMultiplier.Value));
                                 }
                                 else
                                 {
-                                    Captain += ((svelx + svelz) / (4000 * MoreSkills_Config.SailingSkillIncreaseMultiplier.Value));
+                                    MoreSkills_Instances._player.RaiseSkill((Skills.SkillType)MoreSkills_Config.SailingSkill_Type, Captain);
+                                    Captain = 0f;
                                 }
 
                                 
@@ -83,42 +70,33 @@ namespace MoreSkills.ModSkills
                         else if (MoreSkills_Instances._player.GetStandingOnShip() != null || SittingInBoat)
                         {
 
-                            if (MoreSkills_Instances._player.GetVelocity().x < -1)
-                                svelx = MoreSkills_Instances._player.GetVelocity().x * -1;
-                            else if (MoreSkills_Instances._player.GetVelocity().x > 1)
-                                svelx = MoreSkills_Instances._player.GetVelocity().x;
-                            if (MoreSkills_Instances._player.GetVelocity().z < -1)
-                                svelz = MoreSkills_Instances._player.GetVelocity().z * -1;
-                            else if (MoreSkills_Instances._player.GetVelocity().z > 1)
-                                svelz = MoreSkills_Instances._player.GetVelocity().z;
-
                             if (MoreSkills_Instances._player.IsAttached())
                             {
                                 SittingInBoat = true;
-                                if (((svelx + svelz) / 2500) >= 0.0001)
-                                    if (SittingCrew >= 0.10f)
+                                if (MoreSkills_Instances._player.GetVelocity().magnitude >= 1)
+                                    if (SittingCrew < 0.50f)
                                     {
-                                        MoreSkills_Instances._player.RaiseSkill((Skills.SkillType)MoreSkills_Config.SailingSkill_Type, SittingCrew);
-                                        SittingCrew = 0f;
+                                        SittingCrew += (MoreSkills_Instances._player.GetVelocity().magnitude / (8000 * MoreSkills_Config.SailingSkillIncreaseMultiplier.Value));
                                     }
                                     else
                                     {
-                                        SittingCrew += ((svelx + svelz) / (8000 * MoreSkills_Config.SailingSkillIncreaseMultiplier.Value));
+                                        MoreSkills_Instances._player.RaiseSkill((Skills.SkillType)MoreSkills_Config.SailingSkill_Type, SittingCrew);
+                                        SittingCrew = 0f;
                                     }
                                     
                             }
                             else
                             {
                                 SittingInBoat = false;
-                                if (((svelx + svelz) / 5000) >= 0.0001)
-                                    if (StandingCrew >= 0.10f)
+                                if (MoreSkills_Instances._player.GetVelocity().magnitude >= 1)
+                                    if (StandingCrew < 0.50f)
                                     {
-                                        MoreSkills_Instances._player.RaiseSkill((Skills.SkillType)MoreSkills_Config.SailingSkill_Type, StandingCrew);
-                                        StandingCrew = 0f;
+                                        StandingCrew += (MoreSkills_Instances._player.GetVelocity().magnitude / (16000 * MoreSkills_Config.SailingSkillIncreaseMultiplier.Value));
                                     }
                                     else
                                     {
-                                        StandingCrew += ((svelx + svelz) / (16000 * MoreSkills_Config.SailingSkillIncreaseMultiplier.Value));
+                                        MoreSkills_Instances._player.RaiseSkill((Skills.SkillType)MoreSkills_Config.SailingSkill_Type, StandingCrew);
+                                        StandingCrew = 0f;
                                     }                                    
                             }
                         }
@@ -127,8 +105,6 @@ namespace MoreSkills.ModSkills
             }
 
             public static bool SittingInBoat;
-            public static float svelx;
-            public static float svelz;
             public static float Captain;
             public static float SittingCrew;
             public static float StandingCrew;

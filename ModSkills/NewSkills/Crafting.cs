@@ -16,1026 +16,523 @@ namespace MoreSkills.ModSkills
                 if (MoreSkills_Instances._player != null && MoreSkills_Config.EnableCraftingSkill.Value)
                 {
                     IGUI = true;
-                    if (MoreSkills_Config.EnableHigherDifficultyCrafting.Value)
+                    if (Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) < MoreSkills_Config.CraftingMiddleLevel.Value)
                     {
-                        if ((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f >= 5)
+                        //Debug.LogWarning("Menor que");
+                        //Debug.LogWarning("Level: " + Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) + "Nivel medio: " + MoreSkills_Config.CraftingMiddleLevel.Value);
+                        float level = Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f);
+                        float maths = MoreSkills_Config.CraftingLevelMultiplier.Value - (((level / 100) * (100 / MoreSkills_Config.CraftingMiddleLevel.Value)) * (MoreSkills_Config.CraftingLevelMultiplier.Value - 1));
+                        foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
                         {
-                            float maths = (MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * MoreSkills_Config.CraftingHigherLevelMultiplier.Value);
-                            foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
+                            if (recipe == null || recipe.m_item == null)
+                                continue;
+
+                            if (MoreSkills_Config.CraftingMiddleLevel.Value == 0f)
+                                break;
+
+                            if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
                             {
-                                if (recipe == null || recipe.m_item == null)
-                                    continue;
 
-                                if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
+                                //Debug.LogError("Receta " + counter);
+                                C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
+                                //Debug.LogWarning("Objeto: " + C0oI);
+
+                                foreach (Piece.Requirement req in recipe.m_resources)
                                 {
+                                    if (req == null)
+                                        continue;
 
-                                    //Debug.LogError("Receta " + counter);
-                                    C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
-                                    //Debug.LogWarning("Objeto: " + C0oI);
-
-                                    foreach (Piece.Requirement req in recipe.m_resources)
+                                    if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
                                     {
-                                        if (req == null)
-                                            continue;
+                                        break;
+                                    }
 
-                                        if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
+                                    if (C0rI1 == null)
+                                    {
+                                        if (req.m_amount >= 1)
                                         {
-                                            break;
-                                        }
-
-                                        if (C0rI1 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
-                                                C0rA1 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
-                                                C0m1 = C0rA1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
-                                                if (C0m1 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI2 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
-                                                C0rA2 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
-                                                C0m2 = C0rA2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
-                                                if (C0m2 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI3 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
-                                                C0rA3 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
-                                                C0m3 = C0rA3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
-                                                if (C0m3 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI4 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
-                                                C0rA4 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
-                                                C0m4 = C0rA4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
-                                                if (C0m4 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
-                                            }
-                                        }
-
-                                        if (C0rIPL1 == null)
-                                        {
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
-                                                C0rAPL1 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
-                                                C0mPL1 = C0rAPL1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
-                                                if (C0mPL1 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL2 == null)
-                                        {
-
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
-                                                C0rAPL2 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
-                                                C0mPL2 = C0rAPL2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
-                                                if (C0mPL2 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL3 == null)
-                                        {
-                                            C0rIPL3 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
-                                                C0rAPL3 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
-                                                C0mPL3 = C0rAPL3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
-                                                if (C0mPL3 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL4 == null)
-                                        {
-                                            C0rIPL4 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
-                                                C0rAPL4 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
-                                                C0mPL4 = C0rAPL4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
-                                                if (C0mPL4 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-
-                                            }
+                                            C0rI1 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
+                                            C0rA1 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
+                                            C0m1 = C0rA1 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
+                                            if (C0m1 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m1;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
                                         }
                                     }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            float maths = (MoreSkills_Config.CraftingHigherLevelMultiplier.Value / 20);
-                            foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
-                            {
-                                if (recipe == null || recipe.m_item == null)
-                                    continue;
-
-                                if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
-                                {
-
-                                    //Debug.LogError("Receta " + counter);
-                                    C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
-                                    //Debug.LogWarning("Objeto: " + C0oI);
-
-                                    foreach (Piece.Requirement req in recipe.m_resources)
+                                    else if (C0rI2 == null)
                                     {
-                                        if (req == null)
-                                            continue;
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI2 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
+                                            C0rA2 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
+                                            C0m2 = C0rA2 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
+                                            if (C0m2 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m2;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
+                                        }
+                                    }
+                                    else if (C0rI3 == null)
+                                    {
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI3 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
+                                            C0rA3 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
+                                            C0m3 = C0rA3 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
+                                            if (C0m3 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m3;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
+                                        }
+                                    }
+                                    else if (C0rI4 == null)
+                                    {
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI4 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
+                                            C0rA4 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
+                                            C0m4 = C0rA4 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
+                                            if (C0m4 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m4;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
+                                        }
+                                    }
 
-                                        if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
+                                    if (C0rIPL1 == null)
+                                    {
+                                        if (req.m_amountPerLevel >= 1)
                                         {
-                                            break;
+                                            C0rIPL1 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
+                                            C0rAPL1 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
+                                            C0mPL1 = C0rAPL1 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
+                                            if (C0mPL1 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL1;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
+                                    }
+                                    else if (C0rIPL2 == null)
+                                    {
 
-                                        if (C0rI1 == null)
+                                        if (req.m_amountPerLevel >= 1)
                                         {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
-                                                C0rA1 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
-                                                C0m1 = C0rA1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
-                                                if (C0m1 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
-                                            }
+                                            C0rIPL2 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
+                                            C0rAPL2 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
+                                            C0mPL2 = C0rAPL2 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
+                                            if (C0mPL2 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL2;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
-                                        else if (C0rI2 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
-                                                C0rA2 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
-                                                C0m2 = C0rA2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
-                                                if (C0m2 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI3 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
-                                                C0rA3 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
-                                                C0m3 = C0rA3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
-                                                if (C0m3 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI4 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
-                                                C0rA4 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
-                                                C0m4 = C0rA4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
-                                                if (C0m4 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
-                                            }
-                                        }
-
-                                        if (C0rIPL1 == null)
-                                        {
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
-                                                C0rAPL1 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
-                                                C0mPL1 = C0rAPL1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
-                                                if (C0mPL1 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL2 == null)
-                                        {
-
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
-                                                C0rAPL2 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
-                                                C0mPL2 = C0rAPL2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
-                                                if (C0mPL2 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL3 == null)
+                                    }
+                                    else if (C0rIPL3 == null)
+                                    {
+                                        C0rIPL3 = req.m_resItem;
+                                        if (req.m_amountPerLevel >= 1)
                                         {
                                             C0rIPL3 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
-                                                C0rAPL3 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
-                                                C0mPL3 = C0rAPL3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
-                                                if (C0mPL3 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
+                                            C0rAPL3 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
+                                            C0mPL3 = C0rAPL3 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
+                                            if (C0mPL3 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL3;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
-                                        else if (C0rIPL4 == null)
+                                    }
+                                    else if (C0rIPL4 == null)
+                                    {
+                                        C0rIPL4 = req.m_resItem;
+                                        if (req.m_amountPerLevel >= 1)
                                         {
                                             C0rIPL4 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
-                                                C0rAPL4 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
-                                                C0mPL4 = C0rAPL4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
-                                                if (C0mPL4 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
+                                            C0rAPL4 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
+                                            C0mPL4 = C0rAPL4 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
+                                            if (C0mPL4 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL4;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
 
-                                            }
                                         }
                                     }
                                 }
                             }
                         }
                     }
-                    else if (!MoreSkills_Config.EnableHigherDifficultyCrafting.Value)
+                    else if (Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) > MoreSkills_Config.CraftingMiddleLevel.Value)
                     {
-                        if (((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) >= 99)
+                        //Debug.LogWarning("Mayor que");
+                        //Debug.LogWarning("Level: " + Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) + "Nivel medio: " + MoreSkills_Config.CraftingMiddleLevel.Value);
+                        float level = Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f);
+                        float maths = 1 + ((((level - MoreSkills_Config.CraftingMiddleLevel.Value) / 100) * (100 / (100 - MoreSkills_Config.CraftingMiddleLevel.Value))) * (MoreSkills_Config.CraftingLevelDivider.Value - 1));
+                        foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
                         {
-                            float maths = MoreSkills_Config.CraftingNormalLevel100.Value;
-                            foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
+                            if (recipe == null || recipe.m_item == null)
+                                continue;
+
+                            if (MoreSkills_Config.CraftingMiddleLevel.Value == 100f)
+                                break;
+
+                            if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
                             {
-                                if (recipe == null || recipe.m_item == null)
-                                    continue;
 
-                                if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
+                                //Debug.LogError("Receta " + counter);
+                                C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
+                                //Debug.LogWarning("Objeto: " + C0oI);
+
+                                foreach (Piece.Requirement req in recipe.m_resources)
                                 {
+                                    if (req == null)
+                                        continue;
 
-                                    //Debug.LogError("Receta " + counter);
-                                    C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
-                                    //Debug.LogWarning("Objeto: " + C0oI);
-
-                                    foreach (Piece.Requirement req in recipe.m_resources)
+                                    if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
                                     {
-                                        if (req == null)
-                                            continue;
+                                        break;
+                                    }
 
-                                        if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
+                                    if (C0rI1 == null)
+                                    {
+                                        if (req.m_amount >= 1)
                                         {
-                                            break;
+                                            C0rI1 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
+                                            C0rA1 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
+                                            C0m1 = C0rA1 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
+                                            if (C0m1 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m1;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
                                         }
+                                    }
+                                    else if (C0rI2 == null)
+                                    {
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI2 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
+                                            C0rA2 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
+                                            C0m2 = C0rA2 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
+                                            if (C0m2 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m2;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
+                                        }
+                                    }
+                                    else if (C0rI3 == null)
+                                    {
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI3 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
+                                            C0rA3 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
+                                            C0m3 = C0rA3 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
+                                            if (C0m3 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m3;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
+                                        }
+                                    }
+                                    else if (C0rI4 == null)
+                                    {
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI4 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
+                                            C0rA4 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
+                                            C0m4 = C0rA4 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
+                                            if (C0m4 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m4;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
+                                        }
+                                    }
 
-                                        if (C0rI1 == null)
+                                    if (C0rIPL1 == null)
+                                    {
+                                        if (req.m_amountPerLevel >= 1)
                                         {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
-                                                C0rA1 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
-                                                C0m1 = C0rA1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
-                                                if (C0m1 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
-                                            }
+                                            C0rIPL1 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
+                                            C0rAPL1 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
+                                            C0mPL1 = C0rAPL1 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
+                                            if (C0mPL1 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL1;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
-                                        else if (C0rI2 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
-                                                C0rA2 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
-                                                C0m2 = C0rA2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
-                                                if (C0m2 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI3 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
-                                                C0rA3 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
-                                                C0m3 = C0rA3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
-                                                if (C0m3 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI4 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
-                                                C0rA4 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
-                                                C0m4 = C0rA4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
-                                                if (C0m4 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
-                                            }
-                                        }
+                                    }
+                                    else if (C0rIPL2 == null)
+                                    {
 
-                                        if (C0rIPL1 == null)
+                                        if (req.m_amountPerLevel >= 1)
                                         {
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
-                                                C0rAPL1 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
-                                                C0mPL1 = C0rAPL1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
-                                                if (C0mPL1 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
+                                            C0rIPL2 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
+                                            C0rAPL2 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
+                                            C0mPL2 = C0rAPL2 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
+                                            if (C0mPL2 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL2;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
-                                        else if (C0rIPL2 == null)
-                                        {
-
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
-                                                C0rAPL2 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
-                                                C0mPL2 = C0rAPL2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
-                                                if (C0mPL2 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL3 == null)
+                                    }
+                                    else if (C0rIPL3 == null)
+                                    {
+                                        C0rIPL3 = req.m_resItem;
+                                        if (req.m_amountPerLevel >= 1)
                                         {
                                             C0rIPL3 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
-                                                C0rAPL3 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
-                                                C0mPL3 = C0rAPL3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
-                                                if (C0mPL3 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
+                                            C0rAPL3 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
+                                            C0mPL3 = C0rAPL3 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
+                                            if (C0mPL3 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL3;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
-                                        else if (C0rIPL4 == null)
+                                    }
+                                    else if (C0rIPL4 == null)
+                                    {
+                                        C0rIPL4 = req.m_resItem;
+                                        if (req.m_amountPerLevel >= 1)
                                         {
                                             C0rIPL4 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
-                                                C0rAPL4 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
-                                                C0mPL4 = C0rAPL4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
-                                                if (C0mPL4 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
+                                            C0rAPL4 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
+                                            C0mPL4 = C0rAPL4 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
+                                            if (C0mPL4 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL4;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
 
-                                            }
                                         }
                                     }
                                 }
                             }
                         }
-                        else if (((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) >= 74)
+                    }
+                    else if (Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) == MoreSkills_Config.CraftingMiddleLevel.Value)
+                    {
+                        //Debug.LogWarning("Igual que");
+                        //Debug.LogWarning("Level: " + Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) + "Nivel medio: " + MoreSkills_Config.CraftingMiddleLevel.Value);
+                        foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
                         {
-                            float maths = MoreSkills_Config.CraftingNormalLevel75.Value;
-                            foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
+                            if (recipe == null || recipe.m_item == null)
+                                continue;
+
+                            if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
                             {
-                                if (recipe == null || recipe.m_item == null)
-                                    continue;
 
-                                if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
+                                //Debug.LogError("Receta " + counter);
+                                C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
+                                //Debug.LogWarning("Objeto: " + C0oI);
+
+                                foreach (Piece.Requirement req in recipe.m_resources)
                                 {
+                                    if (req == null)
+                                        continue;
 
-                                    //Debug.LogError("Receta " + counter);
-                                    C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
-                                    //Debug.LogWarning("Objeto: " + C0oI);
-
-                                    foreach (Piece.Requirement req in recipe.m_resources)
+                                    if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
                                     {
-                                        if (req == null)
-                                            continue;
+                                        break;
+                                    }
 
-                                        if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
+                                    if (C0rI1 == null)
+                                    {
+                                        if (req.m_amount >= 1)
                                         {
-                                            break;
-                                        }
-
-                                        if (C0rI1 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
-                                                C0rA1 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
-                                                C0m1 = C0rA1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
-                                                if (C0m1 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI2 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
-                                                C0rA2 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
-                                                C0m2 = C0rA2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
-                                                if (C0m2 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI3 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
-                                                C0rA3 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
-                                                C0m3 = C0rA3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
-                                                if (C0m3 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI4 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
-                                                C0rA4 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
-                                                C0m4 = C0rA4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
-                                                if (C0m4 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
-                                            }
-                                        }
-
-                                        if (C0rIPL1 == null)
-                                        {
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
-                                                C0rAPL1 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
-                                                C0mPL1 = C0rAPL1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
-                                                if (C0mPL1 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL2 == null)
-                                        {
-
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
-                                                C0rAPL2 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
-                                                C0mPL2 = C0rAPL2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
-                                                if (C0mPL2 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL3 == null)
-                                        {
-                                            C0rIPL3 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
-                                                C0rAPL3 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
-                                                C0mPL3 = C0rAPL3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
-                                                if (C0mPL3 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL4 == null)
-                                        {
-                                            C0rIPL4 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
-                                                C0rAPL4 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
-                                                C0mPL4 = C0rAPL4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
-                                                if (C0mPL4 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-
-                                            }
+                                            C0rI1 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
+                                            C0rA1 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
+                                            C0m1 = C0rA1;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
+                                            if (C0m1 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m1;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
                                         }
                                     }
-                                }
-                            }
-                        }
-                        else if (((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) >= 49)
-                        {
-                            float maths = MoreSkills_Config.CraftingNormalLevel50.Value;
-                            foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
-                            {
-                                if (recipe == null || recipe.m_item == null)
-                                    continue;
-
-                                if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
-                                {
-
-                                    //Debug.LogError("Receta " + counter);
-                                    C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
-                                    //Debug.LogWarning("Objeto: " + C0oI);
-
-                                    foreach (Piece.Requirement req in recipe.m_resources)
+                                    else if (C0rI2 == null)
                                     {
-                                        if (req == null)
-                                            continue;
-
-                                        if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
+                                        if (req.m_amount >= 1)
                                         {
-                                            break;
-                                        }
-
-                                        if (C0rI1 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
-                                                C0rA1 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
-                                                C0m1 = C0rA1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
-                                                if (C0m1 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI2 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
-                                                C0rA2 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
-                                                C0m2 = C0rA2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
-                                                if (C0m2 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI3 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
-                                                C0rA3 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
-                                                C0m3 = C0rA3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
-                                                if (C0m3 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI4 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
-                                                C0rA4 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
-                                                C0m4 = C0rA4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
-                                                if (C0m4 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
-                                            }
-                                        }
-
-                                        if (C0rIPL1 == null)
-                                        {
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
-                                                C0rAPL1 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
-                                                C0mPL1 = C0rAPL1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
-                                                if (C0mPL1 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL2 == null)
-                                        {
-
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
-                                                C0rAPL2 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
-                                                C0mPL2 = C0rAPL2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
-                                                if (C0mPL2 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL3 == null)
-                                        {
-                                            C0rIPL3 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
-                                                C0rAPL3 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
-                                                C0mPL3 = C0rAPL3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
-                                                if (C0mPL3 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL4 == null)
-                                        {
-                                            C0rIPL4 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
-                                                C0rAPL4 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
-                                                C0mPL4 = C0rAPL4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
-                                                if (C0mPL4 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-
-                                            }
+                                            C0rI2 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
+                                            C0rA2 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
+                                            C0m2 = C0rA2;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
+                                            if (C0m2 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m2;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
                                         }
                                     }
-                                }
-                            }
-                        }
-                        else if (((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) >= 24)
-                        {
-                            float maths = MoreSkills_Config.CraftingNormalLevel25.Value;
-                            foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
-                            {
-                                if (recipe == null || recipe.m_item == null)
-                                    continue;
-
-                                if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
-                                {
-
-                                    //Debug.LogError("Receta " + counter);
-                                    C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
-                                    //Debug.LogWarning("Objeto: " + C0oI);
-
-                                    foreach (Piece.Requirement req in recipe.m_resources)
+                                    else if (C0rI3 == null)
                                     {
-                                        if (req == null)
-                                            continue;
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI3 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
+                                            C0rA3 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
+                                            C0m3 = C0rA3;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
+                                            if (C0m3 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m3;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
+                                        }
+                                    }
+                                    else if (C0rI4 == null)
+                                    {
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI4 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
+                                            C0rA4 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
+                                            C0m4 = C0rA4;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
+                                            if (C0m4 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m4;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
+                                        }
+                                    }
 
-                                        if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
+                                    if (C0rIPL1 == null)
+                                    {
+                                        if (req.m_amountPerLevel >= 1)
                                         {
-                                            break;
+                                            C0rIPL1 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
+                                            C0rAPL1 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
+                                            C0mPL1 = C0rAPL1;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
+                                            if (C0mPL1 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL1;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
+                                    }
+                                    else if (C0rIPL2 == null)
+                                    {
 
-                                        if (C0rI1 == null)
+                                        if (req.m_amountPerLevel >= 1)
                                         {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
-                                                C0rA1 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
-                                                C0m1 = C0rA1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
-                                                if (C0m1 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
-                                            }
+                                            C0rIPL2 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
+                                            C0rAPL2 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
+                                            C0mPL2 = C0rAPL2;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
+                                            if (C0mPL2 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL2;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
-                                        else if (C0rI2 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
-                                                C0rA2 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
-                                                C0m2 = C0rA2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
-                                                if (C0m2 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI3 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
-                                                C0rA3 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
-                                                C0m3 = C0rA3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
-                                                if (C0m3 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI4 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
-                                                C0rA4 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
-                                                C0m4 = C0rA4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
-                                                if (C0m4 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
-                                            }
-                                        }
-
-                                        if (C0rIPL1 == null)
-                                        {
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
-                                                C0rAPL1 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
-                                                C0mPL1 = C0rAPL1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
-                                                if (C0mPL1 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL2 == null)
-                                        {
-
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
-                                                C0rAPL2 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
-                                                C0mPL2 = C0rAPL2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
-                                                if (C0mPL2 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL3 == null)
+                                    }
+                                    else if (C0rIPL3 == null)
+                                    {
+                                        C0rIPL3 = req.m_resItem;
+                                        if (req.m_amountPerLevel >= 1)
                                         {
                                             C0rIPL3 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
-                                                C0rAPL3 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
-                                                C0mPL3 = C0rAPL3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
-                                                if (C0mPL3 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
+                                            C0rAPL3 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
+                                            C0mPL3 = C0rAPL3;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
+                                            if (C0mPL3 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL3;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
-                                        else if (C0rIPL4 == null)
+                                    }
+                                    else if (C0rIPL4 == null)
+                                    {
+                                        C0rIPL4 = req.m_resItem;
+                                        if (req.m_amountPerLevel >= 1)
                                         {
                                             C0rIPL4 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
-                                                C0rAPL4 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
-                                                C0mPL4 = C0rAPL4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
-                                                if (C0mPL4 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
+                                            C0rAPL4 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
+                                            C0mPL4 = C0rAPL4;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
+                                            if (C0mPL4 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL4;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
 
-                                            }
                                         }
                                     }
                                 }
@@ -1352,1026 +849,523 @@ namespace MoreSkills.ModSkills
                         }
                     }
 
-                    if (MoreSkills_Config.EnableHigherDifficultyCrafting.Value)
+                    if (Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) < MoreSkills_Config.CraftingMiddleLevel.Value)
                     {
-                        if ((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f >= 5)
+                        //Debug.LogWarning("Menor que");
+                        //Debug.LogWarning("Level: " + Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) + "Nivel medio: " + MoreSkills_Config.CraftingMiddleLevel.Value);
+                        float level = Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f);
+                        float maths = MoreSkills_Config.CraftingLevelMultiplier.Value - (((level / 100) * (100 / MoreSkills_Config.CraftingMiddleLevel.Value)) * (MoreSkills_Config.CraftingLevelMultiplier.Value - 1));
+                        foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
                         {
-                            float maths = (MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * MoreSkills_Config.CraftingHigherLevelMultiplier.Value);
-                            foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
+                            if (recipe == null || recipe.m_item == null)
+                                continue;
+
+                            if (MoreSkills_Config.CraftingMiddleLevel.Value == 0f)
+                                break;
+
+                            if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
                             {
-                                if (recipe == null || recipe.m_item == null)
-                                    continue;
 
-                                if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
+                                //Debug.LogError("Receta " + counter);
+                                C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
+                                //Debug.LogWarning("Objeto: " + C0oI);
+
+                                foreach (Piece.Requirement req in recipe.m_resources)
                                 {
+                                    if (req == null)
+                                        continue;
 
-                                    //Debug.LogError("Receta " + counter);
-                                    C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
-                                    //Debug.LogWarning("Objeto: " + C0oI);
-
-                                    foreach (Piece.Requirement req in recipe.m_resources)
+                                    if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
                                     {
-                                        if (req == null)
-                                            continue;
+                                        break;
+                                    }
 
-                                        if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
+                                    if (C0rI1 == null)
+                                    {
+                                        if (req.m_amount >= 1)
                                         {
-                                            break;
-                                        }
-
-                                        if (C0rI1 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
-                                                C0rA1 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
-                                                C0m1 = C0rA1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
-                                                if (C0m1 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI2 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
-                                                C0rA2 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
-                                                C0m2 = C0rA2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
-                                                if (C0m2 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI3 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
-                                                C0rA3 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
-                                                C0m3 = C0rA3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
-                                                if (C0m3 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI4 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
-                                                C0rA4 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
-                                                C0m4 = C0rA4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
-                                                if (C0m4 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
-                                            }
-                                        }
-
-                                        if (C0rIPL1 == null)
-                                        {
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
-                                                C0rAPL1 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
-                                                C0mPL1 = C0rAPL1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
-                                                if (C0mPL1 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL2 == null)
-                                        {
-
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
-                                                C0rAPL2 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
-                                                C0mPL2 = C0rAPL2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
-                                                if (C0mPL2 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL3 == null)
-                                        {
-                                            C0rIPL3 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
-                                                C0rAPL3 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
-                                                C0mPL3 = C0rAPL3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
-                                                if (C0mPL3 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL4 == null)
-                                        {
-                                            C0rIPL4 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
-                                                C0rAPL4 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
-                                                C0mPL4 = C0rAPL4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
-                                                if (C0mPL4 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-
-                                            }
+                                            C0rI1 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
+                                            C0rA1 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
+                                            C0m1 = C0rA1 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
+                                            if (C0m1 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m1;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
                                         }
                                     }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            float maths = (MoreSkills_Config.CraftingHigherLevelMultiplier.Value / 20);
-                            foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
-                            {
-                                if (recipe == null || recipe.m_item == null)
-                                    continue;
-
-                                if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
-                                {
-
-                                    //Debug.LogError("Receta " + counter);
-                                    C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
-                                    //Debug.LogWarning("Objeto: " + C0oI);
-
-                                    foreach (Piece.Requirement req in recipe.m_resources)
+                                    else if (C0rI2 == null)
                                     {
-                                        if (req == null)
-                                            continue;
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI2 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
+                                            C0rA2 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
+                                            C0m2 = C0rA2 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
+                                            if (C0m2 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m2;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
+                                        }
+                                    }
+                                    else if (C0rI3 == null)
+                                    {
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI3 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
+                                            C0rA3 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
+                                            C0m3 = C0rA3 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
+                                            if (C0m3 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m3;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
+                                        }
+                                    }
+                                    else if (C0rI4 == null)
+                                    {
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI4 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
+                                            C0rA4 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
+                                            C0m4 = C0rA4 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
+                                            if (C0m4 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m4;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
+                                        }
+                                    }
 
-                                        if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
+                                    if (C0rIPL1 == null)
+                                    {
+                                        if (req.m_amountPerLevel >= 1)
                                         {
-                                            break;
+                                            C0rIPL1 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
+                                            C0rAPL1 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
+                                            C0mPL1 = C0rAPL1 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
+                                            if (C0mPL1 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL1;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
+                                    }
+                                    else if (C0rIPL2 == null)
+                                    {
 
-                                        if (C0rI1 == null)
+                                        if (req.m_amountPerLevel >= 1)
                                         {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
-                                                C0rA1 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
-                                                C0m1 = C0rA1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
-                                                if (C0m1 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
-                                            }
+                                            C0rIPL2 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
+                                            C0rAPL2 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
+                                            C0mPL2 = C0rAPL2 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
+                                            if (C0mPL2 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL2;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
-                                        else if (C0rI2 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
-                                                C0rA2 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
-                                                C0m2 = C0rA2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
-                                                if (C0m2 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI3 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
-                                                C0rA3 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
-                                                C0m3 = C0rA3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
-                                                if (C0m3 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI4 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
-                                                C0rA4 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
-                                                C0m4 = C0rA4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
-                                                if (C0m4 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
-                                            }
-                                        }
-
-                                        if (C0rIPL1 == null)
-                                        {
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
-                                                C0rAPL1 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
-                                                C0mPL1 = C0rAPL1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
-                                                if (C0mPL1 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL2 == null)
-                                        {
-
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
-                                                C0rAPL2 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
-                                                C0mPL2 = C0rAPL2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
-                                                if (C0mPL2 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL3 == null)
+                                    }
+                                    else if (C0rIPL3 == null)
+                                    {
+                                        C0rIPL3 = req.m_resItem;
+                                        if (req.m_amountPerLevel >= 1)
                                         {
                                             C0rIPL3 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
-                                                C0rAPL3 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
-                                                C0mPL3 = C0rAPL3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
-                                                if (C0mPL3 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
+                                            C0rAPL3 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
+                                            C0mPL3 = C0rAPL3 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
+                                            if (C0mPL3 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL3;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
-                                        else if (C0rIPL4 == null)
+                                    }
+                                    else if (C0rIPL4 == null)
+                                    {
+                                        C0rIPL4 = req.m_resItem;
+                                        if (req.m_amountPerLevel >= 1)
                                         {
                                             C0rIPL4 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
-                                                C0rAPL4 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
-                                                C0mPL4 = C0rAPL4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
-                                                if (C0mPL4 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
+                                            C0rAPL4 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
+                                            C0mPL4 = C0rAPL4 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
+                                            if (C0mPL4 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL4;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
 
-                                            }
                                         }
                                     }
                                 }
                             }
                         }
                     }
-                    else if (!MoreSkills_Config.EnableHigherDifficultyCrafting.Value)
+                    else if (Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) > MoreSkills_Config.CraftingMiddleLevel.Value)
                     {
-                        if (((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) >= 99)
+                        //Debug.LogWarning("Mayor que");
+                        //Debug.LogWarning("Level: " + Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) + "Nivel medio: " + MoreSkills_Config.CraftingMiddleLevel.Value);
+                        float level = Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f);
+                        float maths = 1 + ((((level - MoreSkills_Config.CraftingMiddleLevel.Value) / 100) * (100 / (100 - MoreSkills_Config.CraftingMiddleLevel.Value))) * (MoreSkills_Config.CraftingLevelDivider.Value - 1));
+                        foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
                         {
-                            float maths = MoreSkills_Config.CraftingNormalLevel100.Value;
-                            foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
+                            if (recipe == null || recipe.m_item == null)
+                                continue;
+
+                            if (MoreSkills_Config.CraftingMiddleLevel.Value == 100f)
+                                break;
+
+                            if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
                             {
-                                if (recipe == null || recipe.m_item == null)
-                                    continue;
 
-                                if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
+                                //Debug.LogError("Receta " + counter);
+                                C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
+                                //Debug.LogWarning("Objeto: " + C0oI);
+
+                                foreach (Piece.Requirement req in recipe.m_resources)
                                 {
+                                    if (req == null)
+                                        continue;
 
-                                    //Debug.LogError("Receta " + counter);
-                                    C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
-                                    //Debug.LogWarning("Objeto: " + C0oI);
-
-                                    foreach (Piece.Requirement req in recipe.m_resources)
+                                    if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
                                     {
-                                        if (req == null)
-                                            continue;
+                                        break;
+                                    }
 
-                                        if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
+                                    if (C0rI1 == null)
+                                    {
+                                        if (req.m_amount >= 1)
                                         {
-                                            break;
+                                            C0rI1 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
+                                            C0rA1 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
+                                            C0m1 = C0rA1 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
+                                            if (C0m1 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m1;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
                                         }
+                                    }
+                                    else if (C0rI2 == null)
+                                    {
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI2 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
+                                            C0rA2 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
+                                            C0m2 = C0rA2 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
+                                            if (C0m2 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m2;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
+                                        }
+                                    }
+                                    else if (C0rI3 == null)
+                                    {
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI3 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
+                                            C0rA3 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
+                                            C0m3 = C0rA3 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
+                                            if (C0m3 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m3;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
+                                        }
+                                    }
+                                    else if (C0rI4 == null)
+                                    {
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI4 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
+                                            C0rA4 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
+                                            C0m4 = C0rA4 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
+                                            if (C0m4 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m4;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
+                                        }
+                                    }
 
-                                        if (C0rI1 == null)
+                                    if (C0rIPL1 == null)
+                                    {
+                                        if (req.m_amountPerLevel >= 1)
                                         {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
-                                                C0rA1 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
-                                                C0m1 = C0rA1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
-                                                if (C0m1 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
-                                            }
+                                            C0rIPL1 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
+                                            C0rAPL1 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
+                                            C0mPL1 = C0rAPL1 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
+                                            if (C0mPL1 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL1;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
-                                        else if (C0rI2 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
-                                                C0rA2 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
-                                                C0m2 = C0rA2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
-                                                if (C0m2 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI3 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
-                                                C0rA3 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
-                                                C0m3 = C0rA3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
-                                                if (C0m3 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI4 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
-                                                C0rA4 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
-                                                C0m4 = C0rA4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
-                                                if (C0m4 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
-                                            }
-                                        }
+                                    }
+                                    else if (C0rIPL2 == null)
+                                    {
 
-                                        if (C0rIPL1 == null)
+                                        if (req.m_amountPerLevel >= 1)
                                         {
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
-                                                C0rAPL1 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
-                                                C0mPL1 = C0rAPL1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
-                                                if (C0mPL1 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
+                                            C0rIPL2 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
+                                            C0rAPL2 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
+                                            C0mPL2 = C0rAPL2 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
+                                            if (C0mPL2 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL2;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
-                                        else if (C0rIPL2 == null)
-                                        {
-
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
-                                                C0rAPL2 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
-                                                C0mPL2 = C0rAPL2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
-                                                if (C0mPL2 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL3 == null)
+                                    }
+                                    else if (C0rIPL3 == null)
+                                    {
+                                        C0rIPL3 = req.m_resItem;
+                                        if (req.m_amountPerLevel >= 1)
                                         {
                                             C0rIPL3 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
-                                                C0rAPL3 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
-                                                C0mPL3 = C0rAPL3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
-                                                if (C0mPL3 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
+                                            C0rAPL3 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
+                                            C0mPL3 = C0rAPL3 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
+                                            if (C0mPL3 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL3;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
-                                        else if (C0rIPL4 == null)
+                                    }
+                                    else if (C0rIPL4 == null)
+                                    {
+                                        C0rIPL4 = req.m_resItem;
+                                        if (req.m_amountPerLevel >= 1)
                                         {
                                             C0rIPL4 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
-                                                C0rAPL4 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
-                                                C0mPL4 = C0rAPL4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
-                                                if (C0mPL4 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
+                                            C0rAPL4 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
+                                            C0mPL4 = C0rAPL4 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
+                                            if (C0mPL4 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL4;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
 
-                                            }
                                         }
                                     }
                                 }
                             }
                         }
-                        else if (((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) >= 74)
+                    }
+                    else if (Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) == MoreSkills_Config.CraftingMiddleLevel.Value)
+                    {
+                        //Debug.LogWarning("Igual que");
+                        //Debug.LogWarning("Level: " + Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) + "Nivel medio: " + MoreSkills_Config.CraftingMiddleLevel.Value);
+                        foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
                         {
-                            float maths = MoreSkills_Config.CraftingNormalLevel75.Value;
-                            foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
+                            if (recipe == null || recipe.m_item == null)
+                                continue;
+
+                            if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
                             {
-                                if (recipe == null || recipe.m_item == null)
-                                    continue;
 
-                                if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
+                                //Debug.LogError("Receta " + counter);
+                                C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
+                                //Debug.LogWarning("Objeto: " + C0oI);
+
+                                foreach (Piece.Requirement req in recipe.m_resources)
                                 {
+                                    if (req == null)
+                                        continue;
 
-                                    //Debug.LogError("Receta " + counter);
-                                    C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
-                                    //Debug.LogWarning("Objeto: " + C0oI);
-
-                                    foreach (Piece.Requirement req in recipe.m_resources)
+                                    if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
                                     {
-                                        if (req == null)
-                                            continue;
+                                        break;
+                                    }
 
-                                        if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
+                                    if (C0rI1 == null)
+                                    {
+                                        if (req.m_amount >= 1)
                                         {
-                                            break;
-                                        }
-
-                                        if (C0rI1 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
-                                                C0rA1 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
-                                                C0m1 = C0rA1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
-                                                if (C0m1 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI2 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
-                                                C0rA2 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
-                                                C0m2 = C0rA2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
-                                                if (C0m2 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI3 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
-                                                C0rA3 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
-                                                C0m3 = C0rA3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
-                                                if (C0m3 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI4 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
-                                                C0rA4 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
-                                                C0m4 = C0rA4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
-                                                if (C0m4 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
-                                            }
-                                        }
-
-                                        if (C0rIPL1 == null)
-                                        {
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
-                                                C0rAPL1 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
-                                                C0mPL1 = C0rAPL1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
-                                                if (C0mPL1 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL2 == null)
-                                        {
-
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
-                                                C0rAPL2 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
-                                                C0mPL2 = C0rAPL2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
-                                                if (C0mPL2 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL3 == null)
-                                        {
-                                            C0rIPL3 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
-                                                C0rAPL3 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
-                                                C0mPL3 = C0rAPL3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
-                                                if (C0mPL3 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL4 == null)
-                                        {
-                                            C0rIPL4 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
-                                                C0rAPL4 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
-                                                C0mPL4 = C0rAPL4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
-                                                if (C0mPL4 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-
-                                            }
+                                            C0rI1 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
+                                            C0rA1 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
+                                            C0m1 = C0rA1;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
+                                            if (C0m1 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m1;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
                                         }
                                     }
-                                }
-                            }
-                        }
-                        else if (((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) >= 49)
-                        {
-                            float maths = MoreSkills_Config.CraftingNormalLevel50.Value;
-                            foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
-                            {
-                                if (recipe == null || recipe.m_item == null)
-                                    continue;
-
-                                if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
-                                {
-
-                                    //Debug.LogError("Receta " + counter);
-                                    C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
-                                    //Debug.LogWarning("Objeto: " + C0oI);
-
-                                    foreach (Piece.Requirement req in recipe.m_resources)
+                                    else if (C0rI2 == null)
                                     {
-                                        if (req == null)
-                                            continue;
-
-                                        if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
+                                        if (req.m_amount >= 1)
                                         {
-                                            break;
-                                        }
-
-                                        if (C0rI1 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
-                                                C0rA1 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
-                                                C0m1 = C0rA1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
-                                                if (C0m1 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI2 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
-                                                C0rA2 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
-                                                C0m2 = C0rA2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
-                                                if (C0m2 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI3 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
-                                                C0rA3 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
-                                                C0m3 = C0rA3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
-                                                if (C0m3 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI4 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
-                                                C0rA4 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
-                                                C0m4 = C0rA4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
-                                                if (C0m4 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
-                                            }
-                                        }
-
-                                        if (C0rIPL1 == null)
-                                        {
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
-                                                C0rAPL1 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
-                                                C0mPL1 = C0rAPL1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
-                                                if (C0mPL1 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL2 == null)
-                                        {
-
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
-                                                C0rAPL2 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
-                                                C0mPL2 = C0rAPL2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
-                                                if (C0mPL2 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL3 == null)
-                                        {
-                                            C0rIPL3 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
-                                                C0rAPL3 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
-                                                C0mPL3 = C0rAPL3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
-                                                if (C0mPL3 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL4 == null)
-                                        {
-                                            C0rIPL4 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
-                                                C0rAPL4 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
-                                                C0mPL4 = C0rAPL4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
-                                                if (C0mPL4 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-
-                                            }
+                                            C0rI2 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
+                                            C0rA2 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
+                                            C0m2 = C0rA2;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
+                                            if (C0m2 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m2;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
                                         }
                                     }
-                                }
-                            }
-                        }
-                        else if (((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) >= 24)
-                        {
-                            float maths = MoreSkills_Config.CraftingNormalLevel25.Value;
-                            foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
-                            {
-                                if (recipe == null || recipe.m_item == null)
-                                    continue;
-
-                                if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
-                                {
-
-                                    //Debug.LogError("Receta " + counter);
-                                    C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
-                                    //Debug.LogWarning("Objeto: " + C0oI);
-
-                                    foreach (Piece.Requirement req in recipe.m_resources)
+                                    else if (C0rI3 == null)
                                     {
-                                        if (req == null)
-                                            continue;
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI3 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
+                                            C0rA3 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
+                                            C0m3 = C0rA3;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
+                                            if (C0m3 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m3;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
+                                        }
+                                    }
+                                    else if (C0rI4 == null)
+                                    {
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI4 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
+                                            C0rA4 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
+                                            C0m4 = C0rA4;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
+                                            if (C0m4 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m4;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
+                                        }
+                                    }
 
-                                        if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
+                                    if (C0rIPL1 == null)
+                                    {
+                                        if (req.m_amountPerLevel >= 1)
                                         {
-                                            break;
+                                            C0rIPL1 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
+                                            C0rAPL1 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
+                                            C0mPL1 = C0rAPL1;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
+                                            if (C0mPL1 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL1;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
+                                    }
+                                    else if (C0rIPL2 == null)
+                                    {
 
-                                        if (C0rI1 == null)
+                                        if (req.m_amountPerLevel >= 1)
                                         {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
-                                                C0rA1 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
-                                                C0m1 = C0rA1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
-                                                if (C0m1 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
-                                            }
+                                            C0rIPL2 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
+                                            C0rAPL2 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
+                                            C0mPL2 = C0rAPL2;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
+                                            if (C0mPL2 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL2;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
-                                        else if (C0rI2 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
-                                                C0rA2 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
-                                                C0m2 = C0rA2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
-                                                if (C0m2 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI3 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
-                                                C0rA3 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
-                                                C0m3 = C0rA3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
-                                                if (C0m3 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI4 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
-                                                C0rA4 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
-                                                C0m4 = C0rA4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
-                                                if (C0m4 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
-                                            }
-                                        }
-
-                                        if (C0rIPL1 == null)
-                                        {
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
-                                                C0rAPL1 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
-                                                C0mPL1 = C0rAPL1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
-                                                if (C0mPL1 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL2 == null)
-                                        {
-
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
-                                                C0rAPL2 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
-                                                C0mPL2 = C0rAPL2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
-                                                if (C0mPL2 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL3 == null)
+                                    }
+                                    else if (C0rIPL3 == null)
+                                    {
+                                        C0rIPL3 = req.m_resItem;
+                                        if (req.m_amountPerLevel >= 1)
                                         {
                                             C0rIPL3 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
-                                                C0rAPL3 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
-                                                C0mPL3 = C0rAPL3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
-                                                if (C0mPL3 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
+                                            C0rAPL3 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
+                                            C0mPL3 = C0rAPL3;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
+                                            if (C0mPL3 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL3;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
-                                        else if (C0rIPL4 == null)
+                                    }
+                                    else if (C0rIPL4 == null)
+                                    {
+                                        C0rIPL4 = req.m_resItem;
+                                        if (req.m_amountPerLevel >= 1)
                                         {
                                             C0rIPL4 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
-                                                C0rAPL4 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
-                                                C0mPL4 = C0rAPL4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
-                                                if (C0mPL4 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
+                                            C0rAPL4 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
+                                            C0mPL4 = C0rAPL4;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
+                                            if (C0mPL4 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL4;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
 
-                                            }
                                         }
                                     }
                                 }
@@ -2532,1027 +1526,523 @@ namespace MoreSkills.ModSkills
                             C0oI = null;
                         }
                     }
-
-                    if (MoreSkills_Config.EnableHigherDifficultyCrafting.Value)
+                    if (Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) < MoreSkills_Config.CraftingMiddleLevel.Value)
                     {
-                        if ((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f >= 5)
+                        //Debug.LogWarning("Menor que");
+                        //Debug.LogWarning("Level: " + Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) + "Nivel medio: " + MoreSkills_Config.CraftingMiddleLevel.Value);
+                        float level = Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f);
+                        float maths = MoreSkills_Config.CraftingLevelMultiplier.Value - (((level / 100) * (100 / MoreSkills_Config.CraftingMiddleLevel.Value)) * (MoreSkills_Config.CraftingLevelMultiplier.Value - 1));
+                        foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
                         {
-                            float maths = (MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * MoreSkills_Config.CraftingHigherLevelMultiplier.Value);
-                            foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
+                            if (recipe == null || recipe.m_item == null)
+                                continue;
+
+                            if (MoreSkills_Config.CraftingMiddleLevel.Value == 0f)
+                                break;
+
+                            if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
                             {
-                                if (recipe == null || recipe.m_item == null)
-                                    continue;
 
-                                if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
+                                //Debug.LogError("Receta " + counter);
+                                C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
+                                //Debug.LogWarning("Objeto: " + C0oI);
+
+                                foreach (Piece.Requirement req in recipe.m_resources)
                                 {
+                                    if (req == null)
+                                        continue;
 
-                                    //Debug.LogError("Receta " + counter);
-                                    C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
-                                    //Debug.LogWarning("Objeto: " + C0oI);
-
-                                    foreach (Piece.Requirement req in recipe.m_resources)
+                                    if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
                                     {
-                                        if (req == null)
-                                            continue;
+                                        break;
+                                    }
 
-                                        if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
+                                    if (C0rI1 == null)
+                                    {
+                                        if (req.m_amount >= 1)
                                         {
-                                            break;
-                                        }
-
-                                        if (C0rI1 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
-                                                C0rA1 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
-                                                C0m1 = C0rA1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
-                                                if (C0m1 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI2 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
-                                                C0rA2 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
-                                                C0m2 = C0rA2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
-                                                if (C0m2 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI3 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
-                                                C0rA3 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
-                                                C0m3 = C0rA3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
-                                                if (C0m3 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI4 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
-                                                C0rA4 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
-                                                C0m4 = C0rA4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
-                                                if (C0m4 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
-                                            }
-                                        }
-
-                                        if (C0rIPL1 == null)
-                                        {
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
-                                                C0rAPL1 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
-                                                C0mPL1 = C0rAPL1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
-                                                if (C0mPL1 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL2 == null)
-                                        {
-
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
-                                                C0rAPL2 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
-                                                C0mPL2 = C0rAPL2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
-                                                if (C0mPL2 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL3 == null)
-                                        {
-                                            C0rIPL3 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
-                                                C0rAPL3 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
-                                                C0mPL3 = C0rAPL3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
-                                                if (C0mPL3 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL4 == null)
-                                        {
-                                            C0rIPL4 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
-                                                C0rAPL4 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
-                                                C0mPL4 = C0rAPL4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
-                                                if (C0mPL4 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-
-                                            }
+                                            C0rI1 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
+                                            C0rA1 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
+                                            C0m1 = C0rA1 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
+                                            if (C0m1 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m1;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
                                         }
                                     }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            float maths = (MoreSkills_Config.CraftingHigherLevelMultiplier.Value / 20);
-                            foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
-                            {
-                                if (recipe == null || recipe.m_item == null)
-                                    continue;
-
-                                if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
-                                {
-
-                                    //Debug.LogError("Receta " + counter);
-                                    C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
-                                    //Debug.LogWarning("Objeto: " + C0oI);
-
-                                    foreach (Piece.Requirement req in recipe.m_resources)
+                                    else if (C0rI2 == null)
                                     {
-                                        if (req == null)
-                                            continue;
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI2 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
+                                            C0rA2 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
+                                            C0m2 = C0rA2 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
+                                            if (C0m2 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m2;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
+                                        }
+                                    }
+                                    else if (C0rI3 == null)
+                                    {
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI3 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
+                                            C0rA3 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
+                                            C0m3 = C0rA3 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
+                                            if (C0m3 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m3;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
+                                        }
+                                    }
+                                    else if (C0rI4 == null)
+                                    {
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI4 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
+                                            C0rA4 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
+                                            C0m4 = C0rA4 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
+                                            if (C0m4 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m4;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
+                                        }
+                                    }
 
-                                        if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
+                                    if (C0rIPL1 == null)
+                                    {
+                                        if (req.m_amountPerLevel >= 1)
                                         {
-                                            break;
+                                            C0rIPL1 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
+                                            C0rAPL1 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
+                                            C0mPL1 = C0rAPL1 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
+                                            if (C0mPL1 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL1;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
+                                    }
+                                    else if (C0rIPL2 == null)
+                                    {
 
-                                        if (C0rI1 == null)
+                                        if (req.m_amountPerLevel >= 1)
                                         {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
-                                                C0rA1 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
-                                                C0m1 = C0rA1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
-                                                if (C0m1 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
-                                            }
+                                            C0rIPL2 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
+                                            C0rAPL2 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
+                                            C0mPL2 = C0rAPL2 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
+                                            if (C0mPL2 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL2;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
-                                        else if (C0rI2 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
-                                                C0rA2 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
-                                                C0m2 = C0rA2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
-                                                if (C0m2 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI3 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
-                                                C0rA3 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
-                                                C0m3 = C0rA3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
-                                                if (C0m3 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI4 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
-                                                C0rA4 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
-                                                C0m4 = C0rA4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
-                                                if (C0m4 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
-                                            }
-                                        }
-
-                                        if (C0rIPL1 == null)
-                                        {
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
-                                                C0rAPL1 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
-                                                C0mPL1 = C0rAPL1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
-                                                if (C0mPL1 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL2 == null)
-                                        {
-
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
-                                                C0rAPL2 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
-                                                C0mPL2 = C0rAPL2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
-                                                if (C0mPL2 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL3 == null)
+                                    }
+                                    else if (C0rIPL3 == null)
+                                    {
+                                        C0rIPL3 = req.m_resItem;
+                                        if (req.m_amountPerLevel >= 1)
                                         {
                                             C0rIPL3 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
-                                                C0rAPL3 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
-                                                C0mPL3 = C0rAPL3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
-                                                if (C0mPL3 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
+                                            C0rAPL3 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
+                                            C0mPL3 = C0rAPL3 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
+                                            if (C0mPL3 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL3;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
-                                        else if (C0rIPL4 == null)
+                                    }
+                                    else if (C0rIPL4 == null)
+                                    {
+                                        C0rIPL4 = req.m_resItem;
+                                        if (req.m_amountPerLevel >= 1)
                                         {
                                             C0rIPL4 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
-                                                C0rAPL4 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
-                                                C0mPL4 = C0rAPL4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
-                                                if (C0mPL4 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
+                                            C0rAPL4 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
+                                            C0mPL4 = C0rAPL4 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
+                                            if (C0mPL4 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL4;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
 
-                                            }
                                         }
                                     }
                                 }
                             }
                         }
                     }
-                    else if (!MoreSkills_Config.EnableHigherDifficultyCrafting.Value)
+                    else if (Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) > MoreSkills_Config.CraftingMiddleLevel.Value)
                     {
-                        if (((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) >= 99)
+                        //Debug.LogWarning("Mayor que");
+                        //Debug.LogWarning("Level: " + Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) + "Nivel medio: " + MoreSkills_Config.CraftingMiddleLevel.Value);
+                        float level = Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f);
+                        float maths = 1 + ((((level - MoreSkills_Config.CraftingMiddleLevel.Value) / 100) * (100 / (100 - MoreSkills_Config.CraftingMiddleLevel.Value))) * (MoreSkills_Config.CraftingLevelDivider.Value - 1));
+                        foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
                         {
-                            float maths = MoreSkills_Config.CraftingNormalLevel100.Value;
-                            foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
+                            if (recipe == null || recipe.m_item == null)
+                                continue;
+
+                            if (MoreSkills_Config.CraftingMiddleLevel.Value == 100f)
+                                break;
+
+                            if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
                             {
-                                if (recipe == null || recipe.m_item == null)
-                                    continue;
 
-                                if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
+                                //Debug.LogError("Receta " + counter);
+                                C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
+                                //Debug.LogWarning("Objeto: " + C0oI);
+
+                                foreach (Piece.Requirement req in recipe.m_resources)
                                 {
+                                    if (req == null)
+                                        continue;
 
-                                    //Debug.LogError("Receta " + counter);
-                                    C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
-                                    //Debug.LogWarning("Objeto: " + C0oI);
-
-                                    foreach (Piece.Requirement req in recipe.m_resources)
+                                    if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
                                     {
-                                        if (req == null)
-                                            continue;
+                                        break;
+                                    }
 
-                                        if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
+                                    if (C0rI1 == null)
+                                    {
+                                        if (req.m_amount >= 1)
                                         {
-                                            break;
+                                            C0rI1 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
+                                            C0rA1 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
+                                            C0m1 = C0rA1 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
+                                            if (C0m1 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m1;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
                                         }
+                                    }
+                                    else if (C0rI2 == null)
+                                    {
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI2 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
+                                            C0rA2 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
+                                            C0m2 = C0rA2 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
+                                            if (C0m2 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m2;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
+                                        }
+                                    }
+                                    else if (C0rI3 == null)
+                                    {
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI3 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
+                                            C0rA3 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
+                                            C0m3 = C0rA3 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
+                                            if (C0m3 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m3;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
+                                        }
+                                    }
+                                    else if (C0rI4 == null)
+                                    {
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI4 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
+                                            C0rA4 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
+                                            C0m4 = C0rA4 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
+                                            if (C0m4 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m4;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
+                                        }
+                                    }
 
-                                        if (C0rI1 == null)
+                                    if (C0rIPL1 == null)
+                                    {
+                                        if (req.m_amountPerLevel >= 1)
                                         {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
-                                                C0rA1 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
-                                                C0m1 = C0rA1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
-                                                if (C0m1 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
-                                            }
+                                            C0rIPL1 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
+                                            C0rAPL1 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
+                                            C0mPL1 = C0rAPL1 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
+                                            if (C0mPL1 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL1;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
-                                        else if (C0rI2 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
-                                                C0rA2 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
-                                                C0m2 = C0rA2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
-                                                if (C0m2 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI3 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
-                                                C0rA3 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
-                                                C0m3 = C0rA3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
-                                                if (C0m3 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI4 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
-                                                C0rA4 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
-                                                C0m4 = C0rA4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
-                                                if (C0m4 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
-                                            }
-                                        }
+                                    }
+                                    else if (C0rIPL2 == null)
+                                    {
 
-                                        if (C0rIPL1 == null)
+                                        if (req.m_amountPerLevel >= 1)
                                         {
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
-                                                C0rAPL1 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
-                                                C0mPL1 = C0rAPL1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
-                                                if (C0mPL1 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
+                                            C0rIPL2 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
+                                            C0rAPL2 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
+                                            C0mPL2 = C0rAPL2 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
+                                            if (C0mPL2 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL2;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
-                                        else if (C0rIPL2 == null)
-                                        {
-
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
-                                                C0rAPL2 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
-                                                C0mPL2 = C0rAPL2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
-                                                if (C0mPL2 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL3 == null)
+                                    }
+                                    else if (C0rIPL3 == null)
+                                    {
+                                        C0rIPL3 = req.m_resItem;
+                                        if (req.m_amountPerLevel >= 1)
                                         {
                                             C0rIPL3 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
-                                                C0rAPL3 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
-                                                C0mPL3 = C0rAPL3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
-                                                if (C0mPL3 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
+                                            C0rAPL3 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
+                                            C0mPL3 = C0rAPL3 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
+                                            if (C0mPL3 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL3;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
-                                        else if (C0rIPL4 == null)
+                                    }
+                                    else if (C0rIPL4 == null)
+                                    {
+                                        C0rIPL4 = req.m_resItem;
+                                        if (req.m_amountPerLevel >= 1)
                                         {
                                             C0rIPL4 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
-                                                C0rAPL4 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
-                                                C0mPL4 = C0rAPL4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
-                                                if (C0mPL4 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
+                                            C0rAPL4 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
+                                            C0mPL4 = C0rAPL4 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
+                                            if (C0mPL4 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL4;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
 
-                                            }
                                         }
                                     }
                                 }
                             }
                         }
-                        else if (((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) >= 74)
+                    }
+                    else if (Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) == MoreSkills_Config.CraftingMiddleLevel.Value)
+                    {
+                        //Debug.LogWarning("Igual que");
+                        //Debug.LogWarning("Level: " + Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) + "Nivel medio: " + MoreSkills_Config.CraftingMiddleLevel.Value);
+                        foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
                         {
-                            float maths = MoreSkills_Config.CraftingNormalLevel75.Value;
-                            foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
+                            if (recipe == null || recipe.m_item == null)
+                                continue;
+
+                            if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
                             {
-                                if (recipe == null || recipe.m_item == null)
-                                    continue;
 
-                                if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
+                                //Debug.LogError("Receta " + counter);
+                                C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
+                                //Debug.LogWarning("Objeto: " + C0oI);
+
+                                foreach (Piece.Requirement req in recipe.m_resources)
                                 {
+                                    if (req == null)
+                                        continue;
 
-                                    //Debug.LogError("Receta " + counter);
-                                    C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
-                                    //Debug.LogWarning("Objeto: " + C0oI);
-
-                                    foreach (Piece.Requirement req in recipe.m_resources)
+                                    if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
                                     {
-                                        if (req == null)
-                                            continue;
+                                        break;
+                                    }
 
-                                        if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
+                                    if (C0rI1 == null)
+                                    {
+                                        if (req.m_amount >= 1)
                                         {
-                                            break;
-                                        }
-
-                                        if (C0rI1 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
-                                                C0rA1 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
-                                                C0m1 = C0rA1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
-                                                if (C0m1 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI2 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
-                                                C0rA2 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
-                                                C0m2 = C0rA2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
-                                                if (C0m2 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI3 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
-                                                C0rA3 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
-                                                C0m3 = C0rA3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
-                                                if (C0m3 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI4 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
-                                                C0rA4 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
-                                                C0m4 = C0rA4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
-                                                if (C0m4 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
-                                            }
-                                        }
-
-                                        if (C0rIPL1 == null)
-                                        {
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
-                                                C0rAPL1 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
-                                                C0mPL1 = C0rAPL1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
-                                                if (C0mPL1 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL2 == null)
-                                        {
-
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
-                                                C0rAPL2 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
-                                                C0mPL2 = C0rAPL2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
-                                                if (C0mPL2 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL3 == null)
-                                        {
-                                            C0rIPL3 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
-                                                C0rAPL3 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
-                                                C0mPL3 = C0rAPL3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
-                                                if (C0mPL3 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL4 == null)
-                                        {
-                                            C0rIPL4 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
-                                                C0rAPL4 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
-                                                C0mPL4 = C0rAPL4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
-                                                if (C0mPL4 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-
-                                            }
+                                            C0rI1 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
+                                            C0rA1 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
+                                            C0m1 = C0rA1;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
+                                            if (C0m1 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m1;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
                                         }
                                     }
-                                }
-                            }
-                        }
-                        else if (((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) >= 49)
-                        {
-                            float maths = MoreSkills_Config.CraftingNormalLevel50.Value;
-                            foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
-                            {
-                                if (recipe == null || recipe.m_item == null)
-                                    continue;
-
-                                if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
-                                {
-
-                                    //Debug.LogError("Receta " + counter);
-                                    C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
-                                    //Debug.LogWarning("Objeto: " + C0oI);
-
-                                    foreach (Piece.Requirement req in recipe.m_resources)
+                                    else if (C0rI2 == null)
                                     {
-                                        if (req == null)
-                                            continue;
-
-                                        if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
+                                        if (req.m_amount >= 1)
                                         {
-                                            break;
-                                        }
-
-                                        if (C0rI1 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
-                                                C0rA1 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
-                                                C0m1 = C0rA1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
-                                                if (C0m1 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI2 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
-                                                C0rA2 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
-                                                C0m2 = C0rA2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
-                                                if (C0m2 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI3 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
-                                                C0rA3 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
-                                                C0m3 = C0rA3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
-                                                if (C0m3 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI4 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
-                                                C0rA4 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
-                                                C0m4 = C0rA4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
-                                                if (C0m4 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
-                                            }
-                                        }
-
-                                        if (C0rIPL1 == null)
-                                        {
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
-                                                C0rAPL1 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
-                                                C0mPL1 = C0rAPL1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
-                                                if (C0mPL1 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL2 == null)
-                                        {
-
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
-                                                C0rAPL2 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
-                                                C0mPL2 = C0rAPL2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
-                                                if (C0mPL2 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL3 == null)
-                                        {
-                                            C0rIPL3 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
-                                                C0rAPL3 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
-                                                C0mPL3 = C0rAPL3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
-                                                if (C0mPL3 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL4 == null)
-                                        {
-                                            C0rIPL4 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
-                                                C0rAPL4 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
-                                                C0mPL4 = C0rAPL4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
-                                                if (C0mPL4 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-
-                                            }
+                                            C0rI2 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
+                                            C0rA2 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
+                                            C0m2 = C0rA2;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
+                                            if (C0m2 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m2;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
                                         }
                                     }
-                                }
-                            }
-                        }
-                        else if (((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) >= 24)
-                        {
-                            float maths = MoreSkills_Config.CraftingNormalLevel25.Value;
-                            foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
-                            {
-                                if (recipe == null || recipe.m_item == null)
-                                    continue;
-
-                                if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
-                                {
-
-                                    //Debug.LogError("Receta " + counter);
-                                    C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
-                                    //Debug.LogWarning("Objeto: " + C0oI);
-
-                                    foreach (Piece.Requirement req in recipe.m_resources)
+                                    else if (C0rI3 == null)
                                     {
-                                        if (req == null)
-                                            continue;
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI3 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
+                                            C0rA3 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
+                                            C0m3 = C0rA3;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
+                                            if (C0m3 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m3;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
+                                        }
+                                    }
+                                    else if (C0rI4 == null)
+                                    {
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI4 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
+                                            C0rA4 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
+                                            C0m4 = C0rA4;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
+                                            if (C0m4 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m4;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
+                                        }
+                                    }
 
-                                        if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
+                                    if (C0rIPL1 == null)
+                                    {
+                                        if (req.m_amountPerLevel >= 1)
                                         {
-                                            break;
+                                            C0rIPL1 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
+                                            C0rAPL1 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
+                                            C0mPL1 = C0rAPL1;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
+                                            if (C0mPL1 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL1;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
+                                    }
+                                    else if (C0rIPL2 == null)
+                                    {
 
-                                        if (C0rI1 == null)
+                                        if (req.m_amountPerLevel >= 1)
                                         {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
-                                                C0rA1 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
-                                                C0m1 = C0rA1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
-                                                if (C0m1 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
-                                            }
+                                            C0rIPL2 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
+                                            C0rAPL2 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
+                                            C0mPL2 = C0rAPL2;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
+                                            if (C0mPL2 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL2;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
-                                        else if (C0rI2 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
-                                                C0rA2 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
-                                                C0m2 = C0rA2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
-                                                if (C0m2 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI3 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
-                                                C0rA3 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
-                                                C0m3 = C0rA3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
-                                                if (C0m3 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI4 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
-                                                C0rA4 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
-                                                C0m4 = C0rA4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
-                                                if (C0m4 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
-                                            }
-                                        }
-
-                                        if (C0rIPL1 == null)
-                                        {
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
-                                                C0rAPL1 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
-                                                C0mPL1 = C0rAPL1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
-                                                if (C0mPL1 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL2 == null)
-                                        {
-
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
-                                                C0rAPL2 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
-                                                C0mPL2 = C0rAPL2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
-                                                if (C0mPL2 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL3 == null)
+                                    }
+                                    else if (C0rIPL3 == null)
+                                    {
+                                        C0rIPL3 = req.m_resItem;
+                                        if (req.m_amountPerLevel >= 1)
                                         {
                                             C0rIPL3 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
-                                                C0rAPL3 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
-                                                C0mPL3 = C0rAPL3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
-                                                if (C0mPL3 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
+                                            C0rAPL3 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
+                                            C0mPL3 = C0rAPL3;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
+                                            if (C0mPL3 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL3;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
-                                        else if (C0rIPL4 == null)
+                                    }
+                                    else if (C0rIPL4 == null)
+                                    {
+                                        C0rIPL4 = req.m_resItem;
+                                        if (req.m_amountPerLevel >= 1)
                                         {
                                             C0rIPL4 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
-                                                C0rAPL4 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
-                                                C0mPL4 = C0rAPL4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
-                                                if (C0mPL4 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
+                                            C0rAPL4 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
+                                            C0mPL4 = C0rAPL4;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
+                                            if (C0mPL4 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL4;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
 
-                                            }
                                         }
                                     }
                                 }
@@ -3713,1034 +2203,529 @@ namespace MoreSkills.ModSkills
                             C0oI = null;
                         }
                     }
-
-                    if (MoreSkills_Config.EnableHigherDifficultyCrafting.Value)
+                    if (Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) < MoreSkills_Config.CraftingMiddleLevel.Value)
                     {
-                        if ((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f >= 5)
+                        //Debug.LogWarning("Menor que");
+                        //Debug.LogWarning("Level: " + Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) + "Nivel medio: " + MoreSkills_Config.CraftingMiddleLevel.Value);
+                        float level = Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f);
+                        float maths = MoreSkills_Config.CraftingLevelMultiplier.Value - (((level / 100) * (100 / MoreSkills_Config.CraftingMiddleLevel.Value)) * (MoreSkills_Config.CraftingLevelMultiplier.Value - 1));
+                        foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
                         {
-                            float maths = (MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * MoreSkills_Config.CraftingHigherLevelMultiplier.Value);
-                            foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
+                            if (recipe == null || recipe.m_item == null)
+                                continue;
+
+                            if (MoreSkills_Config.CraftingMiddleLevel.Value == 0f)
+                                break;
+
+                            if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
                             {
-                                if (recipe == null || recipe.m_item == null)
-                                    continue;
 
-                                if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
+                                //Debug.LogError("Receta " + counter);
+                                C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
+                                //Debug.LogWarning("Objeto: " + C0oI);
+
+                                foreach (Piece.Requirement req in recipe.m_resources)
                                 {
+                                    if (req == null)
+                                        continue;
 
-                                    //Debug.LogError("Receta " + counter);
-                                    C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
-                                    //Debug.LogWarning("Objeto: " + C0oI);
-
-                                    foreach (Piece.Requirement req in recipe.m_resources)
+                                    if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
                                     {
-                                        if (req == null)
-                                            continue;
+                                        break;
+                                    }
 
-                                        if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
+                                    if (C0rI1 == null)
+                                    {
+                                        if (req.m_amount >= 1)
                                         {
-                                            break;
-                                        }
-
-                                        if (C0rI1 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
-                                                C0rA1 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
-                                                C0m1 = C0rA1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
-                                                if (C0m1 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI2 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
-                                                C0rA2 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
-                                                C0m2 = C0rA2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
-                                                if (C0m2 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI3 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
-                                                C0rA3 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
-                                                C0m3 = C0rA3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
-                                                if (C0m3 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI4 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
-                                                C0rA4 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
-                                                C0m4 = C0rA4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
-                                                if (C0m4 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
-                                            }
-                                        }
-
-                                        if (C0rIPL1 == null)
-                                        {
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
-                                                C0rAPL1 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
-                                                C0mPL1 = C0rAPL1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
-                                                if (C0mPL1 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL2 == null)
-                                        {
-
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
-                                                C0rAPL2 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
-                                                C0mPL2 = C0rAPL2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
-                                                if (C0mPL2 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL3 == null)
-                                        {
-                                            C0rIPL3 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
-                                                C0rAPL3 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
-                                                C0mPL3 = C0rAPL3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
-                                                if (C0mPL3 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL4 == null)
-                                        {
-                                            C0rIPL4 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
-                                                C0rAPL4 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
-                                                C0mPL4 = C0rAPL4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
-                                                if (C0mPL4 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-
-                                            }
+                                            C0rI1 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
+                                            C0rA1 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
+                                            C0m1 = C0rA1 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
+                                            if (C0m1 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m1;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
                                         }
                                     }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            float maths = (MoreSkills_Config.CraftingHigherLevelMultiplier.Value / 20);
-                            foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
-                            {
-                                if (recipe == null || recipe.m_item == null)
-                                    continue;
-
-                                if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
-                                {
-
-                                    //Debug.LogError("Receta " + counter);
-                                    C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
-                                    //Debug.LogWarning("Objeto: " + C0oI);
-
-                                    foreach (Piece.Requirement req in recipe.m_resources)
+                                    else if (C0rI2 == null)
                                     {
-                                        if (req == null)
-                                            continue;
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI2 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
+                                            C0rA2 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
+                                            C0m2 = C0rA2 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
+                                            if (C0m2 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m2;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
+                                        }
+                                    }
+                                    else if (C0rI3 == null)
+                                    {
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI3 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
+                                            C0rA3 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
+                                            C0m3 = C0rA3 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
+                                            if (C0m3 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m3;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
+                                        }
+                                    }
+                                    else if (C0rI4 == null)
+                                    {
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI4 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
+                                            C0rA4 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
+                                            C0m4 = C0rA4 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
+                                            if (C0m4 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m4;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
+                                        }
+                                    }
 
-                                        if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
+                                    if (C0rIPL1 == null)
+                                    {
+                                        if (req.m_amountPerLevel >= 1)
                                         {
-                                            break;
+                                            C0rIPL1 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
+                                            C0rAPL1 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
+                                            C0mPL1 = C0rAPL1 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
+                                            if (C0mPL1 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL1;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
+                                    }
+                                    else if (C0rIPL2 == null)
+                                    {
 
-                                        if (C0rI1 == null)
+                                        if (req.m_amountPerLevel >= 1)
                                         {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
-                                                C0rA1 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
-                                                C0m1 = C0rA1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
-                                                if (C0m1 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
-                                            }
+                                            C0rIPL2 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
+                                            C0rAPL2 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
+                                            C0mPL2 = C0rAPL2 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
+                                            if (C0mPL2 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL2;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
-                                        else if (C0rI2 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
-                                                C0rA2 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
-                                                C0m2 = C0rA2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
-                                                if (C0m2 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI3 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
-                                                C0rA3 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
-                                                C0m3 = C0rA3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
-                                                if (C0m3 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI4 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
-                                                C0rA4 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
-                                                C0m4 = C0rA4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
-                                                if (C0m4 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
-                                            }
-                                        }
-
-                                        if (C0rIPL1 == null)
-                                        {
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
-                                                C0rAPL1 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
-                                                C0mPL1 = C0rAPL1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
-                                                if (C0mPL1 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL2 == null)
-                                        {
-
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
-                                                C0rAPL2 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
-                                                C0mPL2 = C0rAPL2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
-                                                if (C0mPL2 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL3 == null)
+                                    }
+                                    else if (C0rIPL3 == null)
+                                    {
+                                        C0rIPL3 = req.m_resItem;
+                                        if (req.m_amountPerLevel >= 1)
                                         {
                                             C0rIPL3 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
-                                                C0rAPL3 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
-                                                C0mPL3 = C0rAPL3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
-                                                if (C0mPL3 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
+                                            C0rAPL3 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
+                                            C0mPL3 = C0rAPL3 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
+                                            if (C0mPL3 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL3;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
-                                        else if (C0rIPL4 == null)
+                                    }
+                                    else if (C0rIPL4 == null)
+                                    {
+                                        C0rIPL4 = req.m_resItem;
+                                        if (req.m_amountPerLevel >= 1)
                                         {
                                             C0rIPL4 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
-                                                C0rAPL4 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
-                                                C0mPL4 = C0rAPL4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
-                                                if (C0mPL4 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
+                                            C0rAPL4 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
+                                            C0mPL4 = C0rAPL4 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
+                                            if (C0mPL4 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL4;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
 
-                                            }
                                         }
                                     }
                                 }
                             }
                         }
                     }
-                    else if (!MoreSkills_Config.EnableHigherDifficultyCrafting.Value)
+                    else if (Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) > MoreSkills_Config.CraftingMiddleLevel.Value)
                     {
-                        if (((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) >= 99)
+                        //Debug.LogWarning("Mayor que");
+                        //Debug.LogWarning("Level: " + Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) + "Nivel medio: " + MoreSkills_Config.CraftingMiddleLevel.Value);
+                        float level = Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f);
+                        float maths = 1 + ((((level - MoreSkills_Config.CraftingMiddleLevel.Value) / 100) * (100 / (100 - MoreSkills_Config.CraftingMiddleLevel.Value))) * (MoreSkills_Config.CraftingLevelDivider.Value - 1));
+                        foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
                         {
-                            float maths = MoreSkills_Config.CraftingNormalLevel100.Value;
-                            foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
+                            if (recipe == null || recipe.m_item == null)
+                                continue;
+
+                            if (MoreSkills_Config.CraftingMiddleLevel.Value == 100f)
+                                break;
+
+                            if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
                             {
-                                if (recipe == null || recipe.m_item == null)
-                                    continue;
 
-                                if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
+                                //Debug.LogError("Receta " + counter);
+                                C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
+                                //Debug.LogWarning("Objeto: " + C0oI);
+
+                                foreach (Piece.Requirement req in recipe.m_resources)
                                 {
+                                    if (req == null)
+                                        continue;
 
-                                    //Debug.LogError("Receta " + counter);
-                                    C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
-                                    //Debug.LogWarning("Objeto: " + C0oI);
-
-                                    foreach (Piece.Requirement req in recipe.m_resources)
+                                    if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
                                     {
-                                        if (req == null)
-                                            continue;
+                                        break;
+                                    }
 
-                                        if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
+                                    if (C0rI1 == null)
+                                    {
+                                        if (req.m_amount >= 1)
                                         {
-                                            break;
-                                        }
-
-                                        if (C0rI1 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
-                                                C0rA1 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
-                                                C0m1 = C0rA1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
-                                                if (C0m1 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI2 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
-                                                C0rA2 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
-                                                C0m2 = C0rA2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
-                                                if (C0m2 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI3 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
-                                                C0rA3 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
-                                                C0m3 = C0rA3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
-                                                if (C0m3 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI4 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
-                                                C0rA4 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
-                                                C0m4 = C0rA4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
-                                                if (C0m4 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
-                                            }
-                                        }
-
-                                        if (C0rIPL1 == null)
-                                        {
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
-                                                C0rAPL1 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
-                                                C0mPL1 = C0rAPL1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
-                                                if (C0mPL1 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL2 == null)
-                                        {
-
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
-                                                C0rAPL2 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
-                                                C0mPL2 = C0rAPL2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
-                                                if (C0mPL2 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL3 == null)
-                                        {
-                                            C0rIPL3 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
-                                                C0rAPL3 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
-                                                C0mPL3 = C0rAPL3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
-                                                if (C0mPL3 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL4 == null)
-                                        {
-                                            C0rIPL4 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
-                                                C0rAPL4 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
-                                                C0mPL4 = C0rAPL4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
-                                                if (C0mPL4 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-
-                                            }
+                                            C0rI1 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
+                                            C0rA1 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
+                                            C0m1 = C0rA1 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
+                                            if (C0m1 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m1;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
                                         }
                                     }
-                                }
-                            }
-                        }
-                        else if (((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) >= 74)
-                        {
-                            float maths = MoreSkills_Config.CraftingNormalLevel75.Value;
-                            foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
-                            {
-                                if (recipe == null || recipe.m_item == null)
-                                    continue;
-
-                                if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
-                                {
-
-                                    //Debug.LogError("Receta " + counter);
-                                    C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
-                                    //Debug.LogWarning("Objeto: " + C0oI);
-
-                                    foreach (Piece.Requirement req in recipe.m_resources)
+                                    else if (C0rI2 == null)
                                     {
-                                        if (req == null)
-                                            continue;
-
-                                        if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
+                                        if (req.m_amount >= 1)
                                         {
-                                            break;
-                                        }
-
-                                        if (C0rI1 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
-                                                C0rA1 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
-                                                C0m1 = C0rA1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
-                                                if (C0m1 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI2 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
-                                                C0rA2 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
-                                                C0m2 = C0rA2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
-                                                if (C0m2 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI3 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
-                                                C0rA3 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
-                                                C0m3 = C0rA3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
-                                                if (C0m3 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI4 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
-                                                C0rA4 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
-                                                C0m4 = C0rA4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
-                                                if (C0m4 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
-                                            }
-                                        }
-
-                                        if (C0rIPL1 == null)
-                                        {
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
-                                                C0rAPL1 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
-                                                C0mPL1 = C0rAPL1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
-                                                if (C0mPL1 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL2 == null)
-                                        {
-
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
-                                                C0rAPL2 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
-                                                C0mPL2 = C0rAPL2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
-                                                if (C0mPL2 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL3 == null)
-                                        {
-                                            C0rIPL3 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
-                                                C0rAPL3 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
-                                                C0mPL3 = C0rAPL3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
-                                                if (C0mPL3 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL4 == null)
-                                        {
-                                            C0rIPL4 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
-                                                C0rAPL4 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
-                                                C0mPL4 = C0rAPL4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
-                                                if (C0mPL4 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-
-                                            }
+                                            C0rI2 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
+                                            C0rA2 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
+                                            C0m2 = C0rA2 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
+                                            if (C0m2 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m2;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
                                         }
                                     }
-                                }
-                            }
-                        }
-                        else if (((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) >= 49)
-                        {
-                            float maths = MoreSkills_Config.CraftingNormalLevel50.Value;
-                            foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
-                            {
-                                if (recipe == null || recipe.m_item == null)
-                                    continue;
-
-                                if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
-                                {
-
-                                    //Debug.LogError("Receta " + counter);
-                                    C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
-                                    //Debug.LogWarning("Objeto: " + C0oI);
-
-                                    foreach (Piece.Requirement req in recipe.m_resources)
+                                    else if (C0rI3 == null)
                                     {
-                                        if (req == null)
-                                            continue;
-
-                                        if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
+                                        if (req.m_amount >= 1)
                                         {
-                                            break;
-                                        }
-
-                                        if (C0rI1 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
-                                                C0rA1 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
-                                                C0m1 = C0rA1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
-                                                if (C0m1 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI2 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
-                                                C0rA2 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
-                                                C0m2 = C0rA2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
-                                                if (C0m2 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI3 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
-                                                C0rA3 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
-                                                C0m3 = C0rA3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
-                                                if (C0m3 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI4 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
-                                                C0rA4 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
-                                                C0m4 = C0rA4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
-                                                if (C0m4 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
-                                            }
-                                        }
-
-                                        if (C0rIPL1 == null)
-                                        {
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
-                                                C0rAPL1 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
-                                                C0mPL1 = C0rAPL1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
-                                                if (C0mPL1 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL2 == null)
-                                        {
-
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
-                                                C0rAPL2 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
-                                                C0mPL2 = C0rAPL2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
-                                                if (C0mPL2 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL3 == null)
-                                        {
-                                            C0rIPL3 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
-                                                C0rAPL3 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
-                                                C0mPL3 = C0rAPL3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
-                                                if (C0mPL3 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL4 == null)
-                                        {
-                                            C0rIPL4 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
-                                                C0rAPL4 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
-                                                C0mPL4 = C0rAPL4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
-                                                if (C0mPL4 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-
-                                            }
+                                            C0rI3 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
+                                            C0rA3 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
+                                            C0m3 = C0rA3 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
+                                            if (C0m3 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m3;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
                                         }
                                     }
-                                }
-                            }
-                        }
-                        else if (((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) >= 24)
-                        {
-                            float maths = MoreSkills_Config.CraftingNormalLevel25.Value;
-                            foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
-                            {
-                                if (recipe == null || recipe.m_item == null)
-                                    continue;
-
-                                if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
-                                {
-
-                                    //Debug.LogError("Receta " + counter);
-                                    C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
-                                    //Debug.LogWarning("Objeto: " + C0oI);
-
-                                    foreach (Piece.Requirement req in recipe.m_resources)
+                                    else if (C0rI4 == null)
                                     {
-                                        if (req == null)
-                                            continue;
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI4 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
+                                            C0rA4 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
+                                            C0m4 = C0rA4 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
+                                            if (C0m4 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m4;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
+                                        }
+                                    }
 
-                                        if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
+                                    if (C0rIPL1 == null)
+                                    {
+                                        if (req.m_amountPerLevel >= 1)
                                         {
-                                            break;
+                                            C0rIPL1 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
+                                            C0rAPL1 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
+                                            C0mPL1 = C0rAPL1 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
+                                            if (C0mPL1 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL1;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
+                                    }
+                                    else if (C0rIPL2 == null)
+                                    {
 
-                                        if (C0rI1 == null)
+                                        if (req.m_amountPerLevel >= 1)
                                         {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
-                                                C0rA1 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
-                                                C0m1 = C0rA1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
-                                                if (C0m1 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
-                                            }
+                                            C0rIPL2 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
+                                            C0rAPL2 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
+                                            C0mPL2 = C0rAPL2 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
+                                            if (C0mPL2 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL2;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
-                                        else if (C0rI2 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
-                                                C0rA2 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
-                                                C0m2 = C0rA2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
-                                                if (C0m2 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI3 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
-                                                C0rA3 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
-                                                C0m3 = C0rA3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
-                                                if (C0m3 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI4 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
-                                                C0rA4 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
-                                                C0m4 = C0rA4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
-                                                if (C0m4 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
-                                            }
-                                        }
-
-                                        if (C0rIPL1 == null)
-                                        {
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
-                                                C0rAPL1 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
-                                                C0mPL1 = C0rAPL1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
-                                                if (C0mPL1 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL2 == null)
-                                        {
-
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
-                                                C0rAPL2 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
-                                                C0mPL2 = C0rAPL2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
-                                                if (C0mPL2 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL3 == null)
+                                    }
+                                    else if (C0rIPL3 == null)
+                                    {
+                                        C0rIPL3 = req.m_resItem;
+                                        if (req.m_amountPerLevel >= 1)
                                         {
                                             C0rIPL3 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
-                                                C0rAPL3 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
-                                                C0mPL3 = C0rAPL3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
-                                                if (C0mPL3 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
+                                            C0rAPL3 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
+                                            C0mPL3 = C0rAPL3 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
+                                            if (C0mPL3 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL3;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
-                                        else if (C0rIPL4 == null)
+                                    }
+                                    else if (C0rIPL4 == null)
+                                    {
+                                        C0rIPL4 = req.m_resItem;
+                                        if (req.m_amountPerLevel >= 1)
                                         {
                                             C0rIPL4 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
-                                                C0rAPL4 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
-                                                C0mPL4 = C0rAPL4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
-                                                if (C0mPL4 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
+                                            C0rAPL4 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
+                                            C0mPL4 = C0rAPL4 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
+                                            if (C0mPL4 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL4;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
 
-                                            }
                                         }
                                     }
                                 }
                             }
                         }
                     }
+                    else if (Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) == MoreSkills_Config.CraftingMiddleLevel.Value)
+                    {
+                        //Debug.LogWarning("Igual que");
+                        //Debug.LogWarning("Level: " + Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) + "Nivel medio: " + MoreSkills_Config.CraftingMiddleLevel.Value);
+                        foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
+                        {
+                            if (recipe == null || recipe.m_item == null)
+                                continue;
 
+                            if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
+                            {
+
+                                //Debug.LogError("Receta " + counter);
+                                C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
+                                //Debug.LogWarning("Objeto: " + C0oI);
+
+                                foreach (Piece.Requirement req in recipe.m_resources)
+                                {
+                                    if (req == null)
+                                        continue;
+
+                                    if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
+                                    {
+                                        break;
+                                    }
+
+                                    if (C0rI1 == null)
+                                    {
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI1 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
+                                            C0rA1 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
+                                            C0m1 = C0rA1;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
+                                            if (C0m1 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m1;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
+                                        }
+                                    }
+                                    else if (C0rI2 == null)
+                                    {
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI2 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
+                                            C0rA2 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
+                                            C0m2 = C0rA2;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
+                                            if (C0m2 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m2;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
+                                        }
+                                    }
+                                    else if (C0rI3 == null)
+                                    {
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI3 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
+                                            C0rA3 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
+                                            C0m3 = C0rA3;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
+                                            if (C0m3 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m3;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
+                                        }
+                                    }
+                                    else if (C0rI4 == null)
+                                    {
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI4 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
+                                            C0rA4 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
+                                            C0m4 = C0rA4;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
+                                            if (C0m4 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m4;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
+                                        }
+                                    }
+
+                                    if (C0rIPL1 == null)
+                                    {
+                                        if (req.m_amountPerLevel >= 1)
+                                        {
+                                            C0rIPL1 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
+                                            C0rAPL1 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
+                                            C0mPL1 = C0rAPL1;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
+                                            if (C0mPL1 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL1;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
+                                        }
+                                    }
+                                    else if (C0rIPL2 == null)
+                                    {
+
+                                        if (req.m_amountPerLevel >= 1)
+                                        {
+                                            C0rIPL2 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
+                                            C0rAPL2 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
+                                            C0mPL2 = C0rAPL2;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
+                                            if (C0mPL2 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL2;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
+                                        }
+                                    }
+                                    else if (C0rIPL3 == null)
+                                    {
+                                        C0rIPL3 = req.m_resItem;
+                                        if (req.m_amountPerLevel >= 1)
+                                        {
+                                            C0rIPL3 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
+                                            C0rAPL3 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
+                                            C0mPL3 = C0rAPL3;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
+                                            if (C0mPL3 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL3;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
+                                        }
+                                    }
+                                    else if (C0rIPL4 == null)
+                                    {
+                                        C0rIPL4 = req.m_resItem;
+                                        if (req.m_amountPerLevel >= 1)
+                                        {
+                                            C0rIPL4 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
+                                            C0rAPL4 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
+                                            C0mPL4 = C0rAPL4;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
+                                            if (C0mPL4 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL4;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -4914,1027 +2899,523 @@ namespace MoreSkills.ModSkills
                             C0oI = null;
                         }
                     }
-
-                    if (MoreSkills_Config.EnableHigherDifficultyCrafting.Value)
+                    if (Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) < MoreSkills_Config.CraftingMiddleLevel.Value)
                     {
-                        if ((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f >= 5)
+                        //Debug.LogWarning("Menor que");
+                        //Debug.LogWarning("Level: " + Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) + "Nivel medio: " + MoreSkills_Config.CraftingMiddleLevel.Value);
+                        float level = Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f);
+                        float maths = MoreSkills_Config.CraftingLevelMultiplier.Value - (((level / 100) * (100 / MoreSkills_Config.CraftingMiddleLevel.Value)) * (MoreSkills_Config.CraftingLevelMultiplier.Value - 1));
+                        foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
                         {
-                            float maths = (MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * MoreSkills_Config.CraftingHigherLevelMultiplier.Value);
-                            foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
+                            if (recipe == null || recipe.m_item == null)
+                                continue;
+
+                            if (MoreSkills_Config.CraftingMiddleLevel.Value == 0f)
+                                break;
+
+                            if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
                             {
-                                if (recipe == null || recipe.m_item == null)
-                                    continue;
 
-                                if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
+                                //Debug.LogError("Receta " + counter);
+                                C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
+                                //Debug.LogWarning("Objeto: " + C0oI);
+
+                                foreach (Piece.Requirement req in recipe.m_resources)
                                 {
+                                    if (req == null)
+                                        continue;
 
-                                    //Debug.LogError("Receta " + counter);
-                                    C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
-                                    //Debug.LogWarning("Objeto: " + C0oI);
-
-                                    foreach (Piece.Requirement req in recipe.m_resources)
+                                    if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
                                     {
-                                        if (req == null)
-                                            continue;
+                                        break;
+                                    }
 
-                                        if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
+                                    if (C0rI1 == null)
+                                    {
+                                        if (req.m_amount >= 1)
                                         {
-                                            break;
-                                        }
-
-                                        if (C0rI1 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
-                                                C0rA1 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
-                                                C0m1 = C0rA1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
-                                                if (C0m1 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI2 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
-                                                C0rA2 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
-                                                C0m2 = C0rA2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
-                                                if (C0m2 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI3 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
-                                                C0rA3 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
-                                                C0m3 = C0rA3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
-                                                if (C0m3 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI4 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
-                                                C0rA4 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
-                                                C0m4 = C0rA4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
-                                                if (C0m4 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
-                                            }
-                                        }
-
-                                        if (C0rIPL1 == null)
-                                        {
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
-                                                C0rAPL1 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
-                                                C0mPL1 = C0rAPL1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
-                                                if (C0mPL1 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL2 == null)
-                                        {
-
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
-                                                C0rAPL2 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
-                                                C0mPL2 = C0rAPL2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
-                                                if (C0mPL2 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL3 == null)
-                                        {
-                                            C0rIPL3 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
-                                                C0rAPL3 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
-                                                C0mPL3 = C0rAPL3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
-                                                if (C0mPL3 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL4 == null)
-                                        {
-                                            C0rIPL4 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
-                                                C0rAPL4 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
-                                                C0mPL4 = C0rAPL4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
-                                                if (C0mPL4 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-
-                                            }
+                                            C0rI1 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
+                                            C0rA1 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
+                                            C0m1 = C0rA1 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
+                                            if (C0m1 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m1;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
                                         }
                                     }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            float maths = (MoreSkills_Config.CraftingHigherLevelMultiplier.Value / 20);
-                            foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
-                            {
-                                if (recipe == null || recipe.m_item == null)
-                                    continue;
-
-                                if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
-                                {
-
-                                    //Debug.LogError("Receta " + counter);
-                                    C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
-                                    //Debug.LogWarning("Objeto: " + C0oI);
-
-                                    foreach (Piece.Requirement req in recipe.m_resources)
+                                    else if (C0rI2 == null)
                                     {
-                                        if (req == null)
-                                            continue;
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI2 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
+                                            C0rA2 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
+                                            C0m2 = C0rA2 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
+                                            if (C0m2 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m2;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
+                                        }
+                                    }
+                                    else if (C0rI3 == null)
+                                    {
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI3 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
+                                            C0rA3 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
+                                            C0m3 = C0rA3 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
+                                            if (C0m3 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m3;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
+                                        }
+                                    }
+                                    else if (C0rI4 == null)
+                                    {
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI4 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
+                                            C0rA4 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
+                                            C0m4 = C0rA4 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
+                                            if (C0m4 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m4;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
+                                        }
+                                    }
 
-                                        if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
+                                    if (C0rIPL1 == null)
+                                    {
+                                        if (req.m_amountPerLevel >= 1)
                                         {
-                                            break;
+                                            C0rIPL1 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
+                                            C0rAPL1 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
+                                            C0mPL1 = C0rAPL1 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
+                                            if (C0mPL1 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL1;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
+                                    }
+                                    else if (C0rIPL2 == null)
+                                    {
 
-                                        if (C0rI1 == null)
+                                        if (req.m_amountPerLevel >= 1)
                                         {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
-                                                C0rA1 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
-                                                C0m1 = C0rA1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
-                                                if (C0m1 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
-                                            }
+                                            C0rIPL2 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
+                                            C0rAPL2 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
+                                            C0mPL2 = C0rAPL2 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
+                                            if (C0mPL2 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL2;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
-                                        else if (C0rI2 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
-                                                C0rA2 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
-                                                C0m2 = C0rA2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
-                                                if (C0m2 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI3 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
-                                                C0rA3 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
-                                                C0m3 = C0rA3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
-                                                if (C0m3 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI4 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
-                                                C0rA4 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
-                                                C0m4 = C0rA4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
-                                                if (C0m4 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
-                                            }
-                                        }
-
-                                        if (C0rIPL1 == null)
-                                        {
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
-                                                C0rAPL1 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
-                                                C0mPL1 = C0rAPL1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
-                                                if (C0mPL1 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL2 == null)
-                                        {
-
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
-                                                C0rAPL2 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
-                                                C0mPL2 = C0rAPL2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
-                                                if (C0mPL2 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL3 == null)
+                                    }
+                                    else if (C0rIPL3 == null)
+                                    {
+                                        C0rIPL3 = req.m_resItem;
+                                        if (req.m_amountPerLevel >= 1)
                                         {
                                             C0rIPL3 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
-                                                C0rAPL3 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
-                                                C0mPL3 = C0rAPL3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
-                                                if (C0mPL3 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
+                                            C0rAPL3 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
+                                            C0mPL3 = C0rAPL3 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
+                                            if (C0mPL3 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL3;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
-                                        else if (C0rIPL4 == null)
+                                    }
+                                    else if (C0rIPL4 == null)
+                                    {
+                                        C0rIPL4 = req.m_resItem;
+                                        if (req.m_amountPerLevel >= 1)
                                         {
                                             C0rIPL4 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
-                                                C0rAPL4 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
-                                                C0mPL4 = C0rAPL4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
-                                                if (C0mPL4 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
+                                            C0rAPL4 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
+                                            C0mPL4 = C0rAPL4 * maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
+                                            if (C0mPL4 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL4;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
 
-                                            }
                                         }
                                     }
                                 }
                             }
                         }
                     }
-                    else if (!MoreSkills_Config.EnableHigherDifficultyCrafting.Value)
+                    else if (Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) > MoreSkills_Config.CraftingMiddleLevel.Value)
                     {
-                        if (((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) >= 99)
+                        //Debug.LogWarning("Mayor que");
+                        //Debug.LogWarning("Level: " + Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) + "Nivel medio: " + MoreSkills_Config.CraftingMiddleLevel.Value);
+                        float level = Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f);
+                        float maths = 1 + ((((level - MoreSkills_Config.CraftingMiddleLevel.Value) / 100) * (100 / (100 - MoreSkills_Config.CraftingMiddleLevel.Value))) * (MoreSkills_Config.CraftingLevelDivider.Value - 1));
+                        foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
                         {
-                            float maths = MoreSkills_Config.CraftingNormalLevel100.Value;
-                            foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
+                            if (recipe == null || recipe.m_item == null)
+                                continue;
+
+                            if (MoreSkills_Config.CraftingMiddleLevel.Value == 100f)
+                                break;
+
+                            if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
                             {
-                                if (recipe == null || recipe.m_item == null)
-                                    continue;
 
-                                if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
+                                //Debug.LogError("Receta " + counter);
+                                C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
+                                //Debug.LogWarning("Objeto: " + C0oI);
+
+                                foreach (Piece.Requirement req in recipe.m_resources)
                                 {
+                                    if (req == null)
+                                        continue;
 
-                                    //Debug.LogError("Receta " + counter);
-                                    C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
-                                    //Debug.LogWarning("Objeto: " + C0oI);
-
-                                    foreach (Piece.Requirement req in recipe.m_resources)
+                                    if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
                                     {
-                                        if (req == null)
-                                            continue;
+                                        break;
+                                    }
 
-                                        if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
+                                    if (C0rI1 == null)
+                                    {
+                                        if (req.m_amount >= 1)
                                         {
-                                            break;
+                                            C0rI1 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
+                                            C0rA1 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
+                                            C0m1 = C0rA1 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
+                                            if (C0m1 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m1;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
                                         }
+                                    }
+                                    else if (C0rI2 == null)
+                                    {
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI2 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
+                                            C0rA2 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
+                                            C0m2 = C0rA2 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
+                                            if (C0m2 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m2;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
+                                        }
+                                    }
+                                    else if (C0rI3 == null)
+                                    {
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI3 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
+                                            C0rA3 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
+                                            C0m3 = C0rA3 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
+                                            if (C0m3 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m3;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
+                                        }
+                                    }
+                                    else if (C0rI4 == null)
+                                    {
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI4 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
+                                            C0rA4 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
+                                            C0m4 = C0rA4 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
+                                            if (C0m4 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m4;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
+                                        }
+                                    }
 
-                                        if (C0rI1 == null)
+                                    if (C0rIPL1 == null)
+                                    {
+                                        if (req.m_amountPerLevel >= 1)
                                         {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
-                                                C0rA1 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
-                                                C0m1 = C0rA1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
-                                                if (C0m1 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
-                                            }
+                                            C0rIPL1 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
+                                            C0rAPL1 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
+                                            C0mPL1 = C0rAPL1 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
+                                            if (C0mPL1 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL1;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
-                                        else if (C0rI2 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
-                                                C0rA2 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
-                                                C0m2 = C0rA2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
-                                                if (C0m2 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI3 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
-                                                C0rA3 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
-                                                C0m3 = C0rA3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
-                                                if (C0m3 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI4 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
-                                                C0rA4 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
-                                                C0m4 = C0rA4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
-                                                if (C0m4 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
-                                            }
-                                        }
+                                    }
+                                    else if (C0rIPL2 == null)
+                                    {
 
-                                        if (C0rIPL1 == null)
+                                        if (req.m_amountPerLevel >= 1)
                                         {
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
-                                                C0rAPL1 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
-                                                C0mPL1 = C0rAPL1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
-                                                if (C0mPL1 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
+                                            C0rIPL2 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
+                                            C0rAPL2 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
+                                            C0mPL2 = C0rAPL2 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
+                                            if (C0mPL2 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL2;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
-                                        else if (C0rIPL2 == null)
-                                        {
-
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
-                                                C0rAPL2 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
-                                                C0mPL2 = C0rAPL2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
-                                                if (C0mPL2 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL3 == null)
+                                    }
+                                    else if (C0rIPL3 == null)
+                                    {
+                                        C0rIPL3 = req.m_resItem;
+                                        if (req.m_amountPerLevel >= 1)
                                         {
                                             C0rIPL3 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
-                                                C0rAPL3 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
-                                                C0mPL3 = C0rAPL3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
-                                                if (C0mPL3 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
+                                            C0rAPL3 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
+                                            C0mPL3 = C0rAPL3 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
+                                            if (C0mPL3 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL3;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
-                                        else if (C0rIPL4 == null)
+                                    }
+                                    else if (C0rIPL4 == null)
+                                    {
+                                        C0rIPL4 = req.m_resItem;
+                                        if (req.m_amountPerLevel >= 1)
                                         {
                                             C0rIPL4 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
-                                                C0rAPL4 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
-                                                C0mPL4 = C0rAPL4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
-                                                if (C0mPL4 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
+                                            C0rAPL4 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
+                                            C0mPL4 = C0rAPL4 / maths;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
+                                            if (C0mPL4 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL4;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
 
-                                            }
                                         }
                                     }
                                 }
                             }
                         }
-                        else if (((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) >= 74)
+                    }
+                    else if (Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) == MoreSkills_Config.CraftingMiddleLevel.Value)
+                    {
+                        //Debug.LogWarning("Igual que");
+                        //Debug.LogWarning("Level: " + Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) + "Nivel medio: " + MoreSkills_Config.CraftingMiddleLevel.Value);
+                        foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
                         {
-                            float maths = MoreSkills_Config.CraftingNormalLevel75.Value;
-                            foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
+                            if (recipe == null || recipe.m_item == null)
+                                continue;
+
+                            if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
                             {
-                                if (recipe == null || recipe.m_item == null)
-                                    continue;
 
-                                if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
+                                //Debug.LogError("Receta " + counter);
+                                C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
+                                //Debug.LogWarning("Objeto: " + C0oI);
+
+                                foreach (Piece.Requirement req in recipe.m_resources)
                                 {
+                                    if (req == null)
+                                        continue;
 
-                                    //Debug.LogError("Receta " + counter);
-                                    C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
-                                    //Debug.LogWarning("Objeto: " + C0oI);
-
-                                    foreach (Piece.Requirement req in recipe.m_resources)
+                                    if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
                                     {
-                                        if (req == null)
-                                            continue;
+                                        break;
+                                    }
 
-                                        if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
+                                    if (C0rI1 == null)
+                                    {
+                                        if (req.m_amount >= 1)
                                         {
-                                            break;
-                                        }
-
-                                        if (C0rI1 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
-                                                C0rA1 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
-                                                C0m1 = C0rA1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
-                                                if (C0m1 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI2 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
-                                                C0rA2 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
-                                                C0m2 = C0rA2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
-                                                if (C0m2 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI3 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
-                                                C0rA3 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
-                                                C0m3 = C0rA3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
-                                                if (C0m3 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI4 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
-                                                C0rA4 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
-                                                C0m4 = C0rA4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
-                                                if (C0m4 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
-                                            }
-                                        }
-
-                                        if (C0rIPL1 == null)
-                                        {
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
-                                                C0rAPL1 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
-                                                C0mPL1 = C0rAPL1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
-                                                if (C0mPL1 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL2 == null)
-                                        {
-
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
-                                                C0rAPL2 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
-                                                C0mPL2 = C0rAPL2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
-                                                if (C0mPL2 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL3 == null)
-                                        {
-                                            C0rIPL3 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
-                                                C0rAPL3 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
-                                                C0mPL3 = C0rAPL3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
-                                                if (C0mPL3 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL4 == null)
-                                        {
-                                            C0rIPL4 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
-                                                C0rAPL4 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
-                                                C0mPL4 = C0rAPL4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
-                                                if (C0mPL4 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-
-                                            }
+                                            C0rI1 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
+                                            C0rA1 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
+                                            C0m1 = C0rA1;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
+                                            if (C0m1 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m1;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
                                         }
                                     }
-                                }
-                            }
-                        }
-                        else if (((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) >= 49)
-                        {
-                            float maths = MoreSkills_Config.CraftingNormalLevel50.Value;
-                            foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
-                            {
-                                if (recipe == null || recipe.m_item == null)
-                                    continue;
-
-                                if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
-                                {
-
-                                    //Debug.LogError("Receta " + counter);
-                                    C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
-                                    //Debug.LogWarning("Objeto: " + C0oI);
-
-                                    foreach (Piece.Requirement req in recipe.m_resources)
+                                    else if (C0rI2 == null)
                                     {
-                                        if (req == null)
-                                            continue;
-
-                                        if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
+                                        if (req.m_amount >= 1)
                                         {
-                                            break;
-                                        }
-
-                                        if (C0rI1 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
-                                                C0rA1 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
-                                                C0m1 = C0rA1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
-                                                if (C0m1 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI2 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
-                                                C0rA2 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
-                                                C0m2 = C0rA2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
-                                                if (C0m2 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI3 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
-                                                C0rA3 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
-                                                C0m3 = C0rA3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
-                                                if (C0m3 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI4 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
-                                                C0rA4 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
-                                                C0m4 = C0rA4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
-                                                if (C0m4 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
-                                            }
-                                        }
-
-                                        if (C0rIPL1 == null)
-                                        {
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
-                                                C0rAPL1 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
-                                                C0mPL1 = C0rAPL1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
-                                                if (C0mPL1 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL2 == null)
-                                        {
-
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
-                                                C0rAPL2 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
-                                                C0mPL2 = C0rAPL2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
-                                                if (C0mPL2 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL3 == null)
-                                        {
-                                            C0rIPL3 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
-                                                C0rAPL3 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
-                                                C0mPL3 = C0rAPL3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
-                                                if (C0mPL3 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL4 == null)
-                                        {
-                                            C0rIPL4 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
-                                                C0rAPL4 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
-                                                C0mPL4 = C0rAPL4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
-                                                if (C0mPL4 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-
-                                            }
+                                            C0rI2 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
+                                            C0rA2 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
+                                            C0m2 = C0rA2;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
+                                            if (C0m2 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m2;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
                                         }
                                     }
-                                }
-                            }
-                        }
-                        else if (((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type) * 100f) + 0.0001f) >= 24)
-                        {
-                            float maths = MoreSkills_Config.CraftingNormalLevel25.Value;
-                            foreach (Recipe recipe in MoreSkills_Instances._objectDB.m_recipes)
-                            {
-                                if (recipe == null || recipe.m_item == null)
-                                    continue;
-
-                                if (recipe.m_item == MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item)
-                                {
-
-                                    //Debug.LogError("Receta " + counter);
-                                    C0oI = MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item;
-                                    //Debug.LogWarning("Objeto: " + C0oI);
-
-                                    foreach (Piece.Requirement req in recipe.m_resources)
+                                    else if (C0rI3 == null)
                                     {
-                                        if (req == null)
-                                            continue;
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI3 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
+                                            C0rA3 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
+                                            C0m3 = C0rA3;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
+                                            if (C0m3 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m3;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
+                                        }
+                                    }
+                                    else if (C0rI4 == null)
+                                    {
+                                        if (req.m_amount >= 1)
+                                        {
+                                            C0rI4 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
+                                            C0rA4 = req.m_amount;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
+                                            C0m4 = C0rA4;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
+                                            if (C0m4 < 1)
+                                                req.m_amount = 1;
+                                            else
+                                                req.m_amount = (int)C0m4;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
+                                        }
+                                    }
 
-                                        if (MoreSkills_Instances._inventoryGui.m_selectedRecipe.Key.m_item.m_itemData.m_shared.m_name == "$item_bronze")
+                                    if (C0rIPL1 == null)
+                                    {
+                                        if (req.m_amountPerLevel >= 1)
                                         {
-                                            break;
+                                            C0rIPL1 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
+                                            C0rAPL1 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
+                                            C0mPL1 = C0rAPL1;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
+                                            if (C0mPL1 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL1;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
+                                    }
+                                    else if (C0rIPL2 == null)
+                                    {
 
-                                        if (C0rI1 == null)
+                                        if (req.m_amountPerLevel >= 1)
                                         {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rI1);
-                                                C0rA1 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 1: " + C0rA1);
-                                                C0m1 = C0rA1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 1: " + C0m1);
-                                                if (C0m1 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 1: " + req.m_amount);
-                                            }
+                                            C0rIPL2 = req.m_resItem;
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
+                                            C0rAPL2 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
+                                            C0mPL2 = C0rAPL2;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
+                                            if (C0mPL2 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL2;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
-                                        else if (C0rI2 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 2: " + C0rI2);
-                                                C0rA2 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rA2);
-                                                C0m2 = C0rA2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 2: " + C0m2);
-                                                if (C0m2 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 2: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI3 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 3: " + C0rI3);
-                                                C0rA3 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 3: " + C0rA3);
-                                                C0m3 = C0rA3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 3: " + C0m3);
-                                                if (C0m3 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 3: " + req.m_amount);
-                                            }
-                                        }
-                                        else if (C0rI4 == null)
-                                        {
-                                            if (req.m_amount >= 1)
-                                            {
-                                                C0rI4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 4: " + C0rI4);
-                                                C0rA4 = req.m_amount;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 4: " + C0rA4);
-                                                C0m4 = C0rA4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0m4);
-                                                if (C0m4 < 1)
-                                                    req.m_amount = 1;
-                                                else
-                                                    req.m_amount = (int)C0m4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amount);
-                                            }
-                                        }
-
-                                        if (C0rIPL1 == null)
-                                        {
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL1 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL1);
-                                                C0rAPL1 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL1);
-                                                C0mPL1 = C0rAPL1 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL1);
-                                                if (C0mPL1 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL1;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL2 == null)
-                                        {
-
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL2 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL2);
-                                                C0rAPL2 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL2);
-                                                C0mPL2 = C0rAPL2 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL2);
-                                                if (C0mPL2 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL2;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
-                                        }
-                                        else if (C0rIPL3 == null)
+                                    }
+                                    else if (C0rIPL3 == null)
+                                    {
+                                        C0rIPL3 = req.m_resItem;
+                                        if (req.m_amountPerLevel >= 1)
                                         {
                                             C0rIPL3 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL3 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
-                                                C0rAPL3 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
-                                                C0mPL3 = C0rAPL3 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
-                                                if (C0mPL3 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL3;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
-                                            }
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL3);
+                                            C0rAPL3 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL3);
+                                            C0mPL3 = C0rAPL3;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL3);
+                                            if (C0mPL3 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL3;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
                                         }
-                                        else if (C0rIPL4 == null)
+                                    }
+                                    else if (C0rIPL4 == null)
+                                    {
+                                        C0rIPL4 = req.m_resItem;
+                                        if (req.m_amountPerLevel >= 1)
                                         {
                                             C0rIPL4 = req.m_resItem;
-                                            if (req.m_amountPerLevel >= 1)
-                                            {
-                                                C0rIPL4 = req.m_resItem;
-                                                //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
-                                                C0rAPL4 = req.m_amountPerLevel;
-                                                //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
-                                                C0mPL4 = C0rAPL4 / maths;
-                                                //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
-                                                if (C0mPL4 < 1)
-                                                    req.m_amountPerLevel = 1;
-                                                else
-                                                    req.m_amountPerLevel = (int)C0mPL4;
-                                                //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
+                                            //Debug.LogWarning("Guardado Recurso Crafteo 1: " + C0rIPL4);
+                                            C0rAPL4 = req.m_amountPerLevel;
+                                            //Debug.LogWarning("Guardado cantidad del Recurso Crafteo 2: " + C0rAPL4);
+                                            C0mPL4 = C0rAPL4;
+                                            //Debug.LogWarning("Calculos cantidad del Recurso Crafteo 4: " + C0mPL4);
+                                            if (C0mPL4 < 1)
+                                                req.m_amountPerLevel = 1;
+                                            else
+                                                req.m_amountPerLevel = (int)C0mPL4;
+                                            //Debug.LogWarning("Asignado cantidad del Recurso Crafteo 4: " + req.m_amountPerLevel);
 
-                                            }
                                         }
                                     }
                                 }
@@ -5943,7 +3424,7 @@ namespace MoreSkills.ModSkills
                     }
                 }
 
-                MoreSkills_Instances._player.RaiseSkill((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type, ((CraftSkillInc * MoreSkills_Config.CraftingSkillIncreaseMultiplier.Value)) / 100);
+                MoreSkills_Instances._player.RaiseSkill((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type, ((CraftSkillInc * MoreSkills_Config.CraftingSkillIncreaseMultiplier.Value)) / 10);
                 //Debug.LogError("EXP: " + CraftSkillInc);
                 CraftSkillInc = 0;
             }

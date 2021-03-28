@@ -24,6 +24,11 @@ namespace MoreSkills.ModSkills
                         }
                         else
                             MoreSkills_Instances._player.m_crouchSpeed = 2f;
+
+                        if (MoreSkills_Instances._player.IsEncumbered())
+                        {
+                            MoreSkills_Instances._player.SetCrouch(false);
+                        }
                     }
             }
         }

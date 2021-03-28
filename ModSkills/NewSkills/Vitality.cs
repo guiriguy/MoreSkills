@@ -17,7 +17,7 @@ namespace MoreSkills.ModSkills
                 {
                     if (MoreSkills_Instances._player != null)
                     {
-                        float health_skill = (float)Math.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.VitalitySkill_Type) * 100f) + 0.000001f);
+                        float health_skill = Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.VitalitySkill_Type) * 100f) + 0.000001f);
                         float health_skillinc = ((MoreSkills_Config.BaseMaxHealth.Value - MoreSkills_Config.BaseHealth.Value) / 100) * health_skill;
                         health += (MoreSkills_Config.BaseHealth.Value + health_skillinc) - 25f;
                     }
@@ -34,14 +34,14 @@ namespace MoreSkills.ModSkills
                 {
                     if (MoreSkills_Instances._player != null)
                     {
-                        if (IncVitality >= 0.10f)
+                        if (IncVitality < 0.10f)
                         {
-                            MoreSkills_Instances._player.RaiseSkill((Skills.SkillType)MoreSkills_Config.VitalitySkill_Type, IncVitality);
-                            IncVitality = 0f;
+                            IncVitality += ((hit.GetTotalDamage() / 10) * MoreSkills_Config.VitalitySkillIncreaseMultiplier.Value);
                         }
                         else
                         {
-                            IncVitality += ((hit.GetTotalDamage() / 10) * MoreSkills_Config.VitalitySkillIncreaseMultiplier.Value);
+                            MoreSkills_Instances._player.RaiseSkill((Skills.SkillType)MoreSkills_Config.VitalitySkill_Type, IncVitality);
+                            IncVitality = 0f;
                         }
                     }
                 }

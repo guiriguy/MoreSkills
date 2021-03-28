@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 using HarmonyLib;
 using MoreSkills.Config;
 using MoreSkills.Utility;
@@ -12,7 +13,7 @@ namespace MoreSkills.ModSkills
         {
             public static void Postfix(MineRock5 __instance, HitData hit)
             {
-                if (MoreSkills_Config.EnablePickaxeDropMod.Value && ((MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Pickaxes) * 100f) + 0.0001f) >= 10)
+                if (MoreSkills_Config.EnablePickaxeDropMod.Value)
                 {
                     if (MoreSkills_Instances._player != null && hit.m_attacker == MoreSkills_Instances._player.GetZDOID())
                     {
@@ -30,41 +31,41 @@ namespace MoreSkills.ModSkills
                             });
                         }*/
 
+                        float level = MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Pickaxes);
+
                         if (__instance.m_name == "Rock")
                         {
-                            if (((MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Pickaxes) * 100f) + 0.0001f) < 50)
+                            if ((level * 100f) > 50)
                             {
-                                int skill = (int)((MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Pickaxes) * 10) * MoreSkills_Config.PickaxeMultiplier.Value) * 2;
-                                int skill_inc = MoreSkills_Config.BaseMaxRock.Value * skill;
-                                __instance.m_dropItems.m_dropMax = MoreSkills_Config.BaseMaxRock.Value + skill_inc;
+                                float maxskill_inc = Mathf.Round(MoreSkills_Config.BaseMaxRock.Value * MoreSkills_Config.PickaxeMultiplier.Value);
+                                __instance.m_dropItems.m_dropMax = (int)(MoreSkills_Config.BaseMaxRock.Value + maxskill_inc);
+                                float skill = level * MoreSkills_Config.PickaxeMultiplier.Value;
+                                float skill_inc = Mathf.Round(MoreSkills_Config.BaseMinRock.Value * skill);
+                                __instance.m_dropItems.m_dropMin = (int)(MoreSkills_Config.BaseMinRock.Value + skill_inc);
                             }
                             else
                             {
-                                int maxskill = 10 * MoreSkills_Config.PickaxeMultiplier.Value;
-                                int maxskill_inc = MoreSkills_Config.BaseMaxRock.Value * maxskill;
-                                __instance.m_dropItems.m_dropMax = MoreSkills_Config.BaseMaxRock.Value + maxskill_inc;
-                                int skill = (int)((MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Pickaxes) * 10) * MoreSkills_Config.PickaxeMultiplier.Value);
-                                int skill_inc = MoreSkills_Config.BaseMinRock.Value * skill;
-                                __instance.m_dropItems.m_dropMin = MoreSkills_Config.BaseMinRock.Value + skill_inc;
+                                float maxskill = (level * 2) * MoreSkills_Config.PickaxeMultiplier.Value;
+                                float maxskill_inc = Mathf.Round(MoreSkills_Config.BaseMaxRock.Value * maxskill);
+                                __instance.m_dropItems.m_dropMax = (int)(MoreSkills_Config.BaseMaxRock.Value + maxskill_inc);
                             }
                         }
 
                         if (__instance.m_name == "$piece_deposit_copper")
                         {
-                            if (((MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Pickaxes) * 100f) + 0.0001f) < 50)
+                            if ((level * 100f) > 50)
                             {
-                                int skill = (int)((MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Pickaxes) * 10) * MoreSkills_Config.PickaxeMultiplier.Value) * 2;
-                                int skill_inc = MoreSkills_Config.BaseMaxCopperVein.Value * skill;
-                                __instance.m_dropItems.m_dropMax = MoreSkills_Config.BaseMaxCopperVein.Value + skill_inc;
+                                float maxskill_inc = Mathf.Round(MoreSkills_Config.BaseMaxCopperVein.Value * MoreSkills_Config.PickaxeMultiplier.Value);
+                                __instance.m_dropItems.m_dropMax = (int)(MoreSkills_Config.BaseMaxCopperVein.Value + maxskill_inc);
+                                float skill = level * MoreSkills_Config.PickaxeMultiplier.Value;
+                                float skill_inc = Mathf.Round(MoreSkills_Config.BaseMinCopperVein.Value * skill);
+                                __instance.m_dropItems.m_dropMin = (int)(MoreSkills_Config.BaseMinCopperVein.Value + skill_inc);
                             }
                             else
                             {
-                                int maxskill = 10 * MoreSkills_Config.PickaxeMultiplier.Value;
-                                int maxskill_inc = MoreSkills_Config.BaseMaxCopperVein.Value * maxskill;
-                                __instance.m_dropItems.m_dropMax = MoreSkills_Config.BaseMaxCopperVein.Value + maxskill_inc;
-                                int skill = (int)((MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Pickaxes) * 10) * MoreSkills_Config.PickaxeMultiplier.Value);
-                                int skill_inc = MoreSkills_Config.BaseMinCopperVein.Value * skill;
-                                __instance.m_dropItems.m_dropMin = MoreSkills_Config.BaseMinCopperVein.Value + skill_inc;
+                                float maxskill = (level * 2) * MoreSkills_Config.PickaxeMultiplier.Value;
+                                float maxskill_inc = Mathf.Round(MoreSkills_Config.BaseMaxCopperVein.Value * maxskill);
+                                __instance.m_dropItems.m_dropMax = (int)(MoreSkills_Config.BaseMaxCopperVein.Value + maxskill_inc);
                             }
                         }
 
@@ -74,59 +75,55 @@ namespace MoreSkills.ModSkills
                             {
                                 __instance.m_dropItems.m_dropChance = MoreSkills_Config.BaseChanceMudPile.Value + (MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Pickaxes));
                             }
-
-                            if (((MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Pickaxes) * 100f) + 0.0001f) < 50)
+                            if ((level * 100f) > 50)
                             {
-                                int skill = (int)((MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Pickaxes) * 10) * MoreSkills_Config.PickaxeMultiplier.Value) * 2;
-                                int skill_inc = MoreSkills_Config.BaseMaxMudPile.Value * skill;
-                                __instance.m_dropItems.m_dropMax = MoreSkills_Config.BaseMaxMudPile.Value + skill_inc;
+                                float maxskill_inc = Mathf.Round(MoreSkills_Config.BaseMaxMudPile.Value * MoreSkills_Config.PickaxeMultiplier.Value);
+                                __instance.m_dropItems.m_dropMax = (int)(MoreSkills_Config.BaseMaxMudPile.Value + maxskill_inc);
+                                float skill = level * MoreSkills_Config.PickaxeMultiplier.Value;
+                                float skill_inc = Mathf.Round(MoreSkills_Config.BaseMinMudPile.Value * skill);
+                                __instance.m_dropItems.m_dropMin = (int)(MoreSkills_Config.BaseMinMudPile.Value + skill_inc);
                             }
                             else
                             {
-                                int maxskill = 10 * MoreSkills_Config.PickaxeMultiplier.Value;
-                                int maxskill_inc = MoreSkills_Config.BaseMaxMudPile.Value * maxskill;
-                                __instance.m_dropItems.m_dropMax = MoreSkills_Config.BaseMaxMudPile.Value + maxskill_inc;
-                                int skill = (int)((MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Pickaxes) * 10) * MoreSkills_Config.PickaxeMultiplier.Value);
-                                int skill_inc = MoreSkills_Config.BaseMinMudPile.Value * skill;
-                                __instance.m_dropItems.m_dropMin = MoreSkills_Config.BaseMinMudPile.Value + skill_inc;
+                                float maxskill = (level * 2) * MoreSkills_Config.PickaxeMultiplier.Value;
+                                float maxskill_inc = Mathf.Round(MoreSkills_Config.BaseMaxMudPile.Value * maxskill);
+                                __instance.m_dropItems.m_dropMax = (int)(MoreSkills_Config.BaseMaxMudPile.Value + maxskill_inc);
                             }
                         }
 
                         if (__instance.m_name == "Silver vein")
                         {
-                            if (((MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Pickaxes) * 100f) + 0.0001f) < 50)
+                            if ((level * 100f) > 50)
                             {
-                                int skill = (int)((MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Pickaxes) * 10) * MoreSkills_Config.PickaxeMultiplier.Value) * 2;
-                                int skill_inc = MoreSkills_Config.BaseMaxSilverVein.Value * skill;
-                                __instance.m_dropItems.m_dropMax = MoreSkills_Config.BaseMaxSilverVein.Value + skill_inc;
+                                float maxskill_inc = Mathf.Round(MoreSkills_Config.BaseMaxSilverVein.Value * MoreSkills_Config.PickaxeMultiplier.Value);
+                                __instance.m_dropItems.m_dropMax = (int)(MoreSkills_Config.BaseMaxSilverVein.Value + maxskill_inc);
+                                float skill = level * MoreSkills_Config.PickaxeMultiplier.Value;
+                                float skill_inc = Mathf.Round(MoreSkills_Config.BaseMinSilverVein.Value * skill);
+                                __instance.m_dropItems.m_dropMin = (int)(MoreSkills_Config.BaseMinSilverVein.Value + skill_inc);
                             }
                             else
                             {
-                                int maxskill = 10 * MoreSkills_Config.PickaxeMultiplier.Value;
-                                int maxskill_inc = MoreSkills_Config.BaseMaxSilverVein.Value * maxskill;
-                                __instance.m_dropItems.m_dropMax = MoreSkills_Config.BaseMaxSilverVein.Value + maxskill_inc;
-                                int skill = (int)((MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Pickaxes) * 10) * MoreSkills_Config.PickaxeMultiplier.Value);
-                                int skill_inc = MoreSkills_Config.BaseMinSilverVein.Value * skill;
-                                __instance.m_dropItems.m_dropMin = MoreSkills_Config.BaseMinSilverVein.Value + skill_inc;
+                                float maxskill = (level * 2) * MoreSkills_Config.PickaxeMultiplier.Value;
+                                float maxskill_inc = Mathf.Round(MoreSkills_Config.BaseMaxSilverVein.Value * maxskill);
+                                __instance.m_dropItems.m_dropMax = (int)(MoreSkills_Config.BaseMaxSilverVein.Value + maxskill_inc);
                             }
                         }
 
                         if (__instance.m_name == null && __instance.m_hitAreas.Count > 10)
                         {
-                            if (((MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Pickaxes) * 100f) + 0.0001f) < 50)
+                            if ((level * 100f) > 50)
                             {
-                                int skill = (int)((MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Pickaxes) * 10) * MoreSkills_Config.PickaxeMultiplier.Value) * 2;
-                                int skill_inc = MoreSkills_Config.BaseMaxBigRock.Value * skill;
-                                __instance.m_dropItems.m_dropMax = MoreSkills_Config.BaseMaxBigRock.Value + skill_inc;
+                                float maxskill_inc = Mathf.Round(MoreSkills_Config.BaseMaxBigRock.Value * MoreSkills_Config.PickaxeMultiplier.Value);
+                                __instance.m_dropItems.m_dropMax = (int)(MoreSkills_Config.BaseMaxBigRock.Value + maxskill_inc);
+                                float skill = level * MoreSkills_Config.PickaxeMultiplier.Value;
+                                float skill_inc = Mathf.Round(MoreSkills_Config.BaseMinBigRock.Value * skill);
+                                __instance.m_dropItems.m_dropMin = (int)(MoreSkills_Config.BaseMinBigRock.Value + skill_inc);
                             }
                             else
                             {
-                                int maxskill = 10 * MoreSkills_Config.PickaxeMultiplier.Value;
-                                int maxskill_inc = MoreSkills_Config.BaseMaxBigRock.Value * maxskill;
-                                __instance.m_dropItems.m_dropMax = MoreSkills_Config.BaseMaxBigRock.Value + maxskill_inc;
-                                int skill = (int)((MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Pickaxes) * 10) * MoreSkills_Config.PickaxeMultiplier.Value);
-                                int skill_inc = MoreSkills_Config.BaseMinBigRock.Value * skill;
-                                __instance.m_dropItems.m_dropMin = MoreSkills_Config.BaseMinBigRock.Value + skill_inc;
+                                float maxskill = (level * 2) * MoreSkills_Config.PickaxeMultiplier.Value;
+                                float maxskill_inc = Mathf.Round(MoreSkills_Config.BaseMaxBigRock.Value * maxskill);
+                                __instance.m_dropItems.m_dropMax = (int)(MoreSkills_Config.BaseMaxBigRock.Value + maxskill_inc);
                             }
                         }
 
