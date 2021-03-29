@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace MoreSkills.Config
 {
-    [BepInPlugin("com.GuiriGuy.MoreSkills", "MoreSkills", "0.1.5")]
+    [BepInPlugin("com.GuiriGuy.MoreSkills", "MoreSkills", "0.1.6")]
     [BepInDependency("com.pipakin.SkillInjectorMod")]
     public class MoreSkills_Config : BaseUnityPlugin
     {
@@ -45,7 +45,6 @@ namespace MoreSkills.Config
                     MoreSkills_Config.EnableSwimStaminaMod = base.Config.Bind<bool>("1. Enablers: Swim", "Enable Swim Stamina Mod", true, "Enables or disables the Swim Stamina Modification");
                 //Pickaxe.Mod
                 MoreSkills_Config.EnablePickaxeDropMod = base.Config.Bind<bool>("1. Enablers: Pickaxe", "Enable Pickaxe Drop Mod", true, "Enables or disables the Pickaxe Drops Modification");
-                MoreSkills_Config.EnablePickaxeChanceMod = base.Config.Bind<bool>("1. Enablers: Pickaxe", "Enable Pickaxe MudPile Chance Mod", true, "DROP MOD NEEDS TO BE TRUE. Enables or disables the Pickaxe Chances Modification");
                 //Hunting
                 MoreSkills_Config.EnableHuntingSkill = base.Config.Bind<bool>("1. Enablers: Hunting", "Enable Hunting Skill", true, "Enables or disables the Hunting Skill Modification");
                     //Normal Mobs
@@ -60,11 +59,13 @@ namespace MoreSkills.Config
                     MoreSkills_Config.EnableHuntingTrophyMod = base.Config.Bind<bool>("1. Enablers: Hunting", "Enable Hunting Trophy Mod", false, "Enables or disables the Hunting Skill Modification to affect Trophies. RECOMMENDED FOR EPIC LOOTS");
                     //Blob Affect
                     MoreSkills_Config.EnableHuntingBlobSpawn = base.Config.Bind<bool>("1. Enablers: Hunting", "Enable Hunting Blob Spawn Mod", false, "Enables or disables the Hunting Skill Modification to affect Blobs to count as ItemDrops from the Blob Elite");
+                //WoodCutting.Mod
+                MoreSkills_Config.EnableWoodCuttingDropMod = base.Config.Bind<bool>("1. Enablers: WoodCutting", "Enable WoodCutting Drop Mod", true, "Enables or disables the WoodCutting Drops Modification");
 
             //2. Multipliers
-                //Strength
-                    //Skill
-                    MoreSkills_Config.StrengthSkillIncreaseMultiplier = base.Config.Bind<float>("2. Multipliers: Strength", "Strength Skill Increase Multiplier", 1.0f, "Change the skill increase Multiplier, based on the Weight you are carrying 1/400000 when Encumbred, 1/800000 when HalfWeight and Running and 1/1200000 when Halfweight and Moving.");
+            //Strength
+            //Skill
+            MoreSkills_Config.StrengthSkillIncreaseMultiplier = base.Config.Bind<float>("2. Multipliers: Strength", "Strength Skill Increase Multiplier", 1.0f, "Change the skill increase Multiplier, based on the Weight you are carrying 1/400000 when Encumbred, 1/800000 when HalfWeight and Running and 1/1200000 when Halfweight and Moving.");
                     //Stamina 
                     MoreSkills_Config.StrengthStaminaMultiplier = base.Config.Bind<float>("2. Multipliers: Strength", "Strength Stamina Multiplier", 1.0f, "Change the stamina increase Multiplier, that you recieve when not moving Encumbred"); 
                 //Vitality
@@ -76,18 +77,21 @@ namespace MoreSkills.Config
                     MoreSkills_Config.SwimStaminaMultiplier = base.Config.Bind<float>("2. Multipliers: Swim", "Multiply the Swim Stamina Increase", 1.0f, "Multiply the amount of stamina you gain staying still in the water.");
                 //Crafting
                     //Skill
-                    MoreSkills_Config.CraftingSkillIncreaseMultiplier = base.Config.Bind<float>("2. Multipliers: Crafting", "Multiply the Crafting Skill Increase", 5, "Multiplies the Crafting Skill Increase that takes into count all the amount of resources used to craft the object");
+                    MoreSkills_Config.CraftingSkillIncreaseMultiplier = base.Config.Bind<float>("2. Multipliers: Crafting", "Multiply the Crafting Skill Increase", 1.0f, "Multiplies the Crafting Skill Increase that takes into count all the amount of resources used to craft the object");
                     //ResourceChanges
                     MoreSkills_Config.CraftingLevelMultiplier = base.Config.Bind<float>("2. Multipliers: Crafting", "Change the Starting Multiplier in Crafting Mod", 2f, "(If Middle Level is 0, this number will not be counted). This is the Level 0 Multiplier at which objects cost will be multiplied at the begging of the game until reached the level you marked at config to go back to vanilla.");
                     MoreSkills_Config.CraftingMiddleLevel = base.Config.Bind<int>("2. Multipliers: Crafting", "Set the Middle Level of the High Levels Crafting Mod", 50, "This is the level where it will stop Multipling and will start Dividing the cost of objects. Can be set to 100 and never have a divider. Or 0 if you dont want any Multipliers at the start of a game.");
                     MoreSkills_Config.CraftingLevelDivider = base.Config.Bind<float>("2. Multipliers: Crafting", "Change the Ending Multiplier in the Crafting Mod", 2f, "(If Middle Level is 100, this number will not be counted). This is the Level 100 Divider at which objects cost will be divided at the end of the game once you reached the level you marked at config.");
                 //Pickaxe
-                MoreSkills_Config.PickaxeMultiplier = base.Config.Bind<float>("2. Multipliers: Pickaxe", "Multiplier based on level Pickaxe", 1.0f, "The based on level multipliers, so at level 100 you reach such number. At level 100 you got default x2 times the amount of min and max than vanilla. This multiplier changes that number.");
+                MoreSkills_Config.PickaxeMultiplier = base.Config.Bind<float>("2. Multipliers: Pickaxe", "Multiplier based on level Pickaxe", 3.0f, "The based on level multipliers, so at level 100 you reach such number. At level 100 you got default x3 times the amount of drops than vanilla. This multiplier changes that number.");
                 //Hunting
                     //Skill
-                    MoreSkills_Config.HuntingSkillMultiplier = base.Config.Bind<float>("2. Multipliers: Hunting", "Multiplies the Hunting Skill Increase", 1.0f, "The Skill Increase is based in the Damaged you made 1/10, so if you recieve 100 damage you increase the skill by 1. This allows you to multiply this number.");
+                    MoreSkills_Config.HuntingSkillMultiplier = base.Config.Bind<float>("2. Multipliers: Hunting", "Multiplies the Hunting Skill Increase", 1.0f, "The Skill Increase is based on the max Health of the Mob 1/10, so if the mob is killed and had a max health of 500 you get 50 (If you level up, it will only level you up and loose the rest of exp, to yet be fixed). This allows you to multiply this number.");
                     //Drops
-                    MoreSkills_Config.HuntingDropMultiplier = base.Config.Bind<float>("2. Multipliers: Hunting", "Multiplies the Hunting Drops", 3.0f, "The based on level multipliers, so at level 100 you reach such number. At level 100 you recieve x2 at default to the amount of Drops from a Mob/Boss. This multiplier changes that number");
+                    MoreSkills_Config.HuntingDropMultiplier = base.Config.Bind<float>("2. Multipliers: Hunting", "Multiplies the Hunting Drops", 3.0f, "The based on level multipliers, so at level 100 you reach such number. At level 100 you recieve x3 at default to the amount of Drops from a Mob/Boss. This multiplier changes that number");
+                //WoodCutting
+                    //Drops
+                    MoreSkills_Config.WoodCuttingMultiplier = base.Config.Bind<float>("2. Multipliers: WoodCutting", "Multiplier based on level Woodcutting", 3.0f, "The based on level multipliers, so at level 100 you reach such number. At level 100 you got default x3 times the amount of drops than vanilla. This multiplier changes that number.");
 
             //3. Base Configs
             //Strength
@@ -114,27 +118,69 @@ namespace MoreSkills.Config
                     MoreSkills_Config.BaseSwimSpeed = base.Config.Bind<float>("3. BaseConfigs: Swim", "Base Swim Speed", 2f, "Change the base Swim Speed (Valheim Defailt is 2)");
                     MoreSkills_Config.BaseMaxSwimSpeed = base.Config.Bind<float>("3. BaseConfigs: Swim", "Base Max Swim Speed", 4f, "Change the base Max Swim Speed at level 100. (Valheim Default is 2)");
 
-                //4. All Rocks Configs
-                //Pickaxe Mod
-                    //Rock
-                    MoreSkills_Config.BaseMinRock = base.Config.Bind<int>("4. AllRocksConfig: zRocks", "Min Drop of Rocks", 3);
-                    MoreSkills_Config.BaseMaxRock = base.Config.Bind<int>("4. AllRocksConfig: zRocks", "Max Drop of Rocks", 6);
-                    //Big Rock
-                    MoreSkills_Config.BaseMinBigRock = base.Config.Bind<int>("4. AllRocksConfig: zBigRocks", "Min Drop of Big Rocks", 4);
-                    MoreSkills_Config.BaseMaxBigRock = base.Config.Bind<int>("4. AllRocksConfig: zBigRocks", "Max Drop of Big Rocks", 8);
-                    //Copper Vein
-                    MoreSkills_Config.BaseMinCopperVein = base.Config.Bind<int>("4. AllRocksConfig: zCopperVein", "Min Drop of Copper Veins", 2);
-                    MoreSkills_Config.BaseMaxCopperVein = base.Config.Bind<int>("4. AllRocksConfig: zCopperVein", "Max Drop of Copper Veins", 4);
-                    //Mudpile (Iron)
-                    MoreSkills_Config.BaseMinMudPile = base.Config.Bind<int>("4. AllRocksConfig: zMudPile", "Min Drop of Mud Piles (Iron)", 1);
-                    MoreSkills_Config.BaseMaxMudPile = base.Config.Bind<int>("4. AllRocksConfig: zMudPile", "Max Drop of Mud Piles (Iron)", 1);
-                    MoreSkills_Config.BaseChanceMudPile = base.Config.Bind<float>("4. AllRocksConfig: zMudPile", "Chance of Mud Piles (Iron)", 0.3f);
-                    //Silver Vein
-                    MoreSkills_Config.BaseMinSilverVein = base.Config.Bind<int>("4. AllRocksConfig: zSilverVein", "Min Drop of Silver Vein", 2);
-                    MoreSkills_Config.BaseMaxSilverVein = base.Config.Bind<int>("4. AllRocksConfig: zSilverVein", "Max Drop of Silver Vein", 3);
+            //4. All Drops Configs
+            //Minerals
+            //Stone
+            MoreSkills_Config.BaseStoneChance = base.Config.Bind<float>("4. BaseConfigs: Minerals", "Stone Base Chance", 1f);
+            //CopperOre
+            MoreSkills_Config.BaseCopperOreChance = base.Config.Bind<float>("4. BaseConfigs: Minerals", "Copper Ore Base Chance", 1f);
+            //IronScrapOre
+            MoreSkills_Config.BaseIronScrapChance = base.Config.Bind<float>("4. BaseConfigs: Minerals", "Iron Scrap Base Chance", 0.2f);
+            //TinOre
+            MoreSkills_Config.BaseTinOreChance = base.Config.Bind<float>("4. BaseConfigs: Minerals", "Tin Ore Base Chance", 1f);
+            //SilverOre
+            MoreSkills_Config.BaseSilverOreChance = base.Config.Bind<float>("4. BaseConfigs: Minerals", "Silver Ore Base Chance", 1f);
+            //Obsidian
+            MoreSkills_Config.BaseObsidianChance = base.Config.Bind<float>("4. BaseConfigs: Minerals", "Obsidian Base Chance", 1f);
+            //Chitin
+            MoreSkills_Config.BaseChitinChance = base.Config.Bind<float>("4. BaseConfigs: Minerals", "Chitin Base Chance", 1f);
+            //Woods
+            //Wood
+            MoreSkills_Config.BaseWoodChance = base.Config.Bind<float>("4. BaseConfigs: Woods", "Wood Base Chance", 1f);
+            //FineWood
+            MoreSkills_Config.BaseFineWoodChance = base.Config.Bind<float>("4. BaseConfigs: Woods", "Fine Wood Base Chance", 1f);
+            //RoundLog
+            MoreSkills_Config.BaseRoundLogChance = base.Config.Bind<float>("4. BaseConfigs: Woods", "Round Log Base Chance", 1f);
+            //BeechSeeds
+            MoreSkills_Config.BaseBeechSeedChance = base.Config.Bind<float>("4. BaseConfigs: Woods", "Beech Seed Base Chance", 0.5f);
+            //FirCone
+            MoreSkills_Config.BaseFirConeChance = base.Config.Bind<float>("4. BaseConfigs: Woods", "Fir Cone Base Chance", 0.5f);
+            //PineCone
+            MoreSkills_Config.BasePineConeChance = base.Config.Bind<float>("4. BaseConfigs: Woods", "Pine Cone Base Chance", 0.5f);
+            //ElderBark
+            MoreSkills_Config.BaseElderBarkChance = base.Config.Bind<float>("4. BaseConfigs: Woods", "Elder Bark Base Chance", 1f);
+            //Resin
+            MoreSkills_Config.BaseResinChance = base.Config.Bind<float>("4. BaseConfigs: Woods", "Resin Base Chance", 0.5f);
+            //Others
+            //Feathers
+            MoreSkills_Config.BaseFeathersChance = base.Config.Bind<float>("4. BaseConfigs: Others", "Feathers Base Chance", 1f);
+            //Guck
+            MoreSkills_Config.BaseGuckChance = base.Config.Bind<float>("4. BaseConfigs: Others", "Guck Base Chance", 1f);
+            //LeatherScraps
+            MoreSkills_Config.BaseLeatherScrapsChance = base.Config.Bind<float>("4. BaseConfigs: Others", "Leather Scraps Base Chance", 0.2f);
+            //WitheredBone
+            MoreSkills_Config.BaseWitheredBoneChance = base.Config.Bind<float>("4. BaseConfigs: Others", "Withered Bone Base Chance", 0.2f);
 
 
-            
+            /*//Rock             OLD
+            MoreSkills_Config.BaseMinRock = base.Config.Bind<int>("4. AllRocksConfig: zRocks", "Min Drop of Rocks", 3);
+            MoreSkills_Config.BaseMaxRock = base.Config.Bind<int>("4. AllRocksConfig: zRocks", "Max Drop of Rocks", 6);
+            //Big Rock
+            MoreSkills_Config.BaseMinBigRock = base.Config.Bind<int>("4. AllRocksConfig: zBigRocks", "Min Drop of Big Rocks", 4);
+            MoreSkills_Config.BaseMaxBigRock = base.Config.Bind<int>("4. AllRocksConfig: zBigRocks", "Max Drop of Big Rocks", 8);
+            //Copper Vein
+            MoreSkills_Config.BaseMinCopperVein = base.Config.Bind<int>("4. AllRocksConfig: zCopperVein", "Min Drop of Copper Veins", 2);
+            MoreSkills_Config.BaseMaxCopperVein = base.Config.Bind<int>("4. AllRocksConfig: zCopperVein", "Max Drop of Copper Veins", 4);
+            //Mudpile (Iron)
+            MoreSkills_Config.BaseMinMudPile = base.Config.Bind<int>("4. AllRocksConfig: zMudPile", "Min Drop of Mud Piles (Iron)", 1);
+            MoreSkills_Config.BaseMaxMudPile = base.Config.Bind<int>("4. AllRocksConfig: zMudPile", "Max Drop of Mud Piles (Iron)", 1);
+            MoreSkills_Config.BaseChanceMudPile = base.Config.Bind<float>("4. AllRocksConfig: zMudPile", "Chance of Mud Piles (Iron)", 0.3f);
+            //Silver Vein
+            MoreSkills_Config.BaseMinSilverVein = base.Config.Bind<int>("4. AllRocksConfig: zSilverVein", "Min Drop of Silver Vein", 2);
+            MoreSkills_Config.BaseMaxSilverVein = base.Config.Bind<int>("4. AllRocksConfig: zSilverVein", "Max Drop of Silver Vein", 3);*/
+
+
+
             //5. All Mobs Configs
             //Hunting Skill
             //Blob
@@ -674,10 +720,6 @@ namespace MoreSkills.Config
                 Debug.LogWarning("[MoreSkills]: Pickaxe Drop Mod Disabled");
             else
                 Debug.LogWarning("[MoreSkills]: Pickaxe Drop Mod Enabled");
-            if (!MoreSkills_Config.EnablePickaxeChanceMod.Value)
-                Debug.LogWarning("[MoreSkills]: Pickaxe MudPile Chance Mod Disabled");
-            else
-                Debug.LogWarning("[MoreSkills]: Pickaxe MudPile Chance Mod Enabled");
             if (!MoreSkills_Config.EnableHuntingSkill.Value)
                 Debug.LogWarning("[MoreSkills]: Hunting Skill Mod Disabled");
             else
@@ -708,8 +750,12 @@ namespace MoreSkills.Config
                 else
                     Debug.LogWarning("[MoreSkills]: Hunting/Blob Spawn Mod Enabled");
             }
+            if (!MoreSkills_Config.EnableWoodCuttingDropMod.Value)
+                Debug.LogWarning("[MoreSkills]: WoodCutting Drop Mod Disabled");
+            else
+                Debug.LogWarning("[MoreSkills]: WoodCutting Drop Mod Enabled");
         }
-            
+
         // Stats Bases
 
         public static ConfigEntry<float> BaseWeight;
@@ -761,6 +807,8 @@ namespace MoreSkills.Config
         public static ConfigEntry<float> StrengthStaminaMultiplier;
 
         public static ConfigEntry<float> HuntingDropMultiplier;
+
+        public static ConfigEntry<float> WoodCuttingMultiplier;
 
         //Skill Increases Multpliers
 
@@ -818,6 +866,8 @@ namespace MoreSkills.Config
 
         public static ConfigEntry<bool> EnableHuntingBlobSpawn;
 
+        public static ConfigEntry<bool> EnableWoodCuttingDropMod;
+
         //Test
 
         public static Dictionary<string, Texture2D> cachedTextures = new Dictionary<string, Texture2D>();
@@ -834,7 +884,52 @@ namespace MoreSkills.Config
 
         public const int HuntingSkill_Type = 704;
 
-        //Rocks Bases
+        //Drops Bases
+            //Pickaxe Mod
+
+            public static ConfigEntry<float> BaseStoneChance;
+
+            public static ConfigEntry<float> BaseCopperOreChance;
+
+            public static ConfigEntry<float> BaseTinOreChance;
+
+            public static ConfigEntry<float> BaseIronScrapChance;
+
+            public static ConfigEntry<float> BaseWitheredBoneChance;
+
+            public static ConfigEntry<float> BaseSilverOreChance;
+
+            public static ConfigEntry<float> BaseObsidianChance;
+
+            public static ConfigEntry<float> BaseChitinChance;
+
+            //Hunting Skill
+
+            public static ConfigEntry<float> BaseLeatherScrapsChance;
+
+            public static ConfigEntry<float> BaseFeathersChance;
+
+            public static ConfigEntry<float> BaseGuckChance;
+
+            //WoodCutting Mod
+
+            public static ConfigEntry<float> BaseWoodChance;
+
+            public static ConfigEntry<float> BaseFineWoodChance;
+
+            public static ConfigEntry<float> BaseRoundLogChance;
+
+            public static ConfigEntry<float> BaseResinChance;
+
+            public static ConfigEntry<float> BaseBeechSeedChance;
+
+            public static ConfigEntry<float> BasePineConeChance;
+
+            public static ConfigEntry<float> BaseFirConeChance;
+
+            public static ConfigEntry<float> BaseElderBarkChance;
+
+        /*//Rocks Bases          OLD
 
         public static ConfigEntry<int> BaseMinRock;
 
@@ -858,12 +953,12 @@ namespace MoreSkills.Config
 
         //Rocks Chances
 
-        public static ConfigEntry<float> BaseChanceMudPile;
+        public static ConfigEntry<float> BaseChanceMudPile;*/
 
         //Mobs Data Bases
-            //Blob
-                //Ooze
-                public static ConfigEntry<int> BaseMinBlobOoze;
+        //Blob
+        //Ooze
+        public static ConfigEntry<int> BaseMinBlobOoze;
                 public static ConfigEntry<int> BaseMaxBlobOoze;
                 public static ConfigEntry<float> BaseChanceBlobOoze;
                 public static ConfigEntry<bool> BaseLevelMultiplierBlobOoze;

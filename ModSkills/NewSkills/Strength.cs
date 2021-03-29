@@ -42,7 +42,7 @@ namespace MoreSkills.ModSkills
                             if (MoreSkills_Instances._player.IsEncumbered())
                             {
                                 if (IncEncumbred < 0.10f)
-                                    IncEncumbred += ((MoreSkills_Instances._player.GetInventory().GetTotalWeight() / 40000) * MoreSkills_Config.StrengthSkillIncreaseMultiplier.Value);
+                                    IncEncumbred += ((MoreSkills_Instances._player.GetInventory().GetTotalWeight() / 20000) * MoreSkills_Config.StrengthSkillIncreaseMultiplier.Value);
                                 else
                                 {
                                     MoreSkills_Instances._player.RaiseSkill((Skills.SkillType)MoreSkills_Config.StrengthSkill_Type, IncEncumbred);
@@ -54,7 +54,7 @@ namespace MoreSkills.ModSkills
                                 if (MoreSkills_Instances._player.IsRunning())
                                 {
                                     if (IncHalfnRunning < 0.10f)
-                                        IncHalfnRunning += ((MoreSkills_Instances._player.GetInventory().GetTotalWeight() / 80000) * MoreSkills_Config.StrengthSkillIncreaseMultiplier.Value);
+                                        IncHalfnRunning += ((MoreSkills_Instances._player.GetInventory().GetTotalWeight() / 40000) * MoreSkills_Config.StrengthSkillIncreaseMultiplier.Value);
                                     else
                                     {
                                         MoreSkills_Instances._player.RaiseSkill((Skills.SkillType)MoreSkills_Config.StrengthSkill_Type, IncHalfnRunning);
@@ -64,7 +64,7 @@ namespace MoreSkills.ModSkills
                                 else
                                 {
                                     if (IncHalfnMoving < 0.10f)
-                                        IncHalfnMoving += ((MoreSkills_Instances._player.GetInventory().GetTotalWeight() / 120000) * MoreSkills_Config.StrengthSkillIncreaseMultiplier.Value);                                    
+                                        IncHalfnMoving += ((MoreSkills_Instances._player.GetInventory().GetTotalWeight() / 60000) * MoreSkills_Config.StrengthSkillIncreaseMultiplier.Value);                                    
                                     else
                                     {
                                         MoreSkills_Instances._player.RaiseSkill((Skills.SkillType)MoreSkills_Config.StrengthSkill_Type, IncHalfnMoving);

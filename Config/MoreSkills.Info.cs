@@ -8,6 +8,6 @@ namespace MoreSkills.Info
 
 		public const string Guid = "com.guiriguy.moreskills";
 
-		public const string Version = "0.1.5";
+		public const string Version = "0.1.6";
 	}
 }

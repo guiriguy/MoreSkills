@@ -3422,11 +3422,11 @@ namespace MoreSkills.ModSkills
                             }
                         }
                     }
-                }
 
-                MoreSkills_Instances._player.RaiseSkill((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type, ((CraftSkillInc * MoreSkills_Config.CraftingSkillIncreaseMultiplier.Value)) / 10);
-                //Debug.LogError("EXP: " + CraftSkillInc);
-                CraftSkillInc = 0;
+                    MoreSkills_Instances._player.RaiseSkill((Skills.SkillType)MoreSkills_Config.CraftingSkill_Type, ((CraftSkillInc * MoreSkills_Config.CraftingSkillIncreaseMultiplier.Value)) / 10);
+                    //Debug.LogError("EXP: " + CraftSkillInc);
+                    CraftSkillInc = 0;
+                }
             }
         }
 

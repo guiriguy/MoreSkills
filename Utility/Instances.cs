@@ -15,6 +15,8 @@ namespace MoreSkills.Utility
         public static MineRock5 _mineRock5;
         public static Character _CDamage;
         public static ZDOID _CDAttacker;
+        public static Destructible _DDamage;
+        public static ZDOID _DDAttacker;
 
         [HarmonyPatch(typeof(Vagon), "UpdateMass")]
         public static class SI_Vagon
@@ -100,9 +102,26 @@ namespace MoreSkills.Utility
         {
             public static void Postfix (ref Character __instance, HitData hit)
             {
-                _CDamage = __instance;
+                if (MoreSkills_Instances._player != null)
+                {
+                    _CDamage = __instance;
 
-                _CDAttacker = hit.m_attacker;
+                    _CDAttacker = hit.m_attacker;
+                }
+            }
+        }
+
+        [HarmonyPatch(typeof(Destructible), "Damage")]
+        public static class Si_DDamage
+        {
+            public static void Postfix(ref Destructible __instance, HitData hit)
+            {
+                if (MoreSkills_Instances._player != null)
+                {
+                    _DDamage = __instance;
+
+                    _DDAttacker = hit.m_attacker;
+                }
             }
         }
     }

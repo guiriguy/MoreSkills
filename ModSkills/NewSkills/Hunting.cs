@@ -410,7 +410,7 @@ namespace MoreSkills.ModSkills.NewSkills
                                         if (Chance)
                                             drop.m_chance = MoreSkills_Config.BaseChanceDrakeFreezeGland.Value + ((1 - MoreSkills_Config.BaseChanceDrakeFreezeGland.Value) * level);
                                     }
-                                    else if (drop.m_prefab.name == "TrophyDrake")
+                                    else if (drop.m_prefab.name == "TrophyHatchling")
                                     {
                                         if (MoreSkills_Config.EnableHuntingTrophyMod.Value)
                                         {
@@ -2340,7 +2340,7 @@ namespace MoreSkills.ModSkills.NewSkills
                     {
                         if (MoreSkills_Instances._CDAttacker == MoreSkills_Instances._player.GetZDOID())
                         {
-                            HuntIncrease += ((__instance.m_character.GetMaxHealth()) / 100) * __instance.m_character.GetLevel();
+                            HuntIncrease += ((__instance.m_character.GetMaxHealth()) / 10) * __instance.m_character.GetLevel();
                             //Debug.LogWarning("Vida máx: " + __instance.m_character.GetMaxHealth() + " Nivel: " + __instance.m_character.GetLevel());
                         }
 
