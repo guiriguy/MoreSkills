@@ -1,14 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
 using HarmonyLib;
 using MoreSkills.Config;
 using MoreSkills.Utility;
+using UnityEngine;
 
 namespace MoreSkills_Skills
 {
     class MoreSkills
-    {        
+    {
+        
 
         /*[HarmonyPatch(typeof(TreeBase), "Damage")]
         public static class TreeBaseTest

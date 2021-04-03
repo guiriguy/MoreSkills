@@ -1,8 +1,6 @@
-﻿using System.IO;
+﻿using MoreSkills.Utility;
+using System.IO;
 using UnityEngine;
-using UnityEngine.UI;
-using MoreSkills.Utility;
-using MoreSkills.Config;
 
 namespace MoreSkills.UI
 {
@@ -59,6 +57,17 @@ namespace MoreSkills.UI
             HuntingIcon = Sprite.Create(Huntingtexture2D, new Rect(0f, 0f, 32f, 32f), Vector2.zero);
             iconHunting.Dispose();
             return HuntingIcon;
+        }
+
+        public static Sprite TamingIcon;
+
+        public static Sprite Load_TamingIcon()
+        {
+            Stream iconTaming = EmbeddedAssets.LoadAssets("Assets.Icons.tamingicon.png");
+            Texture2D Tamingtexture2D = Helper.LoadPng(iconTaming);
+            TamingIcon = Sprite.Create(Tamingtexture2D, new Rect(0f, 0f, 32f, 32f), Vector2.zero);
+            iconTaming.Dispose();
+            return TamingIcon;
         }
     }
 }

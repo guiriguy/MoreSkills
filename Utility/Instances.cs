@@ -1,5 +1,4 @@
-﻿using System;
-using HarmonyLib;
+﻿using HarmonyLib;
 
 namespace MoreSkills.Utility
 {
@@ -28,7 +27,7 @@ namespace MoreSkills.Utility
             }
         }
 
-        [HarmonyPatch(typeof(Player),"UpdateStats")]
+        [HarmonyPatch(typeof(Player), "UpdateStats")]
         public static class SI_Player
         {
             public static void Postfix(ref Player __instance)
@@ -81,7 +80,7 @@ namespace MoreSkills.Utility
         [HarmonyPatch(typeof(ZNetView), "Awake")]
         public static class SI_ZNetView
         {
-            public static void Postfix (ref ZNetView __instance)
+            public static void Postfix(ref ZNetView __instance)
             {
                 if (__instance != null)
                     _zNetView = __instance;
@@ -91,7 +90,7 @@ namespace MoreSkills.Utility
         [HarmonyPatch(typeof(MineRock5), "Start")]
         public static class SI_MineRock5
         {
-            public static void Postfix (ref MineRock5 __instance)
+            public static void Postfix(ref MineRock5 __instance)
             {
                 _mineRock5 = __instance;
             }
@@ -100,7 +99,7 @@ namespace MoreSkills.Utility
         [HarmonyPatch(typeof(Character), "Damage")]
         public static class SI_CDamage
         {
-            public static void Postfix (ref Character __instance, HitData hit)
+            public static void Postfix(ref Character __instance, HitData hit)
             {
                 if (MoreSkills_Instances._player != null)
                 {

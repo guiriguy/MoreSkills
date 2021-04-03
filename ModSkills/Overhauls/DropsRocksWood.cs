@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
-using HarmonyLib;
+﻿using HarmonyLib;
 using MoreSkills.Config;
 using MoreSkills.Utility;
+using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace MoreSkills.ModSkills
 {
@@ -16,7 +16,7 @@ namespace MoreSkills.ModSkills
             {
                 if (MoreSkills_Instances._player != null)
                 {
-                    if (MoreSkills_Config.EnableWoodCuttingDropMod.Value || MoreSkills_Config.EnablePickaxeDropMod.Value || MoreSkills_Config.EnableHuntingSkill.Value)
+                    if (MoreSkills_OverhaulsConfig.EnableWoodCuttingDropMod.Value || MoreSkills_OverhaulsConfig.EnablePickaxeDropMod.Value || MoreSkills_HuntingConfig.EnableHuntingSkill.Value)
                     {
                         if (MoreSkills_Instances._DDAttacker == MoreSkills_Instances._player.GetZDOID())
                         {
@@ -191,96 +191,96 @@ namespace MoreSkills.ModSkills
                             }
 
                             //Wood
-                            if (MoreSkills_Config.EnableWoodCuttingDropMod.Value)
+                            if (MoreSkills_OverhaulsConfig.EnableWoodCuttingDropMod.Value)
                             {
-                                for (int i = 0; i < (int)(cBeechSeed + (cBeechSeed * (MoreSkills_Config.WoodCuttingMultiplier.Value * MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.WoodCutting)))); i++)
+                                for (int i = 0; i < (int)(cBeechSeed + (cBeechSeed * ((MoreSkills_OverhaulsConfig.WoodCuttingMultiplier.Value - 1) * MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.WoodCutting)))); i++)
                                 {
                                     Drops.Add(objectBeechSeed);
                                 }
-                                for (int i = 0; i < (int)(cElderBark + (cElderBark * (MoreSkills_Config.WoodCuttingMultiplier.Value * MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.WoodCutting)))); i++)
+                                for (int i = 0; i < (int)(cElderBark + (cElderBark * ((MoreSkills_OverhaulsConfig.WoodCuttingMultiplier.Value - 1) * MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.WoodCutting)))); i++)
                                 {
                                     Drops.Add(objectElderBark);
                                 }
-                                for (int i = 0; i < (int)(cFirCone + (cFineWood * (MoreSkills_Config.WoodCuttingMultiplier.Value * MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.WoodCutting)))); i++)
+                                for (int i = 0; i < (int)(cFineWood + (cFineWood * ((MoreSkills_OverhaulsConfig.WoodCuttingMultiplier.Value - 1) * MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.WoodCutting)))); i++)
                                 {
                                     Drops.Add(objectFineWood);
                                 }
-                                for (int i = 0; i < (int)(cFirCone + (cFirCone * (MoreSkills_Config.WoodCuttingMultiplier.Value * MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.WoodCutting)))); i++)
+                                for (int i = 0; i < (int)(cFirCone + (cFirCone * ((MoreSkills_OverhaulsConfig.WoodCuttingMultiplier.Value - 1) * MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.WoodCutting)))); i++)
                                 {
                                     Drops.Add(objectFirCone);
                                 }
-                                for (int i = 0; i < (int)(cPineCone + (cPineCone * (MoreSkills_Config.WoodCuttingMultiplier.Value * MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.WoodCutting)))); i++)
+                                for (int i = 0; i < (int)(cPineCone + (cPineCone * ((MoreSkills_OverhaulsConfig.WoodCuttingMultiplier.Value - 1) * MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.WoodCutting)))); i++)
                                 {
                                     Drops.Add(objectPineCone);
                                 }
-                                for (int i = 0; i < (int)(cResin + (cResin * (MoreSkills_Config.WoodCuttingMultiplier.Value * MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.WoodCutting)))); i++)
+                                for (int i = 0; i < (int)(cResin + (cResin * ((MoreSkills_OverhaulsConfig.WoodCuttingMultiplier.Value - 1) * MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.WoodCutting)))); i++)
                                 {
                                     Drops.Add(objectResin);
                                 }
-                                for (int i = 0; i < (int)(cRoundLog + (cRoundLog * (MoreSkills_Config.WoodCuttingMultiplier.Value * MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.WoodCutting)))); i++)
+                                for (int i = 0; i < (int)(cRoundLog + (cRoundLog * ((MoreSkills_OverhaulsConfig.WoodCuttingMultiplier.Value - 1) * MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.WoodCutting)))); i++)
                                 {
                                     Drops.Add(objectRoundLog);
                                 }
-                                for (int i = 0; i < (int)(cWood + (cWood * (MoreSkills_Config.WoodCuttingMultiplier.Value * MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.WoodCutting)))); i++)
+                                for (int i = 0; i < (int)(cWood + (cWood * ((MoreSkills_OverhaulsConfig.WoodCuttingMultiplier.Value - 1) * MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.WoodCutting)))); i++)
                                 {
                                     Drops.Add(objectWood);
                                 }
                             }
 
                             //Minerals
-                            if (MoreSkills_Config.EnablePickaxeDropMod.Value)
+                            if (MoreSkills_OverhaulsConfig.EnablePickaxeDropMod.Value)
                             {
-                                for (int i = 0; i < (int)(cChitin + (cChitin * (MoreSkills_Config.PickaxeMultiplier.Value * MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Pickaxes)))); i++)
+                                for (int i = 0; i < (int)(cChitin + (cChitin * ((MoreSkills_OverhaulsConfig.PickaxeMultiplier.Value - 1) * MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Pickaxes)))); i++)
                                 {
                                     Drops.Add(objectChitin);
                                 }
-                                for (int i = 0; i < (int)(cCopperOre + (cCopperOre * (MoreSkills_Config.PickaxeMultiplier.Value * MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Pickaxes)))); i++)
+                                for (int i = 0; i < (int)(cCopperOre + (cCopperOre * ((MoreSkills_OverhaulsConfig.PickaxeMultiplier.Value - 1) * MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Pickaxes)))); i++)
                                 {
                                     Drops.Add(objectCopperOre);
                                 }
-                                for (int i = 0; i < (int)(cIronScrap + (cIronScrap * (MoreSkills_Config.PickaxeMultiplier.Value * MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Pickaxes)))); i++)
+                                for (int i = 0; i < (int)(cIronScrap + (cIronScrap * ((MoreSkills_OverhaulsConfig.PickaxeMultiplier.Value - 1) * MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Pickaxes)))); i++)
                                 {
                                     Drops.Add(objectIronScrap);
                                 }
-                                for (int i = 0; i < (int)(cObsidian + (cObsidian * (MoreSkills_Config.PickaxeMultiplier.Value * MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Pickaxes)))); i++)
+                                for (int i = 0; i < (int)(cObsidian + (cObsidian * ((MoreSkills_OverhaulsConfig.PickaxeMultiplier.Value - 1) * MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Pickaxes)))); i++)
                                 {
                                     Drops.Add(objectObsidian);
                                 }
-                                for (int i = 0; i < (int)(cSilverOre + (cSilverOre * (MoreSkills_Config.PickaxeMultiplier.Value * MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Pickaxes)))); i++)
+                                for (int i = 0; i < (int)(cSilverOre + (cSilverOre * ((MoreSkills_OverhaulsConfig.PickaxeMultiplier.Value - 1) * MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Pickaxes)))); i++)
                                 {
                                     Drops.Add(objectSilverOre);
                                 }
-                                for (int i = 0; i < (int)(cStone + (cStone * (MoreSkills_Config.PickaxeMultiplier.Value * MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Pickaxes)))); i++)
+                                for (int i = 0; i < (int)(cStone + (cStone * ((MoreSkills_OverhaulsConfig.PickaxeMultiplier.Value - 1) * MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Pickaxes)))); i++)
                                 {
                                     Drops.Add(objectStone);
                                 }
-                                for (int i = 0; i < (int)(cTinOre + (cTinOre * (MoreSkills_Config.PickaxeMultiplier.Value * MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Pickaxes)))); i++)
+                                for (int i = 0; i < (int)(cTinOre + (cTinOre * ((MoreSkills_OverhaulsConfig.PickaxeMultiplier.Value - 1) * MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Pickaxes)))); i++)
                                 {
                                     Drops.Add(objectTinOre);
                                 }
                             }
 
                             //Others
-                            if (MoreSkills_Config.EnableHuntingSkill.Value)
+                            if (MoreSkills_HuntingConfig.EnableHuntingSkill.Value)
                             {
-                                for (int i = 0; i < (int)(cFeathers + (cFeathers * (MoreSkills_Config.HuntingDropMultiplier.Value * MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.HuntingSkill_Type)))); i++)
+                                for (int i = 0; i < (int)(cFeathers + (cFeathers * ((MoreSkills_HuntingConfig.HuntingDropMultiplier.Value - 1) * MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_HuntingConfig.HuntingSkill_Type)))); i++)
                                 {
                                     Drops.Add(objectFeathers);
                                 }
-                                for (int i = 0; i < (int)(cGuck + (cGuck * (MoreSkills_Config.HuntingDropMultiplier.Value * MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.HuntingSkill_Type)))); i++)
+                                for (int i = 0; i < (int)(cGuck + (cGuck * ((MoreSkills_HuntingConfig.HuntingDropMultiplier.Value - 1) * MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_HuntingConfig.HuntingSkill_Type)))); i++)
                                 {
                                     Drops.Add(objectGuck);
                                 }
-                                for (int i = 0; i < (int)(cLeatherScraps + (cLeatherScraps * (MoreSkills_Config.HuntingDropMultiplier.Value * MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.HuntingSkill_Type)))); i++)
+                                for (int i = 0; i < (int)(cLeatherScraps + (cLeatherScraps * ((MoreSkills_HuntingConfig.HuntingDropMultiplier.Value - 1) * MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_HuntingConfig.HuntingSkill_Type)))); i++)
                                 {
                                     Drops.Add(objectLeatherScraps);
                                 }
-                                for (int i = 0; i < (int)(cWitheredBone + (cWitheredBone * (MoreSkills_Config.HuntingDropMultiplier.Value * MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_Config.HuntingSkill_Type)))); i++)
+                                for (int i = 0; i < (int)(cWitheredBone + (cWitheredBone * ((MoreSkills_HuntingConfig.HuntingDropMultiplier.Value - 1) * MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_HuntingConfig.HuntingSkill_Type)))); i++)
                                 {
                                     Drops.Add(objectWitheredBone);
                                 }
                             }
-                            
+
                             __result = Drops;
                         }
                     }
