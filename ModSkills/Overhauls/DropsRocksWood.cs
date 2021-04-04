@@ -18,7 +18,10 @@ namespace MoreSkills.ModSkills
                 {
                     if (MoreSkills_OverhaulsConfig.EnableWoodCuttingDropMod.Value || MoreSkills_OverhaulsConfig.EnablePickaxeDropMod.Value || MoreSkills_HuntingConfig.EnableHuntingSkill.Value)
                     {
-                        if (MoreSkills_Instances._DDAttacker == MoreSkills_Instances._player.GetZDOID())
+                        if (MoreSkills_Instances._DDAttacker == MoreSkills_Instances._player.GetZDOID()
+                            || MoreSkills_Instances._MR5DAttacker == MoreSkills_Instances._player.GetZDOID()
+                            || MoreSkills_Instances._TBDAttacker == MoreSkills_Instances._player.GetZDOID()
+                            || MoreSkills_Instances._TLDAttacker == MoreSkills_Instances._player.GetZDOID())
                         {
                             //WoodCutting
                             float cBeechSeed = 0;
@@ -162,6 +165,11 @@ namespace MoreSkills.ModSkills
                                     cTinOre += 1;
                                     objectTinOre = objectDrops;
                                 }
+                                else if (objectDrops.name == "Stone")
+                                {
+                                    cStone += 1;
+                                    objectStone = objectDrops;
+                                }
                                 //Others
                                 else if (objectDrops.name == "Feathers")
                                 {
@@ -226,6 +234,41 @@ namespace MoreSkills.ModSkills
                                     Drops.Add(objectWood);
                                 }
                             }
+                            else
+                            {
+                                for (int i = 0; i < (int)(cBeechSeed); i++)
+                                {
+                                    Drops.Add(objectBeechSeed);
+                                }
+                                for (int i = 0; i < (int)(cElderBark); i++)
+                                {
+                                    Drops.Add(objectElderBark);
+                                }
+                                for (int i = 0; i < (int)(cFineWood); i++)
+                                {
+                                    Drops.Add(objectFineWood);
+                                }
+                                for (int i = 0; i < (int)(cFirCone); i++)
+                                {
+                                    Drops.Add(objectFirCone);
+                                }
+                                for (int i = 0; i < (int)(cPineCone); i++)
+                                {
+                                    Drops.Add(objectPineCone);
+                                }
+                                for (int i = 0; i < (int)(cResin); i++)
+                                {
+                                    Drops.Add(objectResin);
+                                }
+                                for (int i = 0; i < (int)(cRoundLog); i++)
+                                {
+                                    Drops.Add(objectRoundLog);
+                                }
+                                for (int i = 0; i < (int)(cWood); i++)
+                                {
+                                    Drops.Add(objectWood);
+                                }
+                            }
 
                             //Minerals
                             if (MoreSkills_OverhaulsConfig.EnablePickaxeDropMod.Value)
@@ -259,6 +302,37 @@ namespace MoreSkills.ModSkills
                                     Drops.Add(objectTinOre);
                                 }
                             }
+                            else
+                            {
+                                for (int i = 0; i < (int)(cChitin); i++)
+                                {
+                                    Drops.Add(objectChitin);
+                                }
+                                for (int i = 0; i < (int)(cCopperOre); i++)
+                                {
+                                    Drops.Add(objectCopperOre);
+                                }
+                                for (int i = 0; i < (int)(cIronScrap); i++)
+                                {
+                                    Drops.Add(objectIronScrap);
+                                }
+                                for (int i = 0; i < (int)(cObsidian); i++)
+                                {
+                                    Drops.Add(objectObsidian);
+                                }
+                                for (int i = 0; i < (int)(cSilverOre); i++)
+                                {
+                                    Drops.Add(objectSilverOre);
+                                }
+                                for (int i = 0; i < (int)(cStone); i++)
+                                {
+                                    Drops.Add(objectStone);
+                                }
+                                for (int i = 0; i < (int)(cTinOre); i++)
+                                {
+                                    Drops.Add(objectTinOre);
+                                }
+                            }
 
                             //Others
                             if (MoreSkills_HuntingConfig.EnableHuntingSkill.Value)
@@ -276,6 +350,25 @@ namespace MoreSkills.ModSkills
                                     Drops.Add(objectLeatherScraps);
                                 }
                                 for (int i = 0; i < (int)(cWitheredBone + (cWitheredBone * ((MoreSkills_HuntingConfig.HuntingDropMultiplier.Value - 1) * MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_HuntingConfig.HuntingSkill_Type)))); i++)
+                                {
+                                    Drops.Add(objectWitheredBone);
+                                }
+                            }
+                            else
+                            {
+                                for (int i = 0; i < (int)(cFeathers); i++)
+                                {
+                                    Drops.Add(objectFeathers);
+                                }
+                                for (int i = 0; i < (int)(cGuck); i++)
+                                {
+                                    Drops.Add(objectGuck);
+                                }
+                                for (int i = 0; i < (int)(cLeatherScraps); i++)
+                                {
+                                    Drops.Add(objectLeatherScraps);
+                                }
+                                for (int i = 0; i < (int)(cWitheredBone); i++)
                                 {
                                     Drops.Add(objectWitheredBone);
                                 }

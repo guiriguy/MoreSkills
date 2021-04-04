@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace MoreSkills.Config
 {
-    [BepInPlugin("MoreSkills.OverhaulsConfig", "MoreSkills: Overhauls", "0.0.4")]
+    [BepInPlugin("MoreSkills.OverhaulsConfig", "MoreSkills: Overhauls", "0.0.5")]
     [BepInDependency("com.pipakin.SkillInjectorMod")]
     public class MoreSkills_OverhaulsConfig : BaseUnityPlugin
     {

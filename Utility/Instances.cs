@@ -16,6 +16,12 @@ namespace MoreSkills.Utility
         public static ZDOID _CDAttacker;
         public static Destructible _DDamage;
         public static ZDOID _DDAttacker;
+        public static MineRock5 _MR5Damage;
+        public static ZDOID _MR5DAttacker;
+        public static TreeBase _TBDamage;
+        public static ZDOID _TBDAttacker;
+        public static TreeLog _TLDamage;
+        public static ZDOID _TLDAttacker;
 
         [HarmonyPatch(typeof(Vagon), "UpdateMass")]
         public static class SI_Vagon
@@ -120,6 +126,48 @@ namespace MoreSkills.Utility
                     _DDamage = __instance;
 
                     _DDAttacker = hit.m_attacker;
+                }
+            }
+        }
+
+        [HarmonyPatch(typeof(MineRock5), "Damage")]
+        public static class SI_MR5Damage
+        {
+            public static void Postfix(ref MineRock5 __instance, HitData hit)
+            {
+                if (MoreSkills_Instances._player != null)
+                {
+                    _MR5Damage = __instance;
+
+                    _MR5DAttacker = hit.m_attacker;
+                }
+            }
+        }
+
+        [HarmonyPatch(typeof(TreeBase), "Damage")]
+        public static class SI_TBDamage
+        {
+            public static void Postfix(ref TreeBase __instance, HitData hit)
+            {
+                if (MoreSkills_Instances._player != null)
+                {
+                    _TBDamage = __instance;
+
+                    _TBDAttacker = hit.m_attacker;
+                }
+            }
+        }
+
+        [HarmonyPatch(typeof(TreeLog), "Damage")]
+        public static class SI_TLDamage
+        {
+            public static void Postfix(ref TreeLog __instance, HitData hit)
+            {
+                if (MoreSkills_Instances._player != null)
+                {
+                    _TLDamage = __instance;
+
+                    _TLDAttacker = hit.m_attacker;
                 }
             }
         }

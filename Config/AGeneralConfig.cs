@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace MoreSkills.Config
 {
-    [BepInPlugin("MoreSkills.AGeneralConfig", "MoreSkills", "0.1.8")]
+    [BepInPlugin("MoreSkills.AGeneralConfig", "MoreSkills", "0.1.9.2")]
     [BepInDependency("com.pipakin.SkillInjectorMod")]
     public class MoreSkills_Config : BaseUnityPlugin
     {
