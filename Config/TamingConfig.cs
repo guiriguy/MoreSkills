@@ -35,9 +35,9 @@ namespace MoreSkills.Config
             if (EnableAllTamableCompatibility.Value)
             {
                 //Boar
-                BoarLevelUnlock = base.Config.Bind<float>("3. CreatureLevels: AllTamableCompatibility", "Boar Master Level", 0f, "The level at which you are a Master taming this creature. You tame the creature in 2 minutes time");
+                BoarLevelUnlock = base.Config.Bind<float>("3. CreatureLevels: AllTamableCompatibility", "Boar Master Level", 0f, "The level at which you know how to tame this creature.");
                 BoarLevelTamer = base.Config.Bind<float>("3. CreatureLevels: AllTamableCompatibility", "Boar Tamer Level", 5f, "The level at which you are good at taming this creature. Reduces the amount of time by half");
-                BoarLevelMaster = base.Config.Bind<float>("3. CreatureLevels: AllTamableCompatibility", "Boar Unlock Level", 15f, "The level at which you know how to tame this creature.");
+                BoarLevelMaster = base.Config.Bind<float>("3. CreatureLevels: AllTamableCompatibility", "Boar Unlock Level", 15f, "The level at which you are a Master taming this creature. You tame the creature in 2 minutes time.");
                 //Wolf
                 WolfLevelUnlock = base.Config.Bind<float>("3. CreatureLevels: AllTamableCompatibility", "Wolf Unlock Level", 10f, "The level at which you know how to tame this creature.");
                 WolfLevelTamer = base.Config.Bind<float>("3. CreatureLevels: AllTamableCompatibility", "Wolf Tamer Level", 20f, "The level at which you are good at taming this creature. Reduces the amount of time by half");
@@ -50,9 +50,9 @@ namespace MoreSkills.Config
             else
             {
                 //Boar
-                BoarLevelUnlock = base.Config.Bind<float>("3. CreatureLevels: Defaults", "Boar Master Level", 0f, "The level at which you are a Master taming this creature. You tame the creature in 2 minutes time");
+                BoarLevelUnlock = base.Config.Bind<float>("3. CreatureLevels: Defaults", "Boar Unlock Level", 0f, "The level at which you know how to tame this creature.");
                 BoarLevelTamer = base.Config.Bind<float>("3. CreatureLevels: Defaults", "Boar Tamer Level", 10f, "The level at which you are good at taming this creature. Reduces the amount of time by half");
-                BoarLevelMaster = base.Config.Bind<float>("3. CreatureLevels: Defaults", "Boar Unlock Level", 40f, "The level at which you know how to tame this creature.");
+                BoarLevelMaster = base.Config.Bind<float>("3. CreatureLevels: Defaults", "Boar Master Level", 40f, "The level at which you are a Master taming this creature. You tame the creature in 2 minutes time.");
                 //Wolf
                 WolfLevelUnlock = base.Config.Bind<float>("3. CreatureLevels: Defaults", "Wolf Unlock Level", 10f, "The level at which you know how to tame this creature.");
                 WolfLevelTamer = base.Config.Bind<float>("3. CreatureLevels: Defaults", "Wolf Tamer Level", 30f, "The level at which you are good at taming this creature. Reduces the amount of time by half");

@@ -41,6 +41,10 @@ namespace MoreSkills.ModSkills.Overhauls
                                 inAir = true;
                                 onGround = false;
                             }
+                            else if (Altitude > 8f)
+                            {
+                                inAir = false;
+                            }
 
                             if (inAir)
                             {
@@ -61,6 +65,8 @@ namespace MoreSkills.ModSkills.Overhauls
                                     }
                                 }
                             }
+
+                            //Debug.LogWarning("Altitud: " + inAir);
                         }
                     }
                 }
@@ -79,6 +85,20 @@ namespace MoreSkills.ModSkills.Overhauls
                         float Altitude = Mathf.Max(0f, __instance.m_maxAirAltitude - MoreSkills_Instances._player.transform.position.y);
 
                         if (Altitude > 4f && Altitude < 8f)
+                        {
+                            if (hit.m_attacker.m_userID == 0)
+                            {
+                                hit.m_damage.m_damage = 0;
+                            }
+                        }
+                        /*if (Altitude > 50f)
+                        {
+                            if (hit.m_attacker.m_userID == 0)
+                            {
+                                hit.m_damage.m_damage /= 999999f;
+                            }
+                        }*/
+                        else if (Altitude > 8f)
                         {
                             if (hit.m_attacker.m_userID == 0)
                             {

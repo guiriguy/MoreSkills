@@ -69,9 +69,10 @@ namespace MoreSkills.ModSkills.NewSkills
                                 if (Chance)
                                     drop.m_chance = vChance + ((1 - vChance) * level);
 
-                                Debug.Log("Updated mob: " + __instance.name.Replace("(Clone)", "") + " Level: " + __instance.m_character.GetLevel() + " Item: " + drop.m_prefab.name.Replace("(UnityEngine.GameObject)", "") + " Min: " + drop.m_amountMin + " Max: " + drop.m_amountMax + " Chance: " + drop.m_chance);
+                                //Debug.Log("Updated mob: " + __instance.name.Replace("(Clone)", "") + " Level: " + __instance.m_character.GetLevel() + " Item: " + drop.m_prefab.name.Replace("(UnityEngine.GameObject)", "") + " Min: " + drop.m_amountMin + " Max: " + drop.m_amountMax + " Chance: " + drop.m_chance);
                             } 
                         }
+                        Debug.Log("[MoreSkills Hunting]: Updated mob's loot: " + __instance.name.Replace("(Clone)", "") + " Level: " + __instance.m_character.GetLevel());
                     }
                 }
             }
