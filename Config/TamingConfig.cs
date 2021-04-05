@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace MoreSkills.Config
 {
-    [BepInPlugin("MoreSkills.TamingConfig", "MoreSkills: Taming", "0.0.2")]
+    [BepInPlugin("MoreSkills.TamingConfig", "MoreSkills: Taming", "0.0.4")]
     [BepInDependency("com.pipakin.SkillInjectorMod")]
     public class MoreSkills_TamingConfig : BaseUnityPlugin
     {
@@ -35,9 +35,9 @@ namespace MoreSkills.Config
             if (EnableAllTamableCompatibility.Value)
             {
                 //Boar
-                BoarLevelUnlock = base.Config.Bind<float>("3. CreatureLevels: AllTamableCompatibility", "Boar Master Level", 0f, "The level at which you know how to tame this creature.");
+                BoarLevelUnlock = base.Config.Bind<float>("3. CreatureLevels: AllTamableCompatibility", "Boar Unlock Level", 0f, "The level at which you know how to tame this creature.");
                 BoarLevelTamer = base.Config.Bind<float>("3. CreatureLevels: AllTamableCompatibility", "Boar Tamer Level", 5f, "The level at which you are good at taming this creature. Reduces the amount of time by half");
-                BoarLevelMaster = base.Config.Bind<float>("3. CreatureLevels: AllTamableCompatibility", "Boar Unlock Level", 15f, "The level at which you are a Master taming this creature. You tame the creature in 2 minutes time.");
+                BoarLevelMaster = base.Config.Bind<float>("3. CreatureLevels: AllTamableCompatibility", "Boar Master Level", 15f, "The level at which you are a Master taming this creature. You tame the creature in 2 minutes time.");
                 //Wolf
                 WolfLevelUnlock = base.Config.Bind<float>("3. CreatureLevels: AllTamableCompatibility", "Wolf Unlock Level", 10f, "The level at which you know how to tame this creature.");
                 WolfLevelTamer = base.Config.Bind<float>("3. CreatureLevels: AllTamableCompatibility", "Wolf Tamer Level", 20f, "The level at which you are good at taming this creature. Reduces the amount of time by half");
@@ -141,7 +141,7 @@ namespace MoreSkills.Config
             SerpentLevelMaster = base.Config.Bind<float>("3. CreatureLevels: AllTamableCompatibility", "Serpent Master Level", 50f, "NEEDS ALLTAMABLE MOD!. The level at which you are a Master taming this creature. You tame the creature in 2 minutes time");
             //Skeleton
             SkeletonLevelUnlock = base.Config.Bind<float>("3. CreatureLevels: AllTamableCompatibility", "Skeleton Unlock Level", 10f, "NEEDS ALLTAMABLE MOD!. The level at which you know how to tame this creature.");
-            SkeletonLevelTamer = base.Config.Bind<float>("3. CreatureLevels: AllTamableCompatibility", "Skeleton Tamer Level", 32f, "NEEDS ALLTAMABLE MOD!. The level at which you are good at taming this creature. Reduces the amount of time by half");
+            SkeletonLevelTamer = base.Config.Bind<float>("3. CreatureLevels: AllTamableCompatibility", "Skeleton Tamer Level", 20f, "NEEDS ALLTAMABLE MOD!. The level at which you are good at taming this creature. Reduces the amount of time by half");
             SkeletonLevelMaster = base.Config.Bind<float>("3. CreatureLevels: AllTamableCompatibility", "Skeleton Master Level", 30f, "NEEDS ALLTAMABLE MOD!. The level at which you are a Master taming this creature. You tame the creature in 2 minutes time");
             //Skeleton Poison
             SkeletonPoisonLevelUnlock = base.Config.Bind<float>("3. CreatureLevels: AllTamableCompatibility", "Skeleton Poison Unlock Level", 15f, "NEEDS ALLTAMABLE MOD!. The level at which you know how to tame this creature.");

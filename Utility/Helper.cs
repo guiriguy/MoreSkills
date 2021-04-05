@@ -63,13 +63,15 @@ namespace MoreSkills.Utility
             public float Master { get; }
             public float Tamer { get; }
             public float Unlock { get; }
+            public float TameTime { get; }
 
-            public TamingLevels(string creature, float master, float tamer, float unlock)
+            public TamingLevels(string creature, float master, float tamer, float unlock, float tametime)
             {
                 Creature = creature;
                 Master = master;
                 Tamer = tamer;
                 Unlock = unlock;
+                TameTime = tametime;
             }
         }
         public struct TamingFix

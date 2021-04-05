@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace MoreSkills.Config
 {
-    [BepInPlugin("MoreSkills.HuntingConfig.GuiriGuyMods", "MoreSkills: Hunting", "0.0.3")]
+    [BepInPlugin("MoreSkills.HuntingConfig", "MoreSkills: Hunting", "0.0.4")]
     [BepInDependency("com.pipakin.SkillInjectorMod")]
 
     public class MoreSkills_HuntingConfig : BaseUnityPlugin
@@ -30,11 +30,18 @@ namespace MoreSkills.Config
             //EnableHuntingTrophyMod = base.Config.Bind<bool>("1. Enablers", "Enable Hunting Trophy Mod", false, "Enables or disables the Hunting Skill Modification to affect Trophies. RECOMMENDED FOR EPIC LOOTS");
             //Blob Affect
             //EnableHuntingBlobSpawn = base.Config.Bind<bool>("1. Enablers", "Enable Hunting Blob Spawn Mod", false, "Enables or disables the Hunting Skill Modification to affect Blobs to count as ItemDrops from the Blob Elite");
+            //ToO
+            EnableTrialsOfOdinCompatibility = base.Config.Bind<bool>("1. Enablers", "Enable Compatibility with Trials of Odin Mod", false, "Enables or disables the Compatibility with Trials of Odin's Levels Mod");
             //Hunting
             //Skill
             HuntingSkillMultiplier = base.Config.Bind<float>("2. Multipliers", "Multiplies the Hunting Skill Increase", 1.0f, "The Skill Increase is based on the max Health of the Mob 1/20, so if the mob is killed and had a max health of 500 you get 50 (If you level up, it will only level you up and loose the rest of exp, to yet be fixed). This allows you to multiply this number.");
             //Drops
             HuntingDropMultiplier = base.Config.Bind<float>("2. Multipliers", "Multiplies the Hunting Drops", 1.5f, "The based on level 2. Multipliers, so at level 100 you reach such number. At level 100 you recieve x1.5 at default to the amount of Drops from a Mob/Boss. This multiplier changes that number");
+            //BaseConfigs
+            //ToO
+            ToOLowLevelStart = base.Config.Bind<int>("3. BaseConfig", "Set Low Level Start Set at Trials of Odin", 1, "You have to put the number at which you set the low level at Trials of Odin Mod");
+            ToOMidLevelStart = base.Config.Bind<int>("3. BaseConfig", "Set Mid Level Start Set at Trials of Odin", 5, "You have to put the number at which you set the low level at Trials of Odin Mod");
+            ToOHighLevelStart = base.Config.Bind<int>("3. BaseConfig", "Set High Level Start Set at Trials of Odin", 8, "You have to put the number at which you set the low level at Trials of Odin Mod");
             //5. All Mobs Configs
             //Hunting Skill
             //Blob
@@ -530,6 +537,10 @@ namespace MoreSkills.Config
                     Debug.LogWarning("[MoreSkills]: Hunting/MinMax Mobs Mod Disabled");
                 else
                     Debug.Log("[MoreSkills]: Hunting/MinMax Mobs Mod Enabled");
+                if (!EnableTrialsOfOdinCompatibility.Value)
+                    Debug.LogError("[MoreSkills]: Hunting/If you got Trials of Odin I highly recommend you to activate this. Otherwise don't read me. I know it's red. But it's all ok, don't worry :P");
+                else
+                    Debug.Log("[MoreSkills]: Hunting/Trials of Odin Compatibility Enabled");
                 if (!EnableHuntingChanceMod.Value)
                     Debug.LogWarning("[MoreSkills]: Hunting/Chance Mod Disabled");
                 else
@@ -568,13 +579,13 @@ namespace MoreSkills.Config
 
         public static ConfigEntry<bool> EnableHuntingBlobSpawn;
 
-        public const int StrengthSkill_Type = 700;
+        public static ConfigEntry<bool> EnableTrialsOfOdinCompatibility;
 
-        public const int VitalitySkill_Type = 701;
+        //BaseConfigs
 
-        public const int SailingSkill_Type = 702;
-
-        public const int CraftingSkill_Type = 703;
+        public static ConfigEntry<int> ToOLowLevelStart;
+        public static ConfigEntry<int> ToOMidLevelStart;
+        public static ConfigEntry<int> ToOHighLevelStart;
 
         public const int HuntingSkill_Type = 704;
 

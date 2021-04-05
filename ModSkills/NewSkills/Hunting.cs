@@ -38,7 +38,7 @@ namespace MoreSkills.ModSkills.NewSkills
                                     max: drop.m_amountMax,
                                     min: drop.m_amountMin,
                                     chance: drop.m_chance));
-                                Debug.Log("[MoreSkills]: Added Creature to the Temporal Hunting Database");
+                                Debug.Log("[MoreSkills Hunting]: Added Creature to the Temporal Hunting Database");
                             }
 
                             //Debug.Log("Updating mob: " + __instance.name.Replace("(Clone)", "") + " Level: " + __instance.m_character.GetLevel() + " Item: " + drop.m_prefab.name.Replace("(UnityEngine.GameObject)", "") + " Min: " + drop.m_amountMin + " Max: " + drop.m_amountMax + " Chance: " + drop.m_chance);
@@ -49,21 +49,33 @@ namespace MoreSkills.ModSkills.NewSkills
                                 vMin = (float)(hDrops.Find(hDrop => hDrop.CreaturePrefab == nameprefab).Min);
                                 vMax = (float)(hDrops.Find(hDrop => hDrop.CreaturePrefab == nameprefab).Max);
                                 vChance = (float)(hDrops.Find(hDrop => hDrop.CreaturePrefab == nameprefab).Chance);
+                                if (MoreSkills_HuntingConfig.EnableTrialsOfOdinCompatibility.Value)
+                                {
+                                    if (__instance.m_character.GetLevel() >= MoreSkills_HuntingConfig.ToOLowLevelStart.Value && __instance.m_character.GetLevel() < MoreSkills_HuntingConfig.ToOMidLevelStart.Value)
+                                        CLevel = 1;
+                                    else if (__instance.m_character.GetLevel() >= MoreSkills_HuntingConfig.ToOMidLevelStart.Value && __instance.m_character.GetLevel() < MoreSkills_HuntingConfig.ToOHighLevelStart.Value)
+                                        CLevel = 2;
+                                    else if (__instance.m_character.GetLevel() >= MoreSkills_HuntingConfig.ToOHighLevelStart.Value)
+                                        CLevel = 3;
+                                }
+                                else
+                                    CLevel = __instance.m_character.GetLevel();
+
                                 if (MinMax)
                                 {
                                     if ((level) > 0.5)
                                     {
                                         float maxskill_inc = Mathf.Round(vMax * realmult);
-                                        drop.m_amountMax = (int)((vMax + maxskill_inc) * __instance.m_character.GetLevel());
+                                        drop.m_amountMax = (int)((vMax + maxskill_inc) * CLevel);
                                         float skill = level * realmult;
                                         float skill_inc = Mathf.Round(vMin * skill);
-                                        drop.m_amountMin = (int)((vMin + skill_inc) * __instance.m_character.GetLevel());
+                                        drop.m_amountMin = (int)((vMin + skill_inc) * CLevel);
                                     }
                                     else
                                     {
                                         float maxskill = (level * 2) * realmult;
                                         float maxskill_inc = Mathf.Round(vMax * maxskill);
-                                        drop.m_amountMax = (int)((vMax + maxskill_inc) * __instance.m_character.GetLevel());
+                                        drop.m_amountMax = (int)((vMax + maxskill_inc) * CLevel);
                                     }
                                 }
                                 if (Chance)
@@ -89,7 +101,7 @@ namespace MoreSkills.ModSkills.NewSkills
                     {
                         if (MoreSkills_Instances._CDAttacker == MoreSkills_Instances._player.GetZDOID())
                         {
-                            HuntIncrease += ((__instance.m_character.GetMaxHealth()) / 20) * __instance.m_character.GetLevel();
+                            HuntIncrease += ((__instance.m_character.GetMaxHealth()) / 20) * CLevel;
                             //Debug.LogWarning("Vida máx: " + __instance.m_character.GetMaxHealth() + " Nivel: " + __instance.m_character.GetLevel());
                         }
 
@@ -105,6 +117,7 @@ namespace MoreSkills.ModSkills.NewSkills
             public static float HuntIncrease;
         }
 
+        public static int CLevel;
         public static List<Helper.HuntingDrops> hDrops = new List<Helper.HuntingDrops>();
     }
 }

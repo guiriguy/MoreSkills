@@ -35,8 +35,9 @@ namespace MoreSkills.ModSkills.Overhauls
 
                         if (MoreSkills_OverhaulsConfig.EnableRollOnFall.Value)
                         {
+                            float MaxARoll = MoreSkills_OverhaulsConfig.BaseRollAltitude.Value + ((MoreSkills_OverhaulsConfig.BaseMaxRollAltitude.Value - MoreSkills_OverhaulsConfig.BaseRollAltitude.Value) * MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Jump));
                             float Altitude = Mathf.Max(0f, __instance.m_maxAirAltitude - MoreSkills_Instances._player.transform.position.y);
-                            if (Altitude > 4f && Altitude < 8f)
+                            if (Altitude > MoreSkills_OverhaulsConfig.BaseRollAltitude.Value && Altitude < MaxARoll)
                             {
                                 inAir = true;
                                 onGround = false;
@@ -66,7 +67,7 @@ namespace MoreSkills.ModSkills.Overhauls
                                 }
                             }
 
-                            //Debug.LogWarning("Altitud: " + inAir);
+                            //Debug.LogWarning("Altitud: " + Altitude);
                         }
                     }
                 }
@@ -82,28 +83,84 @@ namespace MoreSkills.ModSkills.Overhauls
                 {
                     if (MoreSkills_OverhaulsConfig.EnableJumpMod.Value && MoreSkills_OverhaulsConfig.EnableDecreaseFallDamageMod.Value)
                     {
+                        float FDM = MoreSkills_OverhaulsConfig.FallDamageDecrease.Value;
+                        float Level = MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Jump);
+                        float MaxAFall = MoreSkills_OverhaulsConfig.BaseMaxFallAltitude.Value;
+                        float BaseARoll = MoreSkills_OverhaulsConfig.BaseRollAltitude.Value;
+                        float MaxARoll = MoreSkills_OverhaulsConfig.BaseRollAltitude.Value + ((MoreSkills_OverhaulsConfig.BaseMaxRollAltitude.Value - MoreSkills_OverhaulsConfig.BaseRollAltitude.Value) * MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Jump));
                         float Altitude = Mathf.Max(0f, __instance.m_maxAirAltitude - MoreSkills_Instances._player.transform.position.y);
+                        float MDI;
 
-                        if (Altitude > 4f && Altitude < 8f)
+                        if (MoreSkills_OverhaulsConfig.MaxFallDamageIncrease.Value <= 0)
+                            MDI = 1f;
+                        else
+                            MDI = MoreSkills_OverhaulsConfig.MaxFallDamageIncrease.Value;
+
+                        if (MoreSkills_OverhaulsConfig.EnableRollOnFall.Value)
                         {
-                            if (hit.m_attacker.m_userID == 0)
+                            if (Altitude > BaseARoll && Altitude < MaxARoll)
                             {
-                                hit.m_damage.m_damage = 0;
+                                if (hit.m_attacker.m_userID == 0)
+                                {
+                                    hit.m_damage.m_damage = 0;
+                                }
                             }
+                            else if (Altitude > MaxARoll)
+                            {
+                                if (MoreSkills_OverhaulsConfig.EnableMaxFallAltitude.Value)
+                                {
+                                    if (Altitude > MaxARoll && Altitude < MaxAFall)
+                                    {
+                                        if (hit.m_attacker.m_userID == 0)
+                                        {
+                                            hit.m_damage.m_damage = ((100 / (MaxAFall - MaxARoll)) * (Altitude - MaxARoll)) / (FDM * Level);
+                                        }
+                                    }
+                                    else if (Altitude > MaxAFall)
+                                    {
+                                        hit.m_damage.m_damage = (((100 / (MaxAFall - MaxARoll)) * (Altitude - MaxARoll)) / ((FDM * Level)) + (Altitude - MaxAFall) * MDI);
+                                    }
+                                }
+                                else
+                                {
+                                    if (Altitude > MaxARoll)
+                                    {
+                                        if (Altitude > 20f)
+                                        {
+                                            if (hit.m_attacker.m_userID == 0)
+                                            {
+                                                hit.m_damage.m_damage = 100f / (FDM * Level);
+                                            }
+                                        }
+                                        else if (Altitude > MaxARoll && Altitude < 20f)
+                                        {
+                                            if (hit.m_attacker.m_userID == 0)
+                                            {
+                                                hit.m_damage.m_damage = ((100 / (20 - MaxARoll)) * (Altitude - MaxARoll)) / (FDM * Level);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            //MoreSkills_Instances._player.Message(MessageHud.MessageType.Center, Localization.instance.Localize("Height: " + (Altitude - MaxARoll).ToString("F0") + "m" + " Damage: " + hit.m_damage.m_damage.ToString("F0")), 0, null);
                         }
-                        /*if (Altitude > 50f)
+                        else
                         {
-                            if (hit.m_attacker.m_userID == 0)
+                            if (MoreSkills_OverhaulsConfig.EnableMaxFallAltitude.Value)
                             {
-                                hit.m_damage.m_damage /= 999999f;
+                                if (Altitude < MaxAFall)
+                                    hit.m_damage.m_damage = ((100 / (MaxAFall - 4)) * (Altitude - 4)) / (FDM * Level);
+                                else
+                                    hit.m_damage.m_damage = (((100 / (MaxAFall - 4)) * (Altitude - 4)) / ((FDM * Level)) + (Altitude - MaxAFall) * MDI);
                             }
-                        }*/
-                        else if (Altitude > 8f)
-                        {
-                            if (hit.m_attacker.m_userID == 0)
+                            else
                             {
-                                hit.m_damage.m_damage /= MoreSkills_OverhaulsConfig.FallDamageDecrease.Value * MoreSkills_Instances._player.GetSkillFactor(Skills.SkillType.Jump);
+                                if (hit.m_attacker.m_userID == 0)
+                                {
+                                    hit.m_damage.m_damage /= (FDM * Level);
+                                }
                             }
+                            //MoreSkills_Instances._player.Message(MessageHud.MessageType.Center, Localization.instance.Localize("Height: " + (Altitude - MaxARoll).ToString("F0") + "m" + " Damage: " + hit.m_damage.m_damage.ToString("F0")), 0, null);
                         }
                     }
                 }

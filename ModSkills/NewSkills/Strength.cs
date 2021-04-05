@@ -12,9 +12,9 @@ namespace MoreSkills.ModSkills
         {
             public static void Postfix()
             {
-                if (MoreSkills_StrengthConfig.EnableStrengthMod.Value)
+                if (MoreSkills_Instances._player != null)
                 {
-                    if (MoreSkills_Instances._player != null)
+                    if (MoreSkills_StrengthConfig.EnableStrengthMod.Value)
                     {
                         bool halfweight = MoreSkills_Instances._player.GetInventory().GetTotalWeight() > (MoreSkills_Instances._player.GetMaxCarryWeight() / 2);
                         float vel = MoreSkills_Instances._player.m_currentVel.magnitude;

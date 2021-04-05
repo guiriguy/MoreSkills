@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace MoreSkills.Config
 {
-    [BepInPlugin("MoreSkills.OverhaulsConfig", "MoreSkills: Overhauls", "0.0.5")]
+    [BepInPlugin("MoreSkills.OverhaulsConfig", "MoreSkills: Overhauls", "0.0.7")]
     [BepInDependency("com.pipakin.SkillInjectorMod")]
     public class MoreSkills_OverhaulsConfig : BaseUnityPlugin
     {
@@ -35,6 +35,8 @@ namespace MoreSkills.Config
             EnableHigherJump = base.Config.Bind<bool>("1. Enablers: Jump", "Enable Higher Jump Mod", true, "Enables or disables the Higher Jump Modification");
             //HaveToShift
             EnableHaveToShiftToHigherJump = base.Config.Bind<bool>("1. Enablers: Jump", "Enable Need to Shift for Higher Jump Mod", true, "Enables or disables Need to Shift (or custom key) to make a Higher Jump Modification");
+            //MaxFallAltitude
+            EnableMaxFallAltitude = base.Config.Bind<bool>("1. Enablers: Jump", "Enable Max Fall Altitude", true, "Enables or disables the Max Altitude a Character can fall without dying.");
             //Multipliers
             //Swim
             //Stamina
@@ -45,7 +47,10 @@ namespace MoreSkills.Config
             //Drops
             WoodCuttingMultiplier = base.Config.Bind<float>("2. Multipliers: WoodCutting", "Multiplier based on WoodCutting Skill", 1.5f, "The based on level multipliers, so at level 100 you reach such number. At level 100 you got default x1.5 times the amount of drops than vanilla. This multiplier changes that number.");
             //Jumping
+            //DamageDecrease
             FallDamageDecrease = base.Config.Bind<float>("2. Multipliers: Jump", "Deacrease Multiplier based on Jumping Skill", 2.0f, "Decreases the Damage Recieved by Falling from a High Altitude (4 meters)");
+            //DamageIncrease
+            MaxFallDamageIncrease = base.Config.Bind<float>("2. Multipliers: Jump", "Increase Multiplier Per Meter over Max Fall Altitude Skill", 2.0f, "Increses the Damage Recieved per meter exceded from Max Falling Altitude");
             //Base Configs
             //Sneak
             BaseCrouchSpeed = base.Config.Bind<float>("3. BaseConfigs: Sneak", "Base Crouch Speed", 2f, "Change the base Crouch Speed. (Valheim Default is 2)");
@@ -59,6 +64,9 @@ namespace MoreSkills.Config
             BaseJumpForce = base.Config.Bind<float>("3. BaseConfigs: Jump", "Base Jump Force", 8f, "Change the base Jump Force (Valheim Defailt is 8)");
             BaseMaxJumpForce = base.Config.Bind<float>("3. BaseConfigs: Jump", "Base Max Jump Force", 12f, "Change the base Max Jump Force at level 100. (Valheim Default is 8)");
             HigherJumpKey = base.Config.Bind<KeyCode>("3. BaseConfigs: Jump", "Base Higher Jump Key Force", KeyCode.LeftShift, "Change the button to hold when wanted a Higher Jump. Keys: https://docs.unity3d.com/Manual/class-InputManager.html");
+            BaseRollAltitude = base.Config.Bind<float>("3. BaseConfigs: Jump", "Base Roll Altitude", 4f, "Change the base altitude you need to reach for the Character roll on fall, not recieving any damage.");
+            BaseMaxRollAltitude = base.Config.Bind<float>("3. BaseConfigs: Jump", "Base Max Roll Altitude", 8f, "Change the base Max altitude at jump level 100, at which the Character will roll on fall and not recieve any damage.");
+            BaseMaxFallAltitude = base.Config.Bind<float>("3. BaseConfigs: Jump", "Base Max Fall Altitude", 30f, "Change the base Max fall altitude which if it's higher than that you will directly die. (Valheim Default is 20)");
 
             //--
             new Harmony("MoreSkills.OverhaulsConfig.GuiriGuyMods");
@@ -113,6 +121,10 @@ namespace MoreSkills.Config
                     Debug.LogWarning("[MoreSkills]: Jump/Roll On Fall Mod Disabled");
                 else
                     Debug.Log("[MoreSkills]: Jump/Roll On Fall Mod Enabled");
+                if (!EnableMaxFallAltitude.Value)
+                    Debug.LogWarning("[MoreSkills]: Jump/Max Fall Altitude Mod Disabled");
+                else
+                    Debug.Log("[MoreSkills]: Jump/Max Fall Altitude Mod Enabled");
 
             }
 
@@ -133,6 +145,12 @@ namespace MoreSkills.Config
 
         public static ConfigEntry<float> BaseMaxJumpForce;
 
+        public static ConfigEntry<float> BaseRollAltitude;
+
+        public static ConfigEntry<float> BaseMaxRollAltitude;
+
+        public static ConfigEntry<float> BaseMaxFallAltitude;
+
         //Multipliers
 
         public static ConfigEntry<float> PickaxeMultiplier;
@@ -142,6 +160,8 @@ namespace MoreSkills.Config
         public static ConfigEntry<float> WoodCuttingMultiplier;
 
         public static ConfigEntry<float> FallDamageDecrease;
+
+        public static ConfigEntry<float> MaxFallDamageIncrease;
 
         //Enables
 
@@ -168,6 +188,8 @@ namespace MoreSkills.Config
         public static ConfigEntry<bool> EnableRollOnFall;
 
         public static ConfigEntry<bool> EnableHaveToShiftToHigherJump;
+
+        public static ConfigEntry<bool> EnableMaxFallAltitude;
 
         public static ConfigEntry<KeyCode> HigherJumpKey;
 

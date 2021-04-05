@@ -12,13 +12,14 @@ namespace MoreSkills.ModSkills
         {
             public static void Prefix(ref float health)
             {
-                if (MoreSkills_VitalityConfig.EnableHealthMod.Value)
+                if (MoreSkills_Instances._player != null)
                 {
-                    if (MoreSkills_Instances._player != null)
+                    if (MoreSkills_VitalityConfig.EnableHealthMod.Value)
                     {
                         float health_skill = Mathf.Floor((MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_VitalityConfig.VitalitySkill_Type) * 100f) + 0.000001f);
                         float health_skillinc = ((MoreSkills_VitalityConfig.BaseMaxHealth.Value - MoreSkills_VitalityConfig.BaseHealth.Value) / 100) * health_skill;
                         health += (MoreSkills_VitalityConfig.BaseHealth.Value + health_skillinc) - 25f;
+
                     }
                 }
             }
@@ -29,9 +30,9 @@ namespace MoreSkills.ModSkills
         {
             public static void Postfix()
             {
-                if (MoreSkills_VitalityConfig.EnableHealthMod.Value)
+                if (MoreSkills_Instances._player != null)
                 {
-                    if (MoreSkills_Instances._player != null)
+                    if (MoreSkills_VitalityConfig.EnableHealthMod.Value)
                     {
                         if (MoreSkills_Instances._player.GetHealth() < MoreSkills_Instances._player.GetMaxHealth())
                         {
@@ -55,6 +56,7 @@ namespace MoreSkills.ModSkills
                                     healcounter++;
                             }
                         }
+
                     }
                 }
             }
@@ -65,9 +67,9 @@ namespace MoreSkills.ModSkills
         {
             public static void Postfix(ref HitData hit)
             {
-                if (MoreSkills_VitalityConfig.EnableHealthMod.Value)
+                if (MoreSkills_Instances._player != null)
                 {
-                    if (MoreSkills_Instances._player != null)
+                    if (MoreSkills_VitalityConfig.EnableHealthMod.Value)
                     {
                         Damaged = true;
                         healcounter = 0;
@@ -81,6 +83,7 @@ namespace MoreSkills.ModSkills
                             MoreSkills_Instances._player.RaiseSkill((Skills.SkillType)MoreSkills_VitalityConfig.VitalitySkill_Type, IncVitality);
                             IncVitality = 0f;
                         }
+
                     }
                 }
             }
