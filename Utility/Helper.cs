@@ -125,5 +125,33 @@ namespace MoreSkills.Utility
                 ItemUNum = itemunum;
             }
         }
+        public struct FishStats
+        {
+            public string FishName { get; }
+            public float BHookChance { get; }
+            public int ItemStackSize { get; }
+            public float StaminaUse { get; }
+            public FishStats(string fishname, float bhookchance, int itemstacksize, float staminause)
+            {
+                FishName = fishname;
+                BHookChance = bhookchance;
+                ItemStackSize = itemstacksize;
+                StaminaUse = staminause;
+            }
+        }
+        public struct FishSizes
+        {
+            public string FishNameZDOID { get; }
+            public Vector3 FishSize { get; }
+            public float FishHeight { get; }
+            public float FishSpeed { get; }
+            public FishSizes(string fishnamezdoid, Vector3 fishsize, float fishheight, float fishspeed)
+            {
+                FishNameZDOID = fishnamezdoid;
+                FishSize = fishsize;
+                FishHeight = fishheight;
+                FishSpeed = fishspeed;
+            }
+        }
     }
 }

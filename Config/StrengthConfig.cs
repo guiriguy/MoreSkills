@@ -13,7 +13,7 @@ namespace MoreSkills.Config
     public class MoreSkills_StrengthConfig : BaseUnityPlugin
     {
         public void Awake()
-        {
+        {            
             Debug.Log("Loading Strength Skill...");
             //Enablers
             //Strength
@@ -42,9 +42,10 @@ namespace MoreSkills.Config
 
             //Logs
             if (!EnableStrengthMod.Value)
-                Debug.LogWarning("[MoreSkills] Mod Disabled");
+                Debug.LogWarning("[MoreSkills] Strength Skill Disabled");
             else
             {
+                Debug.Log("[MoreSkills] Strength Skill Enabled");
                 if (!EnableWeightMod.Value)
                     Debug.LogWarning("[MoreSkills]Strength/Weight Mod Disabled");
                 else

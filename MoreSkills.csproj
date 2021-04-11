@@ -70,6 +70,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FishingConfig.cs" />
     <Compile Include="Config\OverhaulsConfig.cs" />
     <Compile Include="Config\TamingConfig.cs" />
     <Compile Include="Config\CraftingConfig.cs" />
@@ -87,11 +88,11 @@
     <Compile Include="ModSkills\NewSkills\Strength.cs" />
     <Compile Include="ModSkills\Overhauls\SwimMod.cs" />
     <Compile Include="ModSkills\Overhauls\CrouchMod.cs" />
+    <Compile Include="NextUpdate.cs" />
     <Compile Include="UI\SkillIcons.cs" />
     <Compile Include="Utility\EmbeddedAssests.cs" />
     <Compile Include="Utility\Helper.cs" />
     <Compile Include="Config\AGeneralConfig.cs" />
-    <Compile Include="MoreSkills.cs" />
     <Compile Include="Config\Info.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\Instances.cs" />
@@ -114,6 +115,13 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Assets\Icons\tamingicon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Icons\fishingicon.png" />
+    <Content Include="Debug.targets" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".editorconfig" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

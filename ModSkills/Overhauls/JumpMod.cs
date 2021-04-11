@@ -148,16 +148,25 @@ namespace MoreSkills.ModSkills.Overhauls
                         {
                             if (MoreSkills_OverhaulsConfig.EnableMaxFallAltitude.Value)
                             {
-                                if (Altitude < MaxAFall)
-                                    hit.m_damage.m_damage = ((100 / (MaxAFall - 4)) * (Altitude - 4)) / (FDM * Level);
-                                else
-                                    hit.m_damage.m_damage = (((100 / (MaxAFall - 4)) * (Altitude - 4)) / ((FDM * Level)) + (Altitude - MaxAFall) * MDI);
+                                if (Altitude > 4f && Altitude < MaxAFall)
+                                {
+                                    if (hit.m_attacker.userID == 0)
+                                        hit.m_damage.m_damage = ((100 / (MaxAFall - 4)) * (Altitude - 4)) / (FDM * Level);
+                                }
+                                else if (Altitude > MaxAFall)
+                                {
+                                    if (hit.m_attacker.userID == 0)
+                                        hit.m_damage.m_damage = (((100 / (MaxAFall - 4)) * (Altitude - 4)) / ((FDM * Level)) + (Altitude - MaxAFall) * MDI);
+                                }
                             }
                             else
                             {
-                                if (hit.m_attacker.m_userID == 0)
+                                if (Altitude > 4f)
                                 {
-                                    hit.m_damage.m_damage /= (FDM * Level);
+                                    if (hit.m_attacker.m_userID == 0)
+                                    {
+                                        hit.m_damage.m_damage /= (FDM * Level);
+                                    }
                                 }
                             }
                             //MoreSkills_Instances._player.Message(MessageHud.MessageType.Center, Localization.instance.Localize("Height: " + (Altitude - MaxARoll).ToString("F0") + "m" + " Damage: " + hit.m_damage.m_damage.ToString("F0")), 0, null);

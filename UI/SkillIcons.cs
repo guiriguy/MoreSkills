@@ -69,5 +69,16 @@ namespace MoreSkills.UI
             iconTaming.Dispose();
             return TamingIcon;
         }
+
+        public static Sprite FishingIcon;
+
+        public static Sprite Load_FishingIcon()
+        {
+            Stream iconFishing = EmbeddedAssets.LoadAssets("Assets.Icons.fishingicon.png");
+            Texture2D Fishingtexture2D = Helper.LoadPng(iconFishing);
+            FishingIcon = Sprite.Create(Fishingtexture2D, new Rect(0f, 0f, 32f, 32f), Vector2.zero);
+            iconFishing.Dispose();
+            return FishingIcon;
+        }
     }
 }
