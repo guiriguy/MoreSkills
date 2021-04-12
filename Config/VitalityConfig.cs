@@ -28,10 +28,18 @@ namespace MoreSkills.Config
 
             //Inject.Strength
             if (EnableHealthMod.Value)
-                SkillInjector.RegisterNewSkill(701, "Vitality", "Endure and gain resistance as you recieve damage", 1f, SkillIcons.Load_VitalityIcon(), Skills.SkillType.Unarmed);
+                try
+                {
+                    SkillInjector.RegisterNewSkill(701, "Vitality", "Endure and gain resistance as you recieve damage", 1f, SkillIcons.Load_VitalityIcon(), Skills.SkillType.Unarmed);
+                }
+                catch
+                {
+                }
 
             //--
-            new Harmony("MoreSkills.VitalityConfig.GuiriGuyMods").PatchAll();
+            Debug.Log("Vitality Skill Patched!");
+            harmonyVitality = new Harmony("MoreSkills.VitalityConfig.GuiriGuyMods");
+            harmonyVitality.PatchAll();
 
             //Logs            
             if (!EnableHealthMod.Value)
@@ -42,12 +50,20 @@ namespace MoreSkills.Config
             Debug.Log("Vitality Loaded!");
             Debug.Log("Everything is Loaded. Hope you love the mod :D");
         }
+        private void OnDestroy()
+        {
+
+            Debug.Log("Vitality Skill UnPatched!");
+            harmonyVitality.UnpatchSelf();
+        }
 
         // Stats Bases
 
         public static ConfigEntry<float> BaseHealth;
 
         public static ConfigEntry<float> BaseMaxHealth;
+
+        private Harmony harmonyVitality;
 
         //Skill Increases Multpliers
 

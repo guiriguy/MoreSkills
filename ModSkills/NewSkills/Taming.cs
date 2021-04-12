@@ -21,296 +21,303 @@ namespace MoreSkills.ModSkills.NewSkills
                     {
                         //Debug.LogWarning("Here 1");
                         //Debug.LogWarning("ZDOID ANTES: " + Creature1);
-                        if (__instance.GetTameness() <= 5 && !__instance.m_character.IsTamed() && !__instance.m_character.IsPlayer())
+                        if (__instance.GetTameness() < 100 && !__instance.m_character.IsTamed() && !__instance.m_character.IsPlayer())
                         {
                             Player closestPlayer = null;
                             ZDOID cPlayer = ZDOID.None;
                             //Debug.LogWarning("Here 2");
-                            //Debug.LogWarning("Using Slot 1");
-                            try
+                            //Debug.LogWarning("ZDO" + __instance.m_nview.GetZDO().GetString("TamerID"));
+
+                            if (__instance.m_nview.GetZDO().GetString("TamerID") == "")
                             {
-                                closestPlayer = Player.GetClosestPlayer(__instance.transform.position, 30f);
-                                cPlayer = closestPlayer.GetZDOID();
-                            }
-                            catch (Exception)
-                            {
-                                closestPlayer = null;
-                                cPlayer = ZDOID.None;
-                            }
-                            if (cPlayer == MoreSkills_Instances._player.GetZDOID())
-                            {
-                                //Debug.LogWarning("Here 3");
-                                if (MoreSkills_TamingConfig.EnableAllTamableCompatibility.Value)
+                                try
                                 {
-                                    //Debug.LogWarning("Here 4");
-                                    string sCreature = __instance.name.Replace("(Clone)", "");
-                                    switch (__instance.name.Replace("(Clone)", ""))
+                                    closestPlayer = Player.GetClosestPlayer(__instance.transform.position, 30f);
+                                    cPlayer = closestPlayer.GetZDOID();
+                                }
+                                catch (Exception)
+                                {
+                                    closestPlayer = null;
+                                    cPlayer = ZDOID.None;
+                                }
+                                if (cPlayer == MoreSkills_Instances._player.GetZDOID())
+                                {
+                                    //Debug.LogWarning("Here 3");
+                                    if (MoreSkills_TamingConfig.EnableAllTamableCompatibility.Value)
                                     {
-                                        case "Blob":
-                                            Masterlvl1 = MoreSkills_TamingConfig.BlobLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.BlobLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.BlobLevelTamer.Value;
-                                            break;
-                                        case "BlobElite":
-                                            Masterlvl1 = MoreSkills_TamingConfig.BlobEliteLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.BlobEliteLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.BlobEliteLevelUnlock.Value;
-                                            break;
-                                        case "Boar":
-                                            Masterlvl1 = MoreSkills_TamingConfig.BoarLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.BoarLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.BoarLevelUnlock.Value;
-                                            break;
-                                        case "Deathsquito":
-                                            Masterlvl1 = MoreSkills_TamingConfig.DeathsquitoLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.DeathsquitoLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.DeathsquitoLevelUnlock.Value;
-                                            break;
-                                        case "Hatchling":
-                                            Masterlvl1 = MoreSkills_TamingConfig.DrakeLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.DrakeLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.DrakeLevelUnlock.Value;
-                                            break;
-                                        case "Draugr":
-                                            Masterlvl1 = MoreSkills_TamingConfig.DraugrLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.DraugrLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.DraugrLevelUnlock.Value;
-                                            break;
-                                        case "Draugr_Elite":
-                                            Masterlvl1 = MoreSkills_TamingConfig.DraugrEliteLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.DraugrEliteLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.DraugrEliteLevelUnlock.Value;
-                                            break;
-                                        case "Fenring":
-                                            Masterlvl1 = MoreSkills_TamingConfig.FenringLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.FenringLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.FenringLevelUnlock.Value;
-                                            break;
-                                        case "Goblin":
-                                            Masterlvl1 = MoreSkills_TamingConfig.GoblinLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.GoblinLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.GoblinLevelUnlock.Value;
-                                            break;
-                                        case "GoblinBrute":
-                                            Masterlvl1 = MoreSkills_TamingConfig.GoblinBruteLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.GoblinBruteLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.GoblinBruteLevelUnlock.Value;
-                                            break;
-                                        case "GoblinShaman":
-                                            Masterlvl1 = MoreSkills_TamingConfig.GoblinShamanLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.GoblinShamanLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.GoblinShamanLevelUnlock.Value;
-                                            break;
-                                        case "Greydwarf":
-                                            Masterlvl1 = MoreSkills_TamingConfig.GreydwarfLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.GreydwarfLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.GreydwarfLevelUnlock.Value;
-                                            break;
-                                        case "Greydwarf_Elite":
-                                            Masterlvl1 = MoreSkills_TamingConfig.GoblinBruteLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.GoblinBruteLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.GoblinBruteLevelUnlock.Value;
-                                            break;
-                                        case "Greydwarf_Shaman":
-                                            Masterlvl1 = MoreSkills_TamingConfig.GoblinShamanLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.GoblinShamanLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.GoblinShamanLevelUnlock.Value;
-                                            break;
-                                        case "Greyling":
-                                            Masterlvl1 = MoreSkills_TamingConfig.GreylingLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.GreylingLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.GreylingLevelUnlock.Value;
-                                            break;
-                                        case "Leech":
-                                            Masterlvl1 = MoreSkills_TamingConfig.LeechLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.LeechLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.LeechLevelUnlock.Value;
-                                            break;
-                                        case "Lox":
-                                            Masterlvl1 = MoreSkills_TamingConfig.LoxLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.LoxLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.LoxLevelUnlock.Value;
-                                            break;
-                                        case "Neck":
-                                            Masterlvl1 = MoreSkills_TamingConfig.NeckLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.NeckLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.NeckLevelUnlock.Value;
-                                            break;
-                                        case "Serpent":
-                                            Masterlvl1 = MoreSkills_TamingConfig.SerpentLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.SerpentLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.SerpentLevelUnlock.Value;
-                                            break;
-                                        case "Skeleton":
-                                            Masterlvl1 = MoreSkills_TamingConfig.SkeletonLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.SkeletonLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.SkeletonLevelUnlock.Value;
-                                            break;
-                                        case "Skeleton_Poison":
-                                            Masterlvl1 = MoreSkills_TamingConfig.SkeletonPoisonLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.SkeletonPoisonLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.SkeletonPoisonLevelUnlock.Value;
-                                            break;
-                                        case "StoneGolem":
-                                            Masterlvl1 = MoreSkills_TamingConfig.StoneGolemLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.StoneGolemLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.StoneGolemLevelUnlock.Value;
-                                            break;
-                                        case "Surtling":
-                                            Masterlvl1 = MoreSkills_TamingConfig.SurtlingLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.SurtlingLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.SurtlingLevelUnlock.Value;
-                                            break;
-                                        case "Troll":
-                                            Masterlvl1 = MoreSkills_TamingConfig.TrollLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.TrollLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.TrollLevelUnlock.Value;
-                                            break;
-                                        case "Wolf":
-                                            Masterlvl1 = MoreSkills_TamingConfig.WolfLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.WolfLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.WolfLevelUnlock.Value;
-                                            break;
-                                        case "Wraith":
-                                            Masterlvl1 = MoreSkills_TamingConfig.WraithLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.WraithLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.WraithLevelUnlock.Value;
-                                            break;
-                                        case "Eikthyr":
-                                            Masterlvl1 = MoreSkills_TamingConfig.EikthyrLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.EikthyrLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.EikthyrLevelUnlock.Value;
-                                            break;
-                                        case "gd_king":
-                                            Masterlvl1 = MoreSkills_TamingConfig.ElderLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.ElderLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.ElderLevelUnlock.Value;
-                                            break;
-                                        case "Bonemass":
-                                            Masterlvl1 = MoreSkills_TamingConfig.BonemassLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.BonemassLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.BonemassLevelUnlock.Value;
-                                            break;
-                                        case "Dragon":
-                                            Masterlvl1 = MoreSkills_TamingConfig.DragonLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.DragonLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.DragonLevelUnlock.Value;
-                                            break;
-                                        case "GoblinKing":
-                                            Masterlvl1 = MoreSkills_TamingConfig.GoblinKingLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.GoblinKingLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.GoblinKingLevelUnlock.Value;
-                                            break;
-                                        case "RRR_GDThornweaver":
-                                            Masterlvl1 = MoreSkills_TamingConfig.RRRGDThornweaverLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.RRRGDThornweaverLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.RRRGDThornweaverLevelUnlock.Value;
-                                            break;
-                                        case "RRR_GhostVengeful":
-                                            Masterlvl1 = MoreSkills_TamingConfig.RRRGhostVengefulLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.RRRGhostVengefulLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.RRRGhostVengefulLevelUnlock.Value;
-                                            break;
-                                        case "RRR_TrollTosser":
-                                            Masterlvl1 = MoreSkills_TamingConfig.RRRTrollTosserLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.RRRTrollTosserLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.RRRTrollTosserLevelUnlock.Value;
-                                            break;
-                                        case "Ghost":
-                                            Masterlvl1 = MoreSkills_TamingConfig.GhostLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.GhostLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.GhostLevelUnlock.Value;
-                                            break;
-                                        default:
-                                            Masterlvl1 = 30f;
-                                            Tamerlvl1 = 60f;
-                                            Unlocklvl1 = 90f;
-                                            if (tLevels.Find(tLevel => tLevel.Creature == sCreature).Creature != sCreature)
-                                            {
-                                                Debug.LogWarning("[MoreSkills]: Creature Tame Levels Missing: " + __instance.name.Replace("(Clone)", ""));
-                                                Debug.LogWarning("[MoreSkills]: Adding Creature to Temp with Default Needed Levels. Unlock 30. Tamer 60. Master 90.");
-                                                Debug.LogWarning("[MoreSkills]: Report it if you want custom numbers to the creature, and the levels. Thanks!");
-                                                tLevels.Add(new Helper.TamingLevels(
-                                                    creature: sCreature,
-                                                    master: Masterlvl1,
-                                                    tamer: Tamerlvl1,
-                                                    unlock: Unlocklvl1,
-                                                    tametime: __instance.m_tamingTime));
-                                            }
-                                            break;
+                                        //Debug.LogWarning("Here 4");
+                                        string sCreature = __instance.name.Replace("(Clone)", "");
+                                        switch (__instance.name.Replace("(Clone)", ""))
+                                        {
+                                            case "Blob":
+                                                Masterlvl1 = MoreSkills_TamingConfig.BlobLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.BlobLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.BlobLevelTamer.Value;
+                                                break;
+                                            case "BlobElite":
+                                                Masterlvl1 = MoreSkills_TamingConfig.BlobEliteLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.BlobEliteLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.BlobEliteLevelUnlock.Value;
+                                                break;
+                                            case "Boar":
+                                                Masterlvl1 = MoreSkills_TamingConfig.BoarLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.BoarLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.BoarLevelUnlock.Value;
+                                                break;
+                                            case "Deathsquito":
+                                                Masterlvl1 = MoreSkills_TamingConfig.DeathsquitoLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.DeathsquitoLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.DeathsquitoLevelUnlock.Value;
+                                                break;
+                                            case "Hatchling":
+                                                Masterlvl1 = MoreSkills_TamingConfig.DrakeLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.DrakeLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.DrakeLevelUnlock.Value;
+                                                break;
+                                            case "Draugr":
+                                                Masterlvl1 = MoreSkills_TamingConfig.DraugrLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.DraugrLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.DraugrLevelUnlock.Value;
+                                                break;
+                                            case "Draugr_Elite":
+                                                Masterlvl1 = MoreSkills_TamingConfig.DraugrEliteLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.DraugrEliteLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.DraugrEliteLevelUnlock.Value;
+                                                break;
+                                            case "Fenring":
+                                                Masterlvl1 = MoreSkills_TamingConfig.FenringLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.FenringLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.FenringLevelUnlock.Value;
+                                                break;
+                                            case "Goblin":
+                                                Masterlvl1 = MoreSkills_TamingConfig.GoblinLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.GoblinLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.GoblinLevelUnlock.Value;
+                                                break;
+                                            case "GoblinBrute":
+                                                Masterlvl1 = MoreSkills_TamingConfig.GoblinBruteLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.GoblinBruteLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.GoblinBruteLevelUnlock.Value;
+                                                break;
+                                            case "GoblinShaman":
+                                                Masterlvl1 = MoreSkills_TamingConfig.GoblinShamanLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.GoblinShamanLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.GoblinShamanLevelUnlock.Value;
+                                                break;
+                                            case "Greydwarf":
+                                                Masterlvl1 = MoreSkills_TamingConfig.GreydwarfLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.GreydwarfLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.GreydwarfLevelUnlock.Value;
+                                                break;
+                                            case "Greydwarf_Elite":
+                                                Masterlvl1 = MoreSkills_TamingConfig.GoblinBruteLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.GoblinBruteLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.GoblinBruteLevelUnlock.Value;
+                                                break;
+                                            case "Greydwarf_Shaman":
+                                                Masterlvl1 = MoreSkills_TamingConfig.GoblinShamanLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.GoblinShamanLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.GoblinShamanLevelUnlock.Value;
+                                                break;
+                                            case "Greyling":
+                                                Masterlvl1 = MoreSkills_TamingConfig.GreylingLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.GreylingLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.GreylingLevelUnlock.Value;
+                                                break;
+                                            case "Leech":
+                                                Masterlvl1 = MoreSkills_TamingConfig.LeechLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.LeechLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.LeechLevelUnlock.Value;
+                                                break;
+                                            case "Lox":
+                                                Masterlvl1 = MoreSkills_TamingConfig.LoxLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.LoxLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.LoxLevelUnlock.Value;
+                                                break;
+                                            case "Neck":
+                                                Masterlvl1 = MoreSkills_TamingConfig.NeckLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.NeckLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.NeckLevelUnlock.Value;
+                                                break;
+                                            case "Serpent":
+                                                Masterlvl1 = MoreSkills_TamingConfig.SerpentLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.SerpentLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.SerpentLevelUnlock.Value;
+                                                break;
+                                            case "Skeleton":
+                                                Masterlvl1 = MoreSkills_TamingConfig.SkeletonLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.SkeletonLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.SkeletonLevelUnlock.Value;
+                                                break;
+                                            case "Skeleton_Poison":
+                                                Masterlvl1 = MoreSkills_TamingConfig.SkeletonPoisonLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.SkeletonPoisonLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.SkeletonPoisonLevelUnlock.Value;
+                                                break;
+                                            case "StoneGolem":
+                                                Masterlvl1 = MoreSkills_TamingConfig.StoneGolemLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.StoneGolemLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.StoneGolemLevelUnlock.Value;
+                                                break;
+                                            case "Surtling":
+                                                Masterlvl1 = MoreSkills_TamingConfig.SurtlingLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.SurtlingLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.SurtlingLevelUnlock.Value;
+                                                break;
+                                            case "Troll":
+                                                Masterlvl1 = MoreSkills_TamingConfig.TrollLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.TrollLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.TrollLevelUnlock.Value;
+                                                break;
+                                            case "Wolf":
+                                                Masterlvl1 = MoreSkills_TamingConfig.WolfLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.WolfLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.WolfLevelUnlock.Value;
+                                                break;
+                                            case "Wraith":
+                                                Masterlvl1 = MoreSkills_TamingConfig.WraithLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.WraithLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.WraithLevelUnlock.Value;
+                                                break;
+                                            case "Eikthyr":
+                                                Masterlvl1 = MoreSkills_TamingConfig.EikthyrLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.EikthyrLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.EikthyrLevelUnlock.Value;
+                                                break;
+                                            case "gd_king":
+                                                Masterlvl1 = MoreSkills_TamingConfig.ElderLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.ElderLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.ElderLevelUnlock.Value;
+                                                break;
+                                            case "Bonemass":
+                                                Masterlvl1 = MoreSkills_TamingConfig.BonemassLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.BonemassLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.BonemassLevelUnlock.Value;
+                                                break;
+                                            case "Dragon":
+                                                Masterlvl1 = MoreSkills_TamingConfig.DragonLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.DragonLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.DragonLevelUnlock.Value;
+                                                break;
+                                            case "GoblinKing":
+                                                Masterlvl1 = MoreSkills_TamingConfig.GoblinKingLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.GoblinKingLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.GoblinKingLevelUnlock.Value;
+                                                break;
+                                            case "RRR_GDThornweaver":
+                                                Masterlvl1 = MoreSkills_TamingConfig.RRRGDThornweaverLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.RRRGDThornweaverLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.RRRGDThornweaverLevelUnlock.Value;
+                                                break;
+                                            case "RRR_GhostVengeful":
+                                                Masterlvl1 = MoreSkills_TamingConfig.RRRGhostVengefulLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.RRRGhostVengefulLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.RRRGhostVengefulLevelUnlock.Value;
+                                                break;
+                                            case "RRR_TrollTosser":
+                                                Masterlvl1 = MoreSkills_TamingConfig.RRRTrollTosserLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.RRRTrollTosserLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.RRRTrollTosserLevelUnlock.Value;
+                                                break;
+                                            case "Ghost":
+                                                Masterlvl1 = MoreSkills_TamingConfig.GhostLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.GhostLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.GhostLevelUnlock.Value;
+                                                break;
+                                            default:
+                                                Masterlvl1 = 30f;
+                                                Tamerlvl1 = 60f;
+                                                Unlocklvl1 = 90f;
+                                                if (tLevels.Find(tLevel => tLevel.Creature == sCreature).Creature != sCreature)
+                                                {
+                                                    Debug.LogWarning("[MoreSkills]: Creature Tame Levels Missing: " + __instance.name.Replace("(Clone)", ""));
+                                                    Debug.LogWarning("[MoreSkills]: Adding Creature to Temp with Default Needed Levels. Unlock 30. Tamer 60. Master 90.");
+                                                    Debug.LogWarning("[MoreSkills]: Report it if you want custom numbers to the creature, and the levels. Thanks!");
+                                                    tLevels.Add(new Helper.TamingLevels(
+                                                        creature: sCreature,
+                                                        master: Masterlvl1,
+                                                        tamer: Tamerlvl1,
+                                                        unlock: Unlocklvl1,
+                                                        tametime: __instance.m_tamingTime));
+                                                }
+                                                break;
+                                        }
+                                        if (tLevels.Find(tLevel => tLevel.Creature == sCreature).Creature != sCreature)
+                                        {
+                                            Debug.Log("[MoreSkills]: Saved Taming Levels from : " + __instance.name.Replace("(Clone)", "") + " to the Temporal Database");
+                                            tLevels.Add(new Helper.TamingLevels(
+                                                creature: sCreature,
+                                                master: Masterlvl1,
+                                                tamer: Tamerlvl1,
+                                                unlock: Unlocklvl1,
+                                                tametime: __instance.m_tamingTime));
+                                        }
                                     }
-                                    if (tLevels.Find(tLevel => tLevel.Creature == sCreature).Creature != sCreature)
+                                    else
                                     {
-                                        Debug.Log("[MoreSkills]: Saved Taming Levels from : " + __instance.name.Replace("(Clone)", "") + " to the Temporal Database");
-                                        tLevels.Add(new Helper.TamingLevels(
-                                            creature: sCreature,
-                                            master: Masterlvl1,
-                                            tamer: Tamerlvl1,
-                                            unlock: Unlocklvl1,
-                                            tametime: __instance.m_tamingTime));
+                                        //Debug.LogWarning("Here 5");
+                                        string sCreature = __instance.name.Replace("(Clone)", "");
+                                        switch (__instance.name.Replace("(Clone)", ""))
+                                        {
+                                            case "Boar":
+                                                Masterlvl1 = MoreSkills_TamingConfig.BoarLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.BoarLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.BoarLevelUnlock.Value;
+                                                break;
+                                            case "Wolf":
+                                                Masterlvl1 = MoreSkills_TamingConfig.WolfLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.WolfLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.WolfLevelUnlock.Value;
+                                                break;
+                                            case "Lox":
+                                                Masterlvl1 = MoreSkills_TamingConfig.LoxLevelMaster.Value;
+                                                Tamerlvl1 = MoreSkills_TamingConfig.LeechLevelTamer.Value;
+                                                Unlocklvl1 = MoreSkills_TamingConfig.LeechLevelUnlock.Value;
+                                                break;
+                                        }
+                                        if (tLevels.Find(tLevel => tLevel.Creature == sCreature).Creature != sCreature)
+                                        {
+                                            //Debug.LogWarning("Here 6");
+                                            Debug.Log("[MoreSkills]: Saved Taming Levels from : " + __instance.name.Replace("(Clone)", "") + " to the Temporal Database");
+                                            tLevels.Add(new Helper.TamingLevels(
+                                                creature: sCreature,
+                                                master: Masterlvl1,
+                                                tamer: Tamerlvl1,
+                                                unlock: Unlocklvl1,
+                                                tametime: __instance.m_tamingTime));
+                                        }
                                     }
+                                    //Debug.LogWarning("Here 7");
+                                    //Debug.LogWarning("Nivel Master: " + Masterlvl1);
+                                    //Debug.LogWarning("Nivel Tamer: " + Tamerlvl1);
+                                    //Debug.LogWarning("Nivel Unlock: " + Unlocklvl1);
+                                    string CreatureZDOID = string.Concat(__instance.name + ":" + __instance.m_character.GetZDOID());
+                                    ZDOID TamerID = closestPlayer.GetZDOID();
+                                    float tameTime = __instance.m_tamingTime;
+                                    float eatTime = __instance.m_fedDuration;
+                                    float Master = Masterlvl1;
+                                    float Tamer = Tamerlvl1;
+                                    float Unlock = Unlocklvl1;
+                                    tSaves.Add(new Helper.TamingSaves(
+                                        creaturezdoid: CreatureZDOID,
+                                        tamerid: TamerID,
+                                        tametime: tameTime,
+                                        eattime: eatTime,
+                                        master: Master,
+                                        tamer: Tamer,
+                                        unlock: Unlock));
+                                    //Debug.Log("[MoreSkills]: You are now taming a " + (__instance.name.Replace("(Clone)", "")));
+                                    //Debug.LogWarning("Here 8");
+                                    MoreSkills_Instances._player.Message(MessageHud.MessageType.Center, "You are now taming a " + (__instance.name.Replace("(Clone)", "")), 0, null);
+                                    __instance.m_nview.GetZDO().Set("TamerID", MoreSkills_Instances._player.GetZDOID().ToString());
                                 }
                                 else
                                 {
-                                    //Debug.LogWarning("Here 5");
-                                    string sCreature = __instance.name.Replace("(Clone)", "");
-                                    switch (__instance.name.Replace("(Clone)", ""))
-                                    {
-                                        case "Boar":
-                                            Masterlvl1 = MoreSkills_TamingConfig.BoarLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.BoarLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.BoarLevelUnlock.Value;
-                                            break;
-                                        case "Wolf":
-                                            Masterlvl1 = MoreSkills_TamingConfig.WolfLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.WolfLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.WolfLevelUnlock.Value;
-                                            break;
-                                        case "Lox":
-                                            Masterlvl1 = MoreSkills_TamingConfig.LoxLevelMaster.Value;
-                                            Tamerlvl1 = MoreSkills_TamingConfig.LeechLevelTamer.Value;
-                                            Unlocklvl1 = MoreSkills_TamingConfig.LeechLevelUnlock.Value;
-                                            break;
-                                    }
-                                    if (tLevels.Find(tLevel => tLevel.Creature == sCreature).Creature != sCreature)
-                                    {
-                                        //Debug.LogWarning("Here 6");
-                                        Debug.Log("[MoreSkills]: Saved Taming Levels from : " + __instance.name.Replace("(Clone)", "") + " to the Temporal Database");
-                                        tLevels.Add(new Helper.TamingLevels(
-                                            creature: sCreature,
-                                            master: Masterlvl1,
-                                            tamer: Tamerlvl1,
-                                            unlock: Unlocklvl1,
-                                            tametime: __instance.m_tamingTime));
-                                    }
+                                    Debug.LogError("You are not the tamer, or was the closest one when he first ate or close enough");
+                                    MoreSkills_Instances._player.Message(MessageHud.MessageType.TopLeft, "<color=red>You are not the tamer, either you weren't the closest one when he first ate or close enough " + (__instance.name.Replace("(Clone)", "")) + "</color>", 0, null);
                                 }
-                                //Debug.LogWarning("Here 7");
-                                //Debug.LogWarning("Nivel Master: " + Masterlvl1);
-                                //Debug.LogWarning("Nivel Tamer: " + Tamerlvl1);
-                                //Debug.LogWarning("Nivel Unlock: " + Unlocklvl1);
-                                string CreatureZDOID = string.Concat(__instance.name + ":" + __instance.m_character.GetZDOID());
-                                ZDOID TamerID = closestPlayer.GetZDOID();
-                                float tameTime = __instance.m_tamingTime;
-                                float eatTime = __instance.m_fedDuration;
-                                float Master = Masterlvl1;
-                                float Tamer = Tamerlvl1;
-                                float Unlock = Unlocklvl1;
-                                tSaves.Add(new Helper.TamingSaves(
-                                    creaturezdoid: CreatureZDOID,
-                                    tamerid: TamerID,
-                                    tametime: tameTime,
-                                    eattime: eatTime,
-                                    master: Master,
-                                    tamer: Tamer,
-                                    unlock: Unlock));
-                                //Debug.Log("[MoreSkills]: You are now taming a " + (__instance.name.Replace("(Clone)", "")));
-                                //Debug.LogWarning("Here 8");
-                                MoreSkills_Instances._player.Message(MessageHud.MessageType.Center, "You are now taming a " + (__instance.name.Replace("(Clone)", "")), 0, null);
-                            }
-                            else
-                            {
-                                Debug.LogError("You are not the tamer, or was the closest one when he first ate or close enough");
-                                MoreSkills_Instances._player.Message(MessageHud.MessageType.TopLeft, "<color=red>You are not the tamer, either you weren't the closest one when he first ate or close enough " + (__instance.name.Replace("(Clone)", "")) + "</color>", 0, null);
+                                /*string Test = __instance.m_nview.GetZDO().GetString("TamerID");
+                                Debug.LogWarning("ZDOs" + Test);*/
                             }
                         }
                     }
@@ -738,6 +745,7 @@ namespace MoreSkills.ModSkills.NewSkills
                                 tGotFar.Remove(tgotfar);
                                 var tdoublecheck = tDoubleCheck.Find(x => x.CreatureZDOID == CreatureZDOID);
                                 tDoubleCheck.Remove(tdoublecheck);
+                                __instance.m_nview.GetZDO().Set("TamerID", "");
                             }
                         }
 
@@ -798,390 +806,385 @@ namespace MoreSkills.ModSkills.NewSkills
                     {
                         if (MoreSkills_TamingConfig.EnableTamingUnlocks.Value)
                         {
-                            string sCreature = __instance.name.Replace("(Clone)", "");
-                            if (MoreSkills_TamingConfig.EnableAllTamableCompatibility.Value)
-                            {
-                                //Debug.LogWarning("Here 4");
-                                switch (__instance.name.Replace("(Clone)", ""))
-                                {
-                                    case "Blob":
-                                        Masterlvl1 = MoreSkills_TamingConfig.BlobLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.BlobLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.BlobLevelTamer.Value;
-                                        break;
-                                    case "BlobElite":
-                                        Masterlvl1 = MoreSkills_TamingConfig.BlobEliteLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.BlobEliteLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.BlobEliteLevelUnlock.Value;
-                                        break;
-                                    case "Boar":
-                                        Masterlvl1 = MoreSkills_TamingConfig.BoarLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.BoarLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.BoarLevelUnlock.Value;
-                                        break;
-                                    case "Deathsquito":
-                                        Masterlvl1 = MoreSkills_TamingConfig.DeathsquitoLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.DeathsquitoLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.DeathsquitoLevelUnlock.Value;
-                                        break;
-                                    case "Hatchling":
-                                        Masterlvl1 = MoreSkills_TamingConfig.DrakeLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.DrakeLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.DrakeLevelUnlock.Value;
-                                        break;
-                                    case "Draugr":
-                                        Masterlvl1 = MoreSkills_TamingConfig.DraugrLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.DraugrLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.DraugrLevelUnlock.Value;
-                                        break;
-                                    case "Draugr_Elite":
-                                        Masterlvl1 = MoreSkills_TamingConfig.DraugrEliteLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.DraugrEliteLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.DraugrEliteLevelUnlock.Value;
-                                        break;
-                                    case "Fenring":
-                                        Masterlvl1 = MoreSkills_TamingConfig.FenringLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.FenringLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.FenringLevelUnlock.Value;
-                                        break;
-                                    case "Goblin":
-                                        Masterlvl1 = MoreSkills_TamingConfig.GoblinLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.GoblinLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.GoblinLevelUnlock.Value;
-                                        break;
-                                    case "GoblinBrute":
-                                        Masterlvl1 = MoreSkills_TamingConfig.GoblinBruteLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.GoblinBruteLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.GoblinBruteLevelUnlock.Value;
-                                        break;
-                                    case "GoblinShaman":
-                                        Masterlvl1 = MoreSkills_TamingConfig.GoblinShamanLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.GoblinShamanLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.GoblinShamanLevelUnlock.Value;
-                                        break;
-                                    case "Greydwarf":
-                                        Masterlvl1 = MoreSkills_TamingConfig.GreydwarfLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.GreydwarfLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.GreydwarfLevelUnlock.Value;
-                                        break;
-                                    case "Greydwarf_Elite":
-                                        Masterlvl1 = MoreSkills_TamingConfig.GoblinBruteLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.GoblinBruteLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.GoblinBruteLevelUnlock.Value;
-                                        break;
-                                    case "Greydwarf_Shaman":
-                                        Masterlvl1 = MoreSkills_TamingConfig.GoblinShamanLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.GoblinShamanLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.GoblinShamanLevelUnlock.Value;
-                                        break;
-                                    case "Greyling":
-                                        Masterlvl1 = MoreSkills_TamingConfig.GreylingLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.GreylingLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.GreylingLevelUnlock.Value;
-                                        break;
-                                    case "Leech":
-                                        Masterlvl1 = MoreSkills_TamingConfig.LeechLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.LeechLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.LeechLevelUnlock.Value;
-                                        break;
-                                    case "Lox":
-                                        Masterlvl1 = MoreSkills_TamingConfig.LoxLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.LoxLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.LoxLevelUnlock.Value;
-                                        break;
-                                    case "Neck":
-                                        Masterlvl1 = MoreSkills_TamingConfig.NeckLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.NeckLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.NeckLevelUnlock.Value;
-                                        break;
-                                    case "Serpent":
-                                        Masterlvl1 = MoreSkills_TamingConfig.SerpentLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.SerpentLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.SerpentLevelUnlock.Value;
-                                        break;
-                                    case "Skeleton":
-                                        Masterlvl1 = MoreSkills_TamingConfig.SkeletonLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.SkeletonLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.SkeletonLevelUnlock.Value;
-                                        break;
-                                    case "Skeleton_Poison":
-                                        Masterlvl1 = MoreSkills_TamingConfig.SkeletonPoisonLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.SkeletonPoisonLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.SkeletonPoisonLevelUnlock.Value;
-                                        break;
-                                    case "StoneGolem":
-                                        Masterlvl1 = MoreSkills_TamingConfig.StoneGolemLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.StoneGolemLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.StoneGolemLevelUnlock.Value;
-                                        break;
-                                    case "Surtling":
-                                        Masterlvl1 = MoreSkills_TamingConfig.SurtlingLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.SurtlingLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.SurtlingLevelUnlock.Value;
-                                        break;
-                                    case "Troll":
-                                        Masterlvl1 = MoreSkills_TamingConfig.TrollLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.TrollLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.TrollLevelUnlock.Value;
-                                        break;
-                                    case "Wolf":
-                                        Masterlvl1 = MoreSkills_TamingConfig.WolfLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.WolfLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.WolfLevelUnlock.Value;
-                                        break;
-                                    case "Wraith":
-                                        Masterlvl1 = MoreSkills_TamingConfig.WraithLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.WraithLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.WraithLevelUnlock.Value;
-                                        break;
-                                    case "Eikthyr":
-                                        Masterlvl1 = MoreSkills_TamingConfig.EikthyrLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.EikthyrLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.EikthyrLevelUnlock.Value;
-                                        break;
-                                    case "gd_king":
-                                        Masterlvl1 = MoreSkills_TamingConfig.ElderLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.ElderLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.ElderLevelUnlock.Value;
-                                        break;
-                                    case "Bonemass":
-                                        Masterlvl1 = MoreSkills_TamingConfig.BonemassLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.BonemassLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.BonemassLevelUnlock.Value;
-                                        break;
-                                    case "Dragon":
-                                        Masterlvl1 = MoreSkills_TamingConfig.DragonLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.DragonLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.DragonLevelUnlock.Value;
-                                        break;
-                                    case "GoblinKing":
-                                        Masterlvl1 = MoreSkills_TamingConfig.GoblinKingLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.GoblinKingLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.GoblinKingLevelUnlock.Value;
-                                        break;
-                                    case "RRR_GDThornweaver":
-                                        Masterlvl1 = MoreSkills_TamingConfig.RRRGDThornweaverLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.RRRGDThornweaverLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.RRRGDThornweaverLevelUnlock.Value;
-                                        break;
-                                    case "RRR_GhostVengeful":
-                                        Masterlvl1 = MoreSkills_TamingConfig.RRRGhostVengefulLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.RRRGhostVengefulLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.RRRGhostVengefulLevelUnlock.Value;
-                                        break;
-                                    case "RRR_TrollTosser":
-                                        Masterlvl1 = MoreSkills_TamingConfig.RRRTrollTosserLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.RRRTrollTosserLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.RRRTrollTosserLevelUnlock.Value;
-                                        break;
-                                    case "Ghost":
-                                        Masterlvl1 = MoreSkills_TamingConfig.GhostLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.GhostLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.GhostLevelUnlock.Value;
-                                        break;
-                                    default:
-                                        Masterlvl1 = 30f;
-                                        Tamerlvl1 = 60f;
-                                        Unlocklvl1 = 90f;
-                                        if (tLevels.Find(tLevel => tLevel.Creature == sCreature).Creature != sCreature)
-                                        {
-                                            Debug.LogWarning("[MoreSkills]: Creature Tame Levels Missing: " + __instance.name.Replace("(Clone)", ""));
-                                            Debug.LogWarning("[MoreSkills]: Adding Creature to Temp with Default Needed Levels. Unlock 30. Tamer 60. Master 90.");
-                                            Debug.LogWarning("[MoreSkills]: Report it if you want custom numbers to the creature, and the levels. Thanks!");
-                                            tLevels.Add(new Helper.TamingLevels(
-                                                creature: sCreature,
-                                                master: Masterlvl1,
-                                                tamer: Tamerlvl1,
-                                                unlock: Unlocklvl1,
-                                                tametime: __instance.m_tamingTime));
-                                        }
-                                        break;
-                                }
-                                if (tLevels.Find(tLevel => tLevel.Creature == sCreature).Creature != sCreature)
-                                {
-                                    Debug.Log("[MoreSkills]: Saved Taming Levels from : " + __instance.name.Replace("(Clone)", "") + " to the Temporal Database");
-                                    tLevels.Add(new Helper.TamingLevels(
-                                        creature: sCreature,
-                                        master: Masterlvl1,
-                                        tamer: Tamerlvl1,
-                                        unlock: Unlocklvl1,
-                                        tametime: __instance.m_tamingTime));
-                                }
-                            }
-                            else
-                            {
-                                //Debug.LogWarning("Here 5");
-                                switch (__instance.name.Replace("(Clone)", ""))
-                                {
-                                    case "Boar":
-                                        Masterlvl1 = MoreSkills_TamingConfig.BoarLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.BoarLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.BoarLevelUnlock.Value;
-                                        break;
-                                    case "Wolf":
-                                        Masterlvl1 = MoreSkills_TamingConfig.WolfLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.WolfLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.WolfLevelUnlock.Value;
-                                        break;
-                                    case "Lox":
-                                        Masterlvl1 = MoreSkills_TamingConfig.LoxLevelMaster.Value;
-                                        Tamerlvl1 = MoreSkills_TamingConfig.LeechLevelTamer.Value;
-                                        Unlocklvl1 = MoreSkills_TamingConfig.LeechLevelUnlock.Value;
-                                        break;
-                                }
-                                if (tLevels.Find(tLevel => tLevel.Creature == sCreature).Creature != sCreature)
-                                {
-                                    //Debug.LogWarning("Here 6");
-                                    Debug.Log("[MoreSkills]: Saved Taming Levels from : " + __instance.name.Replace("(Clone)", "") + " to the Temporal Database");
-                                    tLevels.Add(new Helper.TamingLevels(
-                                        creature: sCreature,
-                                        master: Masterlvl1,
-                                        tamer: Tamerlvl1,
-                                        unlock: Unlocklvl1,
-                                        tametime: __instance.m_tamingTime));
-                                }
-                            }
-                            float oldTime = tLevels.Find(tlevel => tlevel.Creature == sCreature).TameTime;
-                            float Master = tLevels.Find(tlevel => tlevel.Creature == sCreature).Master;
-                            float Tamer = tLevels.Find(tlevel => tlevel.Creature == sCreature).Tamer;
-                            float Unlock = tLevels.Find(tlevel => tlevel.Creature == sCreature).Unlock;
-                            float level = MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_TamingConfig.TamingSkill_Type);
-                            float Dif = Unlock - (level * 100);
-                            float MasterMath = ((oldTime / 2) + 120f) - (oldTime / 2);
-                            float TamerMath = ((oldTime / 2) + 120f) - (((oldTime / 2) * ((level - (Tamer / 100)) * (1 / ((Master - Tamer) / 100)))));
-                            float UnlockMath = oldTime - ((oldTime / 2) * ((level - (Unlock / 100)) * (1 / ((Tamer - Unlock) / 100))));
-                            float UnderMath = oldTime * (Unlock - (level * 100));
-                            float UnderTimeH;
-                            float UnderTimeM;
-                            float UnderTimeS;
-                            if (Mathf.Floor(UnderMath / 3600) <= 0)
-                                UnderTimeH = 0;
-                            else
-                                UnderTimeH = Mathf.Floor(UnderMath / 3600);
-                            if ((Mathf.Floor(UnderMath / 60) - (UnderTimeH * 60)) <= 0)
-                                UnderTimeM = 0;
-                            else
-                                UnderTimeM = Mathf.Floor(UnderMath / 60) - (UnderTimeH * 60);
-                            if ((UnderMath - ((UnderTimeH * 3600) + (UnderTimeM * 60))) <= 0)
-                                UnderTimeS = 0;
-                            else
-                                UnderTimeS = Mathf.Floor(UnderMath - ((UnderTimeH * 3600) + (UnderTimeM * 60)));
-
-                            if (UnderTimeH >= 1 && UnderTimeM >= 1 && UnderTimeS >= 1)
-                                UnderTime = UnderTimeH + "h " + UnderTimeM + "m " + UnderTimeS + "s";
-                            else if (UnderTimeH >= 1 && UnderTimeM >= 1 && UnderTimeS == 0)
-                                UnderTime = UnderTimeH + "h " + UnderTimeM + "m";
-                            else if (UnderTimeH >= 1 && UnderTimeM == 0 && UnderTimeS >= 1)
-                                UnderTime = UnderTimeH + "h " + UnderTimeS + "s";
-                            else if (UnderTimeH >= 1 && UnderTimeM == 0 && UnderTimeS == 0)
-                                UnderTime = UnderTimeH + "h";
-                            else if (UnderTimeH == 0 && UnderTimeM >= 1 && UnderTimeS >= 1)
-                                UnderTime = UnderTimeM + "m " + UnderTimeS + "s";
-                            else if (UnderTimeH == 0 && UnderTimeM >= 1 && UnderTimeS == 0)
-                                UnderTime = UnderTimeM + "m";
-                            else if (UnderTimeH == 0 && UnderTimeM == 0 && UnderTimeS >= 1)
-                                UnderTime = UnderTimeS + "s";
-
-                            float UnlockTimeH;
-                            float UnlockTimeM;
-                            float UnlockTimeS;
-                            if (Mathf.Floor(UnlockMath / 3600) <= 0)
-                                UnlockTimeH = 0;
-                            else
-                                UnlockTimeH = Mathf.Floor(UnlockMath / 3600);
-                            if ((Mathf.Floor(UnlockMath / 60) - (UnlockTimeH * 60)) <= 0)
-                                UnlockTimeM = 0;
-                            else
-                                UnlockTimeM = Mathf.Floor(UnlockMath / 60) - (UnlockTimeH * 60);
-                            if ((UnlockMath - ((UnlockTimeH * 3600) + (UnlockTimeM * 60))) <= 0)
-                                UnlockTimeS = 0;
-                            else
-                                UnlockTimeS = Mathf.Floor(UnlockMath - ((UnlockTimeH * 3600) + (UnlockTimeM * 60)));
-
-                            if (UnlockTimeH >= 1 && UnlockTimeM >= 1 && UnlockTimeS >= 1)
-                                UnlockTime = UnlockTimeH + "h " + UnlockTimeM + "m " + UnlockTimeS + "s";
-                            else if (UnlockTimeH >= 1 && UnlockTimeM >= 1 && UnlockTimeS == 0)
-                                UnlockTime = UnlockTimeH + "h " + UnlockTimeM + "m ";
-                            else if (UnlockTimeH >= 1 && UnlockTimeM == 0 && UnlockTimeS >= 1)
-                                UnlockTime = UnlockTimeH + "h " + UnlockTimeS + "s";
-                            else if (UnlockTimeH >= 1 && UnlockTimeM == 0 && UnlockTimeS == 0)
-                                UnlockTime = UnlockTimeH + "h";
-                            else if (UnlockTimeH == 0 && UnlockTimeM >= 1 && UnlockTimeS >= 1)
-                                UnlockTime = UnlockTimeM + "m " + UnlockTimeS + "s";
-                            else if (UnlockTimeH == 0 && UnlockTimeM >= 1 && UnlockTimeS == 0)
-                                UnlockTime = UnlockTimeM + "m";
-                            else if (UnlockTimeH == 0 && UnlockTimeM == 0 && UnlockTimeS >= 1)
-                                UnlockTime = UnlockTimeS + "s";
-
-                            float TamerTimeH;
-                            float TamerTimeM;
-                            float TamerTimeS;
-                            if (Mathf.Floor(TamerMath / 3600) <= 0)
-                                TamerTimeH = 0;
-                            else
-                                TamerTimeH = Mathf.Floor(TamerMath / 3600);
-                            if ((Mathf.Floor(TamerMath / 60) - (TamerTimeH * 60)) <= 0)
-                                TamerTimeM = 0;
-                            else
-                                TamerTimeM = Mathf.Floor(TamerMath / 60) - (TamerTimeH * 60);
-                            if ((TamerMath - ((TamerTimeH * 3600) + (TamerTimeM * 60))) <= 0)
-                                TamerTimeS = 0;
-                            else
-                                TamerTimeS = Mathf.Floor(TamerMath - ((TamerTimeH * 3600) + (TamerTimeM * 60)));
-
-                            if (TamerTimeH >= 1 && TamerTimeM >= 1 && TamerTimeS >= 1)
-                                TamerTime = TamerTimeH + "h " + TamerTimeM + "m " + TamerTimeS + "s";
-                            else if (TamerTimeH >= 1 && TamerTimeM >= 1 && TamerTimeS == 0)
-                                TamerTime = TamerTimeH + "h " + TamerTimeM + "m";
-                            else if (TamerTimeH >= 1 && TamerTimeM == 0 && TamerTimeS >= 1)
-                                TamerTime = TamerTimeH + "h " + TamerTimeS + "s";
-                            else if (TamerTimeH >= 1 && TamerTimeM == 0 && TamerTimeS == 0)
-                                TamerTime = TamerTimeH + "h";
-                            else if (TamerTimeH == 0 && TamerTimeM >= 1 && TamerTimeS >= 1)
-                                TamerTime = TamerTimeM + "m " + TamerTimeS + "s";
-                            else if (TamerTimeH == 0 && TamerTimeM >= 1 && TamerTimeS == 0)
-                                TamerTime = TamerTimeM + "m";
-                            else if (TamerTimeH == 0 && TamerTimeM == 0 && TamerTimeS >= 1)
-                                TamerTime = TamerTimeS + "s";
-
-                            float MasterTimeH;
-                            float MasterTimeM;
-                            float MasterTimeS;
-                            if (Mathf.Floor(MasterMath / 3600) <= 0)
-                                MasterTimeH = 0;
-                            else
-                                MasterTimeH = Mathf.Floor(MasterMath / 3600);
-                            if ((Mathf.Floor(MasterMath / 60) - (MasterTimeH * 60)) <= 0)
-                                MasterTimeM = 0;
-                            else
-                                MasterTimeM = Mathf.Floor(MasterMath / 60) - (MasterTimeH * 60);
-                            if ((MasterMath - ((MasterTimeH * 3600) + (MasterTimeM * 60))) <= 0)
-                                MasterTimeS = 0;
-                            else
-                                MasterTimeS = Mathf.Floor(MasterMath - ((MasterTimeH * 3600) + (MasterTimeM * 60)));
-
-                            if (MasterTimeH >= 1 && MasterTimeM >= 1 && MasterTimeS >= 1)
-                                MasterTime = MasterTimeH + "h " + MasterTimeM + "m " + MasterTimeS + "s";
-                            else if (MasterTimeH >= 1 && MasterTimeM >= 1 && MasterTimeS == 0)
-                                MasterTime = MasterTimeH + "h " + MasterTimeM + "m";
-                            else if (MasterTimeH >= 1 && MasterTimeM == 0 && MasterTimeS >= 1)
-                                MasterTime = MasterTimeH + "h " + MasterTimeS + "s";
-                            else if (MasterTimeH >= 1 && MasterTimeM == 0 && MasterTimeS == 0)
-                                MasterTime = MasterTimeH + "h";
-                            else if (MasterTimeH == 0 && MasterTimeM >= 1 && MasterTimeS >= 1)
-                                MasterTime = MasterTimeM + "m " + MasterTimeS + "s";
-                            else if (MasterTimeH == 0 && MasterTimeM >= 1 && MasterTimeS == 0)
-                                MasterTime = MasterTimeM + "m";
-                            else if (MasterTimeH == 0 && MasterTimeM == 0 && MasterTimeS >= 1)
-                                MasterTime = MasterTimeS + "s";
-                            /*Debug.LogWarning("Nivel: " + level);
-                            Debug.LogWarning("Instancia: " + __instance.name);
-                            Debug.LogWarning("Master: " + Master);
-                            Debug.LogWarning("Master: " + Tamer);
-                            Debug.LogWarning("Master: " + Unlock);*/
-
                             if (__instance.GetTameness() <= 0 && !__instance.m_character.IsTamed() && !__instance.m_character.IsPlayer())
                             {
+                                string sCreature = __instance.name.Replace("(Clone)", "");
+                                if (MoreSkills_TamingConfig.EnableAllTamableCompatibility.Value)
+                                {
+                                    //Debug.LogWarning("Here 4");
+                                    switch (__instance.name.Replace("(Clone)", ""))
+                                    {
+                                        case "Blob":
+                                            Masterlvl1 = MoreSkills_TamingConfig.BlobLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.BlobLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.BlobLevelTamer.Value;
+                                            break;
+                                        case "BlobElite":
+                                            Masterlvl1 = MoreSkills_TamingConfig.BlobEliteLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.BlobEliteLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.BlobEliteLevelUnlock.Value;
+                                            break;
+                                        case "Boar":
+                                            Masterlvl1 = MoreSkills_TamingConfig.BoarLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.BoarLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.BoarLevelUnlock.Value;
+                                            break;
+                                        case "Deathsquito":
+                                            Masterlvl1 = MoreSkills_TamingConfig.DeathsquitoLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.DeathsquitoLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.DeathsquitoLevelUnlock.Value;
+                                            break;
+                                        case "Hatchling":
+                                            Masterlvl1 = MoreSkills_TamingConfig.DrakeLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.DrakeLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.DrakeLevelUnlock.Value;
+                                            break;
+                                        case "Draugr":
+                                            Masterlvl1 = MoreSkills_TamingConfig.DraugrLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.DraugrLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.DraugrLevelUnlock.Value;
+                                            break;
+                                        case "Draugr_Elite":
+                                            Masterlvl1 = MoreSkills_TamingConfig.DraugrEliteLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.DraugrEliteLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.DraugrEliteLevelUnlock.Value;
+                                            break;
+                                        case "Fenring":
+                                            Masterlvl1 = MoreSkills_TamingConfig.FenringLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.FenringLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.FenringLevelUnlock.Value;
+                                            break;
+                                        case "Goblin":
+                                            Masterlvl1 = MoreSkills_TamingConfig.GoblinLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.GoblinLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.GoblinLevelUnlock.Value;
+                                            break;
+                                        case "GoblinBrute":
+                                            Masterlvl1 = MoreSkills_TamingConfig.GoblinBruteLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.GoblinBruteLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.GoblinBruteLevelUnlock.Value;
+                                            break;
+                                        case "GoblinShaman":
+                                            Masterlvl1 = MoreSkills_TamingConfig.GoblinShamanLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.GoblinShamanLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.GoblinShamanLevelUnlock.Value;
+                                            break;
+                                        case "Greydwarf":
+                                            Masterlvl1 = MoreSkills_TamingConfig.GreydwarfLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.GreydwarfLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.GreydwarfLevelUnlock.Value;
+                                            break;
+                                        case "Greydwarf_Elite":
+                                            Masterlvl1 = MoreSkills_TamingConfig.GoblinBruteLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.GoblinBruteLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.GoblinBruteLevelUnlock.Value;
+                                            break;
+                                        case "Greydwarf_Shaman":
+                                            Masterlvl1 = MoreSkills_TamingConfig.GoblinShamanLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.GoblinShamanLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.GoblinShamanLevelUnlock.Value;
+                                            break;
+                                        case "Greyling":
+                                            Masterlvl1 = MoreSkills_TamingConfig.GreylingLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.GreylingLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.GreylingLevelUnlock.Value;
+                                            break;
+                                        case "Leech":
+                                            Masterlvl1 = MoreSkills_TamingConfig.LeechLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.LeechLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.LeechLevelUnlock.Value;
+                                            break;
+                                        case "Lox":
+                                            Masterlvl1 = MoreSkills_TamingConfig.LoxLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.LoxLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.LoxLevelUnlock.Value;
+                                            break;
+                                        case "Neck":
+                                            Masterlvl1 = MoreSkills_TamingConfig.NeckLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.NeckLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.NeckLevelUnlock.Value;
+                                            break;
+                                        case "Serpent":
+                                            Masterlvl1 = MoreSkills_TamingConfig.SerpentLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.SerpentLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.SerpentLevelUnlock.Value;
+                                            break;
+                                        case "Skeleton":
+                                            Masterlvl1 = MoreSkills_TamingConfig.SkeletonLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.SkeletonLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.SkeletonLevelUnlock.Value;
+                                            break;
+                                        case "Skeleton_Poison":
+                                            Masterlvl1 = MoreSkills_TamingConfig.SkeletonPoisonLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.SkeletonPoisonLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.SkeletonPoisonLevelUnlock.Value;
+                                            break;
+                                        case "StoneGolem":
+                                            Masterlvl1 = MoreSkills_TamingConfig.StoneGolemLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.StoneGolemLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.StoneGolemLevelUnlock.Value;
+                                            break;
+                                        case "Surtling":
+                                            Masterlvl1 = MoreSkills_TamingConfig.SurtlingLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.SurtlingLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.SurtlingLevelUnlock.Value;
+                                            break;
+                                        case "Troll":
+                                            Masterlvl1 = MoreSkills_TamingConfig.TrollLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.TrollLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.TrollLevelUnlock.Value;
+                                            break;
+                                        case "Wolf":
+                                            Masterlvl1 = MoreSkills_TamingConfig.WolfLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.WolfLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.WolfLevelUnlock.Value;
+                                            break;
+                                        case "Wraith":
+                                            Masterlvl1 = MoreSkills_TamingConfig.WraithLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.WraithLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.WraithLevelUnlock.Value;
+                                            break;
+                                        case "Eikthyr":
+                                            Masterlvl1 = MoreSkills_TamingConfig.EikthyrLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.EikthyrLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.EikthyrLevelUnlock.Value;
+                                            break;
+                                        case "gd_king":
+                                            Masterlvl1 = MoreSkills_TamingConfig.ElderLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.ElderLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.ElderLevelUnlock.Value;
+                                            break;
+                                        case "Bonemass":
+                                            Masterlvl1 = MoreSkills_TamingConfig.BonemassLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.BonemassLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.BonemassLevelUnlock.Value;
+                                            break;
+                                        case "Dragon":
+                                            Masterlvl1 = MoreSkills_TamingConfig.DragonLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.DragonLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.DragonLevelUnlock.Value;
+                                            break;
+                                        case "GoblinKing":
+                                            Masterlvl1 = MoreSkills_TamingConfig.GoblinKingLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.GoblinKingLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.GoblinKingLevelUnlock.Value;
+                                            break;
+                                        case "RRR_GDThornweaver":
+                                            Masterlvl1 = MoreSkills_TamingConfig.RRRGDThornweaverLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.RRRGDThornweaverLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.RRRGDThornweaverLevelUnlock.Value;
+                                            break;
+                                        case "RRR_GhostVengeful":
+                                            Masterlvl1 = MoreSkills_TamingConfig.RRRGhostVengefulLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.RRRGhostVengefulLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.RRRGhostVengefulLevelUnlock.Value;
+                                            break;
+                                        case "RRR_TrollTosser":
+                                            Masterlvl1 = MoreSkills_TamingConfig.RRRTrollTosserLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.RRRTrollTosserLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.RRRTrollTosserLevelUnlock.Value;
+                                            break;
+                                        case "Ghost":
+                                            Masterlvl1 = MoreSkills_TamingConfig.GhostLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.GhostLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.GhostLevelUnlock.Value;
+                                            break;
+                                        default:
+                                            Masterlvl1 = 30f;
+                                            Tamerlvl1 = 60f;
+                                            Unlocklvl1 = 90f;
+                                            if (tLevels.Find(tLevel => tLevel.Creature == sCreature).Creature != sCreature)
+                                            {
+                                                Debug.LogWarning("[MoreSkills]: Creature Tame Levels Missing: " + __instance.name.Replace("(Clone)", ""));
+                                                Debug.LogWarning("[MoreSkills]: Adding Creature to Temp with Default Needed Levels. Unlock 30. Tamer 60. Master 90.");
+                                                Debug.LogWarning("[MoreSkills]: Report it if you want custom numbers to the creature, and the levels. Thanks!");
+                                                tLevels.Add(new Helper.TamingLevels(
+                                                    creature: sCreature,
+                                                    master: Masterlvl1,
+                                                    tamer: Tamerlvl1,
+                                                    unlock: Unlocklvl1,
+                                                    tametime: __instance.m_tamingTime));
+                                            }
+                                            break;
+                                    }
+                                    if (tLevels.Find(tLevel => tLevel.Creature == sCreature).Creature != sCreature)
+                                    {
+                                        Debug.Log("[MoreSkills]: Saved Taming Levels from : " + __instance.name.Replace("(Clone)", "") + " to the Temporal Database");
+                                        tLevels.Add(new Helper.TamingLevels(
+                                            creature: sCreature,
+                                            master: Masterlvl1,
+                                            tamer: Tamerlvl1,
+                                            unlock: Unlocklvl1,
+                                            tametime: __instance.m_tamingTime));
+                                    }
+                                }
+                                else
+                                {
+                                    //Debug.LogWarning("Here 5");
+                                    switch (__instance.name.Replace("(Clone)", ""))
+                                    {
+                                        case "Boar":
+                                            Masterlvl1 = MoreSkills_TamingConfig.BoarLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.BoarLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.BoarLevelUnlock.Value;
+                                            break;
+                                        case "Wolf":
+                                            Masterlvl1 = MoreSkills_TamingConfig.WolfLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.WolfLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.WolfLevelUnlock.Value;
+                                            break;
+                                        case "Lox":
+                                            Masterlvl1 = MoreSkills_TamingConfig.LoxLevelMaster.Value;
+                                            Tamerlvl1 = MoreSkills_TamingConfig.LeechLevelTamer.Value;
+                                            Unlocklvl1 = MoreSkills_TamingConfig.LeechLevelUnlock.Value;
+                                            break;
+                                    }
+                                    if (tLevels.Find(tLevel => tLevel.Creature == sCreature).Creature != sCreature)
+                                    {
+                                        //Debug.LogWarning("Here 6");
+                                        Debug.Log("[MoreSkills]: Saved Taming Levels from : " + __instance.name.Replace("(Clone)", "") + " to the Temporal Database");
+                                        tLevels.Add(new Helper.TamingLevels(
+                                            creature: sCreature,
+                                            master: Masterlvl1,
+                                            tamer: Tamerlvl1,
+                                            unlock: Unlocklvl1,
+                                            tametime: __instance.m_tamingTime));
+                                    }
+                                }
+                                float oldTime = tLevels.Find(tlevel => tlevel.Creature == sCreature).TameTime;
+                                float Master = tLevels.Find(tlevel => tlevel.Creature == sCreature).Master;
+                                float Tamer = tLevels.Find(tlevel => tlevel.Creature == sCreature).Tamer;
+                                float Unlock = tLevels.Find(tlevel => tlevel.Creature == sCreature).Unlock;
+                                float level = MoreSkills_Instances._player.GetSkillFactor((Skills.SkillType)MoreSkills_TamingConfig.TamingSkill_Type);
+                                float Dif = Unlock - (level * 100);
+                                float MasterMath = ((oldTime / 2) + 120f) - (oldTime / 2);
+                                float TamerMath = ((oldTime / 2) + 120f) - (((oldTime / 2) * ((level - (Tamer / 100)) * (1 / ((Master - Tamer) / 100)))));
+                                float UnlockMath = oldTime - ((oldTime / 2) * ((level - (Unlock / 100)) * (1 / ((Tamer - Unlock) / 100))));
+                                float UnderMath = oldTime * (Unlock - (level * 100));
+                                float UnderTimeH;
+                                float UnderTimeM;
+                                float UnderTimeS;
+
+                                if (Mathf.Floor(UnderMath / 3600) <= 0)
+                                    UnderTimeH = 0;
+                                else
+                                    UnderTimeH = Mathf.Floor(UnderMath / 3600);
+                                if ((Mathf.Floor(UnderMath / 60) - (UnderTimeH * 60)) <= 0)
+                                    UnderTimeM = 0;
+                                else
+                                    UnderTimeM = Mathf.Floor(UnderMath / 60) - (UnderTimeH * 60);
+                                if ((UnderMath - ((UnderTimeH * 3600) + (UnderTimeM * 60))) <= 0)
+                                    UnderTimeS = 0;
+                                else
+                                    UnderTimeS = Mathf.Floor(UnderMath - ((UnderTimeH * 3600) + (UnderTimeM * 60)));
+
+                                if (UnderTimeH >= 1 && UnderTimeM >= 1 && UnderTimeS >= 1)
+                                    UnderTime = UnderTimeH + "h " + UnderTimeM + "m " + UnderTimeS + "s";
+                                else if (UnderTimeH >= 1 && UnderTimeM >= 1 && UnderTimeS == 0)
+                                    UnderTime = UnderTimeH + "h " + UnderTimeM + "m";
+                                else if (UnderTimeH >= 1 && UnderTimeM == 0 && UnderTimeS >= 1)
+                                    UnderTime = UnderTimeH + "h " + UnderTimeS + "s";
+                                else if (UnderTimeH >= 1 && UnderTimeM == 0 && UnderTimeS == 0)
+                                    UnderTime = UnderTimeH + "h";
+                                else if (UnderTimeH == 0 && UnderTimeM >= 1 && UnderTimeS >= 1)
+                                    UnderTime = UnderTimeM + "m " + UnderTimeS + "s";
+                                else if (UnderTimeH == 0 && UnderTimeM >= 1 && UnderTimeS == 0)
+                                    UnderTime = UnderTimeM + "m";
+                                else if (UnderTimeH == 0 && UnderTimeM == 0 && UnderTimeS >= 1)
+                                    UnderTime = UnderTimeS + "s";
+
+                                float UnlockTimeH;
+                                float UnlockTimeM;
+                                float UnlockTimeS;
+                                if (Mathf.Floor(UnlockMath / 3600) <= 0)
+                                    UnlockTimeH = 0;
+                                else
+                                    UnlockTimeH = Mathf.Floor(UnlockMath / 3600);
+                                if ((Mathf.Floor(UnlockMath / 60) - (UnlockTimeH * 60)) <= 0)
+                                    UnlockTimeM = 0;
+                                else
+                                    UnlockTimeM = Mathf.Floor(UnlockMath / 60) - (UnlockTimeH * 60);
+                                if ((UnlockMath - ((UnlockTimeH * 3600) + (UnlockTimeM * 60))) <= 0)
+                                    UnlockTimeS = 0;
+                                else
+                                    UnlockTimeS = Mathf.Floor(UnlockMath - ((UnlockTimeH * 3600) + (UnlockTimeM * 60)));
+
+                                if (UnlockTimeH >= 1 && UnlockTimeM >= 1 && UnlockTimeS >= 1)
+                                    UnlockTime = UnlockTimeH + "h " + UnlockTimeM + "m " + UnlockTimeS + "s";
+                                else if (UnlockTimeH >= 1 && UnlockTimeM >= 1 && UnlockTimeS == 0)
+                                    UnlockTime = UnlockTimeH + "h " + UnlockTimeM + "m ";
+                                else if (UnlockTimeH >= 1 && UnlockTimeM == 0 && UnlockTimeS >= 1)
+                                    UnlockTime = UnlockTimeH + "h " + UnlockTimeS + "s";
+                                else if (UnlockTimeH >= 1 && UnlockTimeM == 0 && UnlockTimeS == 0)
+                                    UnlockTime = UnlockTimeH + "h";
+                                else if (UnlockTimeH == 0 && UnlockTimeM >= 1 && UnlockTimeS >= 1)
+                                    UnlockTime = UnlockTimeM + "m " + UnlockTimeS + "s";
+                                else if (UnlockTimeH == 0 && UnlockTimeM >= 1 && UnlockTimeS == 0)
+                                    UnlockTime = UnlockTimeM + "m";
+                                else if (UnlockTimeH == 0 && UnlockTimeM == 0 && UnlockTimeS >= 1)
+                                    UnlockTime = UnlockTimeS + "s";
+
+                                float TamerTimeH;
+                                float TamerTimeM;
+                                float TamerTimeS;
+                                if (Mathf.Floor(TamerMath / 3600) <= 0)
+                                    TamerTimeH = 0;
+                                else
+                                    TamerTimeH = Mathf.Floor(TamerMath / 3600);
+                                if ((Mathf.Floor(TamerMath / 60) - (TamerTimeH * 60)) <= 0)
+                                    TamerTimeM = 0;
+                                else
+                                    TamerTimeM = Mathf.Floor(TamerMath / 60) - (TamerTimeH * 60);
+                                if ((TamerMath - ((TamerTimeH * 3600) + (TamerTimeM * 60))) <= 0)
+                                    TamerTimeS = 0;
+                                else
+                                    TamerTimeS = Mathf.Floor(TamerMath - ((TamerTimeH * 3600) + (TamerTimeM * 60)));
+
+                                if (TamerTimeH >= 1 && TamerTimeM >= 1 && TamerTimeS >= 1)
+                                    TamerTime = TamerTimeH + "h " + TamerTimeM + "m " + TamerTimeS + "s";
+                                else if (TamerTimeH >= 1 && TamerTimeM >= 1 && TamerTimeS == 0)
+                                    TamerTime = TamerTimeH + "h " + TamerTimeM + "m";
+                                else if (TamerTimeH >= 1 && TamerTimeM == 0 && TamerTimeS >= 1)
+                                    TamerTime = TamerTimeH + "h " + TamerTimeS + "s";
+                                else if (TamerTimeH >= 1 && TamerTimeM == 0 && TamerTimeS == 0)
+                                    TamerTime = TamerTimeH + "h";
+                                else if (TamerTimeH == 0 && TamerTimeM >= 1 && TamerTimeS >= 1)
+                                    TamerTime = TamerTimeM + "m " + TamerTimeS + "s";
+                                else if (TamerTimeH == 0 && TamerTimeM >= 1 && TamerTimeS == 0)
+                                    TamerTime = TamerTimeM + "m";
+                                else if (TamerTimeH == 0 && TamerTimeM == 0 && TamerTimeS >= 1)
+                                    TamerTime = TamerTimeS + "s";
+
+                                float MasterTimeH;
+                                float MasterTimeM;
+                                float MasterTimeS;
+                                if (Mathf.Floor(MasterMath / 3600) <= 0)
+                                    MasterTimeH = 0;
+                                else
+                                    MasterTimeH = Mathf.Floor(MasterMath / 3600);
+                                if ((Mathf.Floor(MasterMath / 60) - (MasterTimeH * 60)) <= 0)
+                                    MasterTimeM = 0;
+                                else
+                                    MasterTimeM = Mathf.Floor(MasterMath / 60) - (MasterTimeH * 60);
+                                if ((MasterMath - ((MasterTimeH * 3600) + (MasterTimeM * 60))) <= 0)
+                                    MasterTimeS = 0;
+                                else
+                                    MasterTimeS = Mathf.Floor(MasterMath - ((MasterTimeH * 3600) + (MasterTimeM * 60)));
+
+                                if (MasterTimeH >= 1 && MasterTimeM >= 1 && MasterTimeS >= 1)
+                                    MasterTime = MasterTimeH + "h " + MasterTimeM + "m " + MasterTimeS + "s";
+                                else if (MasterTimeH >= 1 && MasterTimeM >= 1 && MasterTimeS == 0)
+                                    MasterTime = MasterTimeH + "h " + MasterTimeM + "m";
+                                else if (MasterTimeH >= 1 && MasterTimeM == 0 && MasterTimeS >= 1)
+                                    MasterTime = MasterTimeH + "h " + MasterTimeS + "s";
+                                else if (MasterTimeH >= 1 && MasterTimeM == 0 && MasterTimeS == 0)
+                                    MasterTime = MasterTimeH + "h";
+                                else if (MasterTimeH == 0 && MasterTimeM >= 1 && MasterTimeS >= 1)
+                                    MasterTime = MasterTimeM + "m " + MasterTimeS + "s";
+                                else if (MasterTimeH == 0 && MasterTimeM >= 1 && MasterTimeS == 0)
+                                    MasterTime = MasterTimeM + "m";
+                                else if (MasterTimeH == 0 && MasterTimeM == 0 && MasterTimeS >= 1)
+                                    MasterTime = MasterTimeS + "s";
                                 if (level < (Unlock / 100))
                                 {
                                     __result += Localization.instance.Localize(string.Concat(new string[]
@@ -1207,7 +1210,89 @@ namespace MoreSkills.ModSkills.NewSkills
                                     __result += Localization.instance.Localize("\n<color=green>Skill: <b>Master Tamer</b> (" + MasterTime + ")</color>");
                                 }
                             }
+                            
+                            if (__instance.m_character.IsTamed() && !__instance.m_character.IsPlayer())
+                            {
+                                if (MoreSkills_TamingConfig.EnableCustomNames.Value)
+                                {
+                                    if (__instance.m_nview.GetZDO().GetString("TameName", "") == "")
+                                    {
+                                        __instance.m_nview.GetZDO().Set("TameName", "Type in chat, /name TameName, to name your tame");
+                                    }
+                                    if (MoreSkills_Instances._player.IsCrouching())
+                                    {
+                                        if (Name != null)
+                                        {
+                                            if (__instance.m_nview.GetZDO().GetString("TameName") == "Type in chat, /name TameName, to name your tame")
+                                            {
+                                                __instance.m_nview.GetZDO().Set("TameName", Name);
+                                            }
+                                        }
+
+                                        if (__instance.m_nview.GetZDO().GetString("TameName") == "Type in chat, /name TameName, to name your tame")
+                                            __result += Localization.instance.Localize("\n<color=green>" + __instance.m_nview.GetZDO().GetString("TameName") + "</color>");
+                                        else if (__instance.m_character.m_name != __instance.m_nview.GetZDO().GetString("TameName"))
+                                            __result += Localization.instance.Localize("\n<color=orange>" + "Get Far to Update the Name" + "</color>");
+
+                                        __result += Localization.instance.Localize(string.Concat(
+                                            "\nMaxHealth: " + __instance.m_character.GetMaxHealth(),
+                                            "\nPhysicalResistance: " + __instance.m_character.GetDamageModifier(HitData.DamageType.Physical)));
+
+
+                                        Name = null;
+                                    }
+                                    else
+                                    {
+                                        if (__instance.m_nview.GetZDO().GetString("TameName") == "Type in chat, /name TameName, to name your tame")
+                                        {
+                                            __result += Localization.instance.Localize("\n<color=orange>Crouch to change the Tame name or see his Stats</color>");
+                                        }
+                                        else
+                                            __result += Localization.instance.Localize("\n<color=orange>Crouch to see Tame Stats</color>");
+                                    }
+                                }
+                                //Debug.LogWarning("Nombre: " + Name);
+                            }
+                            //Debug.LogWarning("TestTameness: " + __instance.GetTameness() + " TestTamed: " + __instance.m_character.IsTamed() + " TestPlayer: " + __instance.m_character.IsPlayer());
                         }
+                    }
+                }
+            }
+        }
+
+        [HarmonyPatch(typeof(Chat), "InputText")]
+        public static class SetNameTame
+        {
+            public static void Postfix(ref Chat __instance)
+            {
+                if (MoreSkills_Instances._player != null)
+                {
+                    if (MoreSkills_TamingConfig.EnableCustomNames.Value)
+                    {
+                        if (MoreSkills_Instances._player.IsCrouching())
+                        {
+                            if (__instance.m_input.text.StartsWith("/name"))
+                            {
+                                Name = __instance.m_input.text.Replace("/name ", "");
+                                //Debug.LogWarning("Input: " + Name);
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        [HarmonyPatch(typeof(Character), "GetHoverName")]
+        public static class ChangeNameTame
+        {
+            public static void Prefix(ref Character __instance, ref string __result)
+            {
+                if (__instance != null)
+                {
+                    if (__instance.m_nview.GetZDO().GetString("TameName") != "" && __instance.m_nview.GetZDO().GetString("TameName") != "Type in chat, /name TameName, to name your tame")
+                    {
+                        __instance.m_name = __instance.m_nview.GetZDO().GetString("TameName");
                     }
                 }
             }
@@ -1216,6 +1301,8 @@ namespace MoreSkills.ModSkills.NewSkills
         public static float Masterlvl1;
         public static float Tamerlvl1;
         public static float Unlocklvl1;
+
+        public static string Name;
 
 
         public static string MasterTime;

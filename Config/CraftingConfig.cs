@@ -30,10 +30,17 @@ namespace MoreSkills.Config
 
             //Inject.Strength
             if (EnableCraftingSkill.Value)
-                SkillInjector.RegisterNewSkill(703, "Crafting", "You get better at this thing of crafting. You can probably even become more efficient...", 1f, SkillIcons.Load_CraftingIcon(), Skills.SkillType.Unarmed);
+                try
+                {
+                    SkillInjector.RegisterNewSkill(703, "Crafting", "You get better at this thing of crafting. You can probably even become more efficient...", 1f, SkillIcons.Load_CraftingIcon(), Skills.SkillType.Unarmed);
+                }
+                catch
+                {
+                }
 
             //--
-            new Harmony("MoreSkills.CraftingConfig.GuiriGuyMods");
+            Debug.Log("Crafting Skill Patched!");
+            harmonyCraft = new Harmony("MoreSkills.CraftingConfig.GuiriGuyMods");
 
             //Logs
 
@@ -44,9 +51,18 @@ namespace MoreSkills.Config
 
             Debug.Log("Crafting Skill Loaded!");
         }
-    
+
+        private void OnDestroy()
+        {
+
+            Debug.Log("Crafting Skill UnPatched!");
+            harmonyCraft.UnpatchSelf();
+        }
+
 
         // Stats Bases
+
+        private Harmony harmonyCraft;
 
         //Multipliers
 

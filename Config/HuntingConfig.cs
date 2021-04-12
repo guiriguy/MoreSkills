@@ -27,9 +27,9 @@ namespace MoreSkills.Config
             //Chance Mod
             EnableHuntingChanceMod = base.Config.Bind<bool>("1. Enablers", "Enable Hunting Chance Mod", true, "Enables or disables the Hunting Skill Modification to the Chances of Droping an Item");
             //Trophy Mods
-            //EnableHuntingTrophyMod = base.Config.Bind<bool>("1. Enablers", "Enable Hunting Trophy Mod", false, "Enables or disables the Hunting Skill Modification to affect Trophies. RECOMMENDED FOR EPIC LOOTS");
+            EnableHuntingTrophyMod = base.Config.Bind<bool>("1. Enablers", "Enable Hunting Trophy Mod", false, "Enables or disables the Hunting Skill Modification to affect Trophies. RECOMMENDED FOR EPIC LOOTS");
             //Blob Affect
-            //EnableHuntingBlobSpawn = base.Config.Bind<bool>("1. Enablers", "Enable Hunting Blob Spawn Mod", false, "Enables or disables the Hunting Skill Modification to affect Blobs to count as ItemDrops from the Blob Elite");
+            EnableHuntingBlobSpawn = base.Config.Bind<bool>("1. Enablers", "Enable Hunting Blob Spawn Mod", false, "Enables or disables the Hunting Skill Modification to affect Blobs to count as ItemDrops from the Blob Elite");
             //ToO
             EnableTrialsOfOdinCompatibility = base.Config.Bind<bool>("1. Enablers", "Enable Compatibility with Trials of Odin Mod", false, "Enables or disables the Compatibility with Trials of Odin's Levels Mod");
             //Hunting
@@ -510,10 +510,17 @@ namespace MoreSkills.Config
 
             //Inject.Strength
             if (EnableHuntingSkill.Value)
-                SkillInjector.RegisterNewSkill(704, "Hunting", "You're gonna get better at gaining more resources when you kill something.", 1f, SkillIcons.Load_HuntingIcon(), Skills.SkillType.Unarmed);
+                try
+                {
+                    SkillInjector.RegisterNewSkill(704, "Hunting", "You're gonna get better at gaining more resources when you kill something.", 1f, SkillIcons.Load_HuntingIcon(), Skills.SkillType.Unarmed);
+                }
+                catch
+                {
+                }
 
             //--
-            new Harmony("GuiriGuyMods.MoreSkills.HuntingConfig");
+            Debug.Log("Hunting Skill Patched!");
+            harmonyHunting = new Harmony("MoreSkills.HuntingConfig.GuiriGuyMods");
 
             //Logs
             if (!EnableHuntingSkill.Value)
@@ -529,10 +536,10 @@ namespace MoreSkills.Config
                     Debug.LogWarning("[MoreSkills]: Hunting/Boss Mobs Mod Disabled");
                 else
                     Debug.Log("[MoreSkills]: Hunting/Boss Mobs Mod Enabled");*/
-                /*if (!EnableHuntingTrophyMod.Value)
+                if (!EnableHuntingTrophyMod.Value)
                     Debug.LogWarning("[MoreSkills]: Hunting/Trophy Mod Disabled");
                 else
-                    Debug.Log("[MoreSkills]: Hunting/Trophy Mod Enabled");*/
+                    Debug.Log("[MoreSkills]: Hunting/Trophy Mod Enabled");
                 if (!EnableHuntingMinMaxMod.Value)
                     Debug.LogWarning("[MoreSkills]: Hunting/MinMax Mobs Mod Disabled");
                 else
@@ -553,8 +560,16 @@ namespace MoreSkills.Config
 
             Debug.Log("Hunting Skill Loaded!");
         }
+        private void OnDestroy()
+        {
+
+            Debug.Log("Hunting Skill UnPatched!");
+            harmonyHunting.UnpatchSelf();
+        }
 
         // Stats Bases
+
+        private Harmony harmonyHunting;
 
         //2. Multipliers
 

@@ -44,6 +44,16 @@ namespace MoreSkills.ModSkills.NewSkills
                             //Debug.Log("Updating mob: " + __instance.name.Replace("(Clone)", "") + " Level: " + __instance.m_character.GetLevel() + " Item: " + drop.m_prefab.name.Replace("(UnityEngine.GameObject)", "") + " Min: " + drop.m_amountMin + " Max: " + drop.m_amountMax + " Chance: " + drop.m_chance);
                             //Debug.LogWarning("Name ins: " + nameprefab + " Name list: " + hDrops.Find(hDrop => hDrop.CreaturePrefab == nameprefab).CreaturePrefab);
 
+                            if (!MoreSkills_HuntingConfig.EnableHuntingNormalMobsMod.Value)
+                                if (!drop.m_prefab.name.Contains("Trophy") || !drop.m_prefab.name.Contains("Blob"))
+                                    break;
+
+                            if (!MoreSkills_HuntingConfig.EnableHuntingTrophyMod.Value && drop.m_prefab.name.Contains("Trophy"))
+                                break;
+
+                            if (!MoreSkills_HuntingConfig.EnableHuntingBlobSpawn.Value && drop.m_prefab.name.Contains("Blob"))
+                                break;
+
                             if (nameprefab == hDrops.Find(hDrop => hDrop.CreaturePrefab == nameprefab).CreaturePrefab)
                             {
                                 vMin = (float)(hDrops.Find(hDrop => hDrop.CreaturePrefab == nameprefab).Min);

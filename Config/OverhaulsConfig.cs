@@ -48,7 +48,7 @@ namespace MoreSkills.Config
             WoodCuttingMultiplier = base.Config.Bind<float>("2. Multipliers: WoodCutting", "Multiplier based on WoodCutting Skill", 1.5f, "The based on level multipliers, so at level 100 you reach such number. At level 100 you got default x1.5 times the amount of drops than vanilla. This multiplier changes that number.");
             //Jumping
             //DamageDecrease
-            FallDamageDecrease = base.Config.Bind<float>("2. Multipliers: Jump", "Deacrease Multiplier based on Jumping Skill", 2.0f, "Decreases the Damage Recieved by Falling from a High Altitude (4 meters)");
+            FallDamageDecrease = base.Config.Bind<float>("2. Multipliers: Jump", "Decrease Multiplier based on Jumping Skill", 2.0f, "Decreases the Damage Recieved by Falling from a High Altitude (4 meters)");
             //DamageIncrease
             MaxFallDamageIncrease = base.Config.Bind<float>("2. Multipliers: Jump", "Increase Multiplier Per Meter over Max Fall Altitude Skill", 2.0f, "Increses the Damage Recieved per meter exceded from Max Falling Altitude");
             //Base Configs
@@ -69,7 +69,8 @@ namespace MoreSkills.Config
             BaseMaxFallAltitude = base.Config.Bind<float>("3. BaseConfigs: Jump", "Base Max Fall Altitude", 30f, "Change the base Max fall altitude which if it's higher than that you will directly die. (Valheim Default is 20)");
 
             //--
-            new Harmony("MoreSkills.OverhaulsConfig.GuiriGuyMods");
+            Debug.Log("Overhauls Patched!");
+            harmonyOverhauls = new Harmony("MoreSkills.OverhaulsConfig.GuiriGuyMods");
 
             //Logs
             if (!EnableCrouchMod.Value)
@@ -130,6 +131,12 @@ namespace MoreSkills.Config
 
             Debug.Log("All Overhauls Loaded!");
         }
+        private void OnDestroy()
+        {
+
+            Debug.Log("Overhauls UnPatched!");
+            harmonyOverhauls.UnpatchSelf();
+        }
 
         // Stats Bases
 
@@ -150,6 +157,8 @@ namespace MoreSkills.Config
         public static ConfigEntry<float> BaseMaxRollAltitude;
 
         public static ConfigEntry<float> BaseMaxFallAltitude;
+
+        private Harmony harmonyOverhauls;
 
         //Multipliers
 

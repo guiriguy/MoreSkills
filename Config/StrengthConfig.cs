@@ -35,10 +35,17 @@ namespace MoreSkills.Config
 
             //Inject.Strength
             if (EnableStrengthMod.Value)
-                SkillInjector.RegisterNewSkill(700, "Strength", "Able to carry more and with higher numbers", 1f, SkillIcons.Load_StrengthIcon(), Skills.SkillType.Unarmed);
+                try
+                {
+                    SkillInjector.RegisterNewSkill(700, "Strength", "Able to carry more and with higher numbers", 1f, SkillIcons.Load_StrengthIcon(), Skills.SkillType.Unarmed);
+                }
+                catch
+                {
+                }
 
             //--
-            new Harmony("MoreSkills.StrengthConfig.GuiriGuyMods");
+            Debug.Log("Strength Skill Patched!");
+            harmonyStrength = new Harmony("MoreSkills.StrengthConfig.GuiriGuyMods");
 
             //Logs
             if (!EnableStrengthMod.Value)
@@ -59,8 +66,12 @@ namespace MoreSkills.Config
 
             Debug.Log("Strength Skill Loaded!");
         }
-    
+        private void OnDestroy()
+        {
 
+            Debug.Log("Strength Skill UnPatched!");
+            harmonyStrength.UnpatchSelf();
+        }
 
         // Stats Bases
 
@@ -68,6 +79,7 @@ namespace MoreSkills.Config
 
         public static ConfigEntry<float> BaseMaxWeight;
 
+        private Harmony harmonyStrength;
        
         //Multipliers
 

@@ -41,10 +41,17 @@ namespace MoreSkills.Config
 
             //Inject.Strength
             if (EnableSailingMod.Value)
-                SkillInjector.RegisterNewSkill(702, "Sailing", "You become a true viking with a great control of the boat in your adventures through seas", 1f, SkillIcons.Load_SailingIcon(), Skills.SkillType.Unarmed);
+                try
+                {
+                    SkillInjector.RegisterNewSkill(702, "Sailing", "You become a true viking with a great control of the boat in your adventures through seas", 1f, SkillIcons.Load_SailingIcon(), Skills.SkillType.Unarmed);
+                }
+                catch
+                {
+                }
 
             //--
-            new Harmony("MoreSkills.SailingConfig.GuiriGuyMods");
+            Debug.Log("Sailing Skill Patched!");
+            harmonySailing = new Harmony("MoreSkills.SailingConfig.GuiriGuyMods");
 
             //Logs
             if (!EnableSailingMod.Value)
@@ -62,6 +69,12 @@ namespace MoreSkills.Config
                     Debug.Log("[MoreSkills]Sailing/CrewMates Mod Enabled");
             }
             Debug.Log("Sailing Skill Loaded!");
+        }
+        private void OnDestroy()
+        {
+
+            Debug.Log("Sailing Skill UnPatched!");
+            harmonySailing.UnpatchSelf();
         }
 
         // Stats Bases
@@ -83,6 +96,8 @@ namespace MoreSkills.Config
         public static ConfigEntry<float> BaseDSideways;
 
         public static ConfigEntry<float> BaseMaxDSideways;
+
+        private Harmony harmonySailing;
 
         //Skill Increases Multpliers
 

@@ -15,6 +15,7 @@ namespace MoreSkills.Config
         public void Awake()
         {
             Debug.Log("Loading Taming Skill...");
+
             //1. Enablers
             //Taming
             EnableTamingSkill = base.Config.Bind<bool>("1. Enablers", "Enable Taming Skill", true, "Enables or disables the Taming Skill Modification");
@@ -26,6 +27,8 @@ namespace MoreSkills.Config
             EnableTamingTimeMod = base.Config.Bind<bool>("1. Enablers", "Enable Taming Times Modification", true, "Enables or disables the time to tame modification based on level. The higher the less it takes to tame.");
             //TamingEat
             EnableTamingEatMod = base.Config.Bind<bool>("1. Enablers", "Enable Taming Eat Modification", true, "Enables or disables the rate time at the creature eats based on level. The lower the more it eats.");
+            //CustomNames
+            EnableCustomNames = base.Config.Bind<bool>("1. Enablers", "Enable Custom Tamed Names", true, "Enables or disables the ability to name your Tamed Creature.");
             //2. Multipliers
             //Taming
             //Skill
@@ -198,10 +201,17 @@ namespace MoreSkills.Config
 
             //Inject.Strength
             if (EnableTamingSkill.Value)
-                SkillInjector.RegisterNewSkill(705, "Taming", "You're gonna get better at controling and taming these beasts.", 1f, SkillIcons.Load_TamingIcon(), Skills.SkillType.Unarmed);
+                try
+                {
+                    SkillInjector.RegisterNewSkill(705, "Taming", "You're gonna get better at controling and taming these beasts.", 1f, SkillIcons.Load_TamingIcon(), Skills.SkillType.Unarmed);
+                }
+                catch
+                {
+                }
 
             //--
-            new Harmony("MoreSkills.TamingConfig.GuiriGuyMods");
+            Debug.Log("Taming Skill Patched!");
+            harmonyTaming = new Harmony("MoreSkills.TamingConfig.GuiriGuyMods");
 
             //Logs
             if (!EnableTamingSkill.Value)
@@ -231,6 +241,14 @@ namespace MoreSkills.Config
             }
             Debug.Log("Taming Skill Loaded!");
         }
+        private void OnDestroy()
+        {
+
+            Debug.Log("Taming Skill UnPatched!");
+            harmonyTaming.UnpatchSelf();
+        }
+
+        private Harmony harmonyTaming;
 
         //Skill Increases Multpliers
 
@@ -247,6 +265,9 @@ namespace MoreSkills.Config
         public static ConfigEntry<bool> EnableAllTamableCompatibility;
 
         public static ConfigEntry<bool> EnableTamingUnlocks;
+
+        public static ConfigEntry<bool> EnableCustomNames;
+
         //Skills Types
 
         public const int TamingSkill_Type = 705;

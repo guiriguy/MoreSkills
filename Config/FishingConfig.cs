@@ -40,10 +40,17 @@ namespace MoreSkills.Config
 
             //Inject.Strength
             if (EnableFishingSkill.Value)
-                SkillInjector.RegisterNewSkill(706, "Fishing", "Fishing Stamina Drain, Fishing Base Hook, Fish Drop", 1f, SkillIcons.Load_FishingIcon(), Skills.SkillType.Unarmed);
+                try
+                {
+                    SkillInjector.RegisterNewSkill(706, "Fishing", "Fishing Stamina Drain, Fishing Base Hook, Fish Drop", 1f, SkillIcons.Load_FishingIcon(), Skills.SkillType.Unarmed);
+                }
+                catch
+                {
+                }
 
             //--
-            new Harmony("MoreSkills.FishingConfig.GuiriGuyMods");
+            Debug.Log("Fishing Skill Patched!");
+            harmonyFishing = new Harmony("MoreSkills.FishingConfig.GuiriGuyMods");
 
             //Logs
             if (!EnableFishingSkill.Value)
@@ -72,14 +79,20 @@ namespace MoreSkills.Config
 
             Debug.Log("Fishing Skill Loaded!");
         }
+        private void OnDestroy()
+        {
 
-
+            Debug.Log("Fishing Skill UnPatched!");
+            harmonyFishing.UnpatchSelf();
+        }
 
         // Stats Bases
 
         public static ConfigEntry<int> AutoHookLevel;
 
         public static ConfigEntry<int> AutoHookPercentage;
+
+        private Harmony harmonyFishing;
 
         //Multipliers
 
